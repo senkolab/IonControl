@@ -64,3 +64,8 @@ unittests/pygsti_addons/temp*
 tests/push.py
 evaltree.db
 *.pem
+
+
+src/
+ok.py
+_ok.pyd
