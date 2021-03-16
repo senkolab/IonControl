@@ -1,0 +1,77 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_NeutralFluorescence.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">5144</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="EndShutter" type="int">5144</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.5 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">141 us</Element>
+#       <Element name="DetectTime" type="Quantity">20 us</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyVar</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_IonFluorescence_Nat.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-09-10 20:38:06.014337+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-09-10 20:37:51.063766+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-09-10 20:38:06.204891+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x000002A9841ADAC8&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyVar" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1599770269.9121556	1599770269.9121556	1.0	0.0	0	0	0.5
+1599770271.0275223	1599770271.0275223	2.0	0.0	0	0	0.5
+1599770271.6382453	1599770271.6382453	3.0	1.0	1	0.5	0.5
+1599770272.1649609	1599770272.1649609	4.0	2.0	2	0.7071067811865476	0.7071067811865476
+1599770272.7148614	1599770272.7148614	5.0	1.0	1	0.5	0.5
+1599770273.2712812	1599770273.2712812	6.0	0.0	0	0	0.5
+1599770273.8034835	1599770273.8034835	7.0	1.0	1	0.5	0.5
+1599770274.3630774	1599770274.3630774	8.0	1.0	1	0.5	0.5
+1599770274.842045	1599770274.842045	9.0	1.0	1	0.5	0.5
+1599770275.3636985	1599770275.3636985	10.0	1.0	1	0.5	0.5
+1599770275.8466332	1599770275.8466332	11.0	1.0	1	0.5	0.5
+1599770276.3415184	1599770276.3415184	12.0	0.0	0	0	0.5
+1599770276.8480105	1599770276.8480105	13.0	0.0	0	0	0.5
+1599770277.351265	1599770277.351265	14.0	1.0	1	0.5	0.5
+1599770277.8534305	1599770277.8534305	15.0	0.0	0	0	0.5
+1599770278.3617308	1599770278.3617308	16.0	0.0	0	0	0.5
+1599770278.8482792	1599770278.8482792	17.0	0.0	0	0	0.5
+1599770279.3614278	1599770279.3614278	18.0	0.0	0	0	0.5
+1599770279.8489873	1599770279.8489873	19.0	0.0	0	0	0.5
+1599770280.34773	1599770280.34773	20.0	2.0	2	0.7071067811865476	0.7071067811865476
+1599770280.8456402	1599770280.8456402	21.0	0.0	0	0	0.5
+1599770281.368906	1599770281.368906	22.0	1.0	1	0.5	0.5
+1599770281.8459356	1599770281.8459356	23.0	1.0	1	0.5	0.5
+1599770282.369475	1599770282.369475	24.0	2.0	2	0.7071067811865476	0.7071067811865476
+1599770282.8405194	1599770282.8405194	25.0	0.0	0	0	0.5
+1599770283.324791	1599770283.324791	26.0	2.0	2	0.7071067811865476	0.7071067811865476
+1599770283.8472185	1599770283.8472185	27.0	0.0	0	0	0.5
+1599770284.3664432	1599770284.3664432	28.0	0.0	0	0	0.5
+1599770284.9067268	1599770284.9067268	29.0	2.0	2	0.7071067811865476	0.7071067811865476
+1599770285.4757874	1599770285.4757874	30.0	0.0	0	0	0.5

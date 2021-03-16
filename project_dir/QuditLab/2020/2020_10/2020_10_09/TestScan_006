@@ -1,0 +1,86 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Two-step Ionization Trap Efficiency PMT.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">12830</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="TrapRF_mask" type="int">8192</Element>
+#       <Element name="TrapRF" type="int">8192</Element>
+#       <Element name="EndShutter" type="int">12830</Element>
+#       <Element name="Camera_Switch_mask" type="int">4096</Element>
+#       <Element name="Camera_Switch" type="int">0</Element>
+#       <Element name="CameraTTL_mask" type="int">2048</Element>
+#       <Element name="CameraTTL" type="int">2048</Element>
+#       <Element name="NaturalAbundanceShutter_mask" type="int">512</Element>
+#       <Element name="NaturalAbundanceShutter" type="int">512</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.1 s</Element>
+#       <Element name="DetectTime" type="Quantity">100 ms</Element>
+#       <Element name="TrapStartDelay" type="Quantity">0 s</Element>
+#       <Element name="WaitForCoolTime" type="Quantity">2 s</Element>
+#       <Element name="WaitForCameraTime" type="Quantity">2 s</Element>
+#       <Element name="TrappedIonThreshold" type="int">80</Element>
+#       <Element name="DummyPulse" type="int">2</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="testvar" type="Quantity">100</Element>
+#       <Element name="DummyPulseCount" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyVar</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Two-step Ionization Trap Efficiency PMT</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-10-09 18:35:37.018105+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-10-09 18:34:34.137287+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-10-09 18:35:42.862961+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000022BCF876828&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyVar" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1602268462.8668163	1602268462.8668163	0.0	1199.5	2399	12.244896896258457	12.244896896258457
+1602268474.1347766	1602268474.1347766	1.0	48.0	48	3.4641016151377544	3.4641016151377544
+1602268477.015665	1602268477.015665	2.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602268479.6202009	1602268479.6202009	3.0	35.0	35	2.958039891549808	2.958039891549808
+1602268482.3333323	1602268482.3333323	4.0	41.0	41	3.2015621187164243	3.2015621187164243
+1602268484.8903728	1602268484.8903728	5.0	62.0	62	3.9370039370059056	3.9370039370059056
+1602268487.3365073	1602268487.3365073	6.0	41.0	41	3.2015621187164243	3.2015621187164243
+1602268489.7985513	1602268489.7985513	7.0	38.0	38	3.082207001484488	3.082207001484488
+1602268492.3223505	1602268492.3223505	8.0	67.0	67	4.092676385936225	4.092676385936225
+1602268494.596367	1602268494.596367	9.0	43.0	43	3.278719262151	3.278719262151
+1602268496.8050885	1602268496.8050885	10.0	38.0	38	3.082207001484488	3.082207001484488
+1602268499.008467	1602268499.008467	11.0	61.0	61	3.905124837953327	3.905124837953327
+1602268501.232065	1602268501.232065	12.0	116.0	232	3.8078865529319543	3.8078865529319543
+1602268508.837106	1602268508.837106	13.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602268510.826551	1602268510.826551	14.0	59.0	59	3.840572873934304	3.840572873934304
+1602268513.006149	1602268513.006149	15.0	36.0	36	3.0	3.0
+1602268515.2690284	1602268515.2690284	16.0	44.0	44	3.3166247903554	3.3166247903554
+1602268517.3894355	1602268517.3894355	17.0	52.0	52	3.605551275463989	3.605551275463989
+1602268519.5803807	1602268519.5803807	18.0	33.0	33	2.8722813232690143	2.8722813232690143
+1602268521.9458961	1602268521.9458961	19.0	43.0	43	3.278719262151	3.278719262151
+1602268524.3440342	1602268524.3440342	20.0	31.0	31	2.7838821814150108	2.7838821814150108
+1602268526.7491894	1602268526.7491894	21.0	39.0	39	3.122498999199199	3.122498999199199
+1602268529.171447	1602268529.171447	22.0	51.0	51	3.570714214271425	3.570714214271425
+1602268531.7176404	1602268531.7176404	23.0	34.0	34	2.9154759474226504	2.9154759474226504
+1602268534.3699932	1602268534.3699932	24.0	53.0	53	3.640054944640259	3.640054944640259

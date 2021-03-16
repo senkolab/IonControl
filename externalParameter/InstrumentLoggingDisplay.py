@@ -94,6 +94,7 @@ class InstrumentLoggingDisplayTableModel( QtCore.QAbstractTableModel ):
  
     def update(self, key, value):
         if key in self.data:
+            #print("InstrumentLoggingDisplay: %s"%value)
             self.data[key].update(value)
             index = self.data.index(key)
             leftInd = self.createIndex(index, 1)

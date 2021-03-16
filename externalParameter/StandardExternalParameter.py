@@ -8,18 +8,129 @@ from collections import OrderedDict
 import logging
 import numpy
 
+
 from modules.quantity import Q
 from .ExternalParameterBase import ExternalParameterBase
 from ProjectConfig.Project import getProject
 from uiModules.ImportErrorPopup import importErrorPopup
 from .qtHelper import qtHelper
-
+#LKSJDFLJ
 project=getProject()
-wavemeterEnabled = project.isEnabled('hardware', 'HighFinesse Wavemeter')
+HighFinesseWavemeterEnabled = project.isEnabled('hardware', 'HighFinesse Wavemeter')
+wavemeterEnabled = False
 visaEnabled = project.isEnabled('hardware', 'VISA')
+DG4000Enabled = project.isEnabled('hardware', 'DG4000 AWG')
+
 from PyQt5 import QtCore
 
-if wavemeterEnabled:
+if DG4000Enabled:
+    print(DG4000Enabled)
+    class RG4000WFGeneratorNonVisa(ExternalParameterBase):
+        className = "RG4000 Waveform Generator Non VISA"
+	#Populates the Params Control 
+        _outputChannels = OrderedDict([("OutEnable1", ""),
+                                       ("OutEnable2", ""),
+                                       ("Freq1", "Hz"),
+                                       ("Freq2", "Hz"),
+                                       ("Amp1", "V"),
+                                       ("Amp2", "V")
+                                       #("SweepEnabled1", ""),
+                                       #("SweepEnabled2", ""),
+                                       #("SweepStartFreq1", "Hz"),
+                                       #("SweepStartFreq2", "Hz"),
+                                       #("SweepStopFreq1", "Hz"),
+                                       #("SweepStopFreq2", "Hz"),
+                                       #("SweepTime1", "s"),
+                                       #("SweepTime2", "s"),
+                                       #("SweepReturnTime1", "s"),
+                                       #("SweepReturnTime2", "s")]
+                                       ]
+                                      )
+
+        _outputLookup = { "OutEnable1": ("OUTP1:STAT", 1, ""),
+                          "OutEnable2": ("OUTP2:STAT", 2, ""),
+                          "Freq1": ("SOUR1:FREQ", 1, "Hz"),
+                          "Freq2": ("SOUR2:FREQ", 2, "Hz"),
+                          "Amp1": ("SOUR1:VOLT:AMPL", 1, "V"),
+                          "Amp2": ("SOUR2:VOLT:AMPL", 2, "V")
+                          #"SweepEnabled1": ("SOUR1:FREQ:MODE", 0, ""),
+                          #"SweepEnabled2": ("SOUR2:FREQ:MODE", 0, ""),
+                          #"SweepStartFreq1": ("SOUR1:FREQ:STAR", 1, "Hz"),
+                          #"SweepStartFreq2": ("SOUR2:FREQ:STAR", 2, "Hz"),
+                          #"SweepStopFreq1": ("SOUR1:FREQ:STOP", 1, "Hz"),
+                          #"SweepStopFreq2": ("SOUR2:FREQ:STOP", 2, "Hz"),
+                          #"SweepTime1": ("SOUR1:SWE:TIME", 1, "s"),
+                          #"SweepTime2": ("SOUR2:SWE:TIME", 2, "s"),
+                          #"SweepReturnTime1": ("SOUR1:SWE:RTIM", 1, "s"),
+                          #"SweepReturnTime2": ("SOUR2:SWE:RTIM", 2, "s")
+                          }
+
+
+        _inputChannels = {"OutEnable1": "",
+                          "OutEnable2": "",
+                          "Freq1": "Hz",
+                          "Freq2": "Hz",
+                          "Amp1": "V",
+                          "Amp2": "V"
+                          #"SweepEnabled1": "",
+                          #"SweepEnabled2": "",
+                          #"SweepStartFreq1": "Hz",
+                          #"SweepStartFreq2": "Hz",
+                          #"SweepStopFreq1": "Hz",
+                          #"SweepStopFreq2": "Hz",
+                          #"SweepTime1": "s",
+                          #"SweepTime2": "s",
+                          #"SweepReturnTime1": "s",
+                          #"SweepReturnTime2": "s"
+                          }
+        def __init__(self, name, config, globalDict, instrument="TCPIP0::192.168.168.21::inst0::INSTR"):
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+            self.rm = visa.ResourceManager()
+            self.instrument = self.rm.open_resource( instrument)
+            self.setDefaults()
+            self.initializeChannelsToExternals()
+            self.qtHelper = qtHelper()
+            self.newData = self.qtHelper.newData
+            self.initOutput()   
+        def setValue(self, channel, v):
+            function, index, unit = self._outputLookup[channel]
+            #print(function)
+            if(function == ':OUTP1' or function == ':OUTP2' or function == 'OUTP1:STAT' or function == 'OUTP2:STAT'):
+                #print('YOOYoooOyo I made it in here StandardExternalParameter')
+                command = "{0} {1}".format(function, v)
+            else:
+                command = "{0} {1}".format(function, v.m_as(unit))#, index)
+            #print(command)
+            self.instrument.write(command) #set voltage
+            return v
+        def getValue(self, channel):
+            function, index, unit = self._outputLookup[channel]
+            command = "{0}?".format(function)#, index)
+            try:
+                val = Q(float(self.instrument.query(command)), unit)
+                val = str(val)
+                val = val[:-2]
+                #print("Q unit %s"%val)
+                if val == "ON":
+                    #print("Q unit IN %s"%val)
+                    val = 1
+                else:
+                    val = 0
+                return val #set voltage
+            except:
+                val = str(self.instrument.query(command))
+                val = val[:-2]
+                #print("Other unit %s"%val)
+                if val == "ON":
+                    #print("Other unit IN %s"%val)
+                    val = 1
+                else:
+                    val = 0
+                return val
+        def close(self):
+            del self.instrument
+
+if wavemeterEnabled or HighFinesseWavemeterEnabled:
     from wavemeter.Wavemeter import Wavemeter
 
 if visaEnabled:
@@ -28,8 +139,92 @@ if visaEnabled:
     except ImportError: #popup on failed import of enabled visa
         importErrorPopup('VISA')
 
-
 if visaEnabled:
+    class RG4000WFGenerator(ExternalParameterBase):
+        className = "RG4000 Waveform Generator"
+	#Populates the Params Control 
+        _outputChannels = OrderedDict([("OutEnable1", ""),
+                                       ("OutEnable2", ""),
+                                       ("Freq1", "Hz"),
+                                       ("Freq2", "Hz"),
+                                       ("Amp1", "V"),
+                                       ("Amp2", "V"),
+                                       #("SweepEnabled1", ""),
+                                       #("SweepEnabled2", ""),
+                                       ("SweepStartFreq1", "Hz"),
+                                       ("SweepStartFreq2", "Hz"),
+                                       ("SweepStopFreq1", "Hz"),
+                                       ("SweepStopFreq2", "Hz"),
+                                       ("SweepTime1", "s"),
+                                       ("SweepTime2", "s"),
+                                       ("SweepReturnTime1", "s"),
+                                       ("SweepReturnTime2", "s")]
+                                      )
+
+        _outputLookup = { "OutEnable1": ("OUTP1:STAT", 1, ""),
+                          "OutEnable2": ("OUTP2:STAT", 2, ""),
+                          "Freq1": ("SOUR1:FREQ", 1, "Hz"),
+                          "Freq2": ("SOUR2:FREQ", 2, "Hz"),
+                          "Amp1": ("SOUR1:VOLT:AMPL", 1, "V"),
+                          "Amp2": ("SOUR2:VOLT:AMPL", 2, "V"),
+                          #"SweepEnabled1": ("SOUR1:FREQ:MODE", 0, ""),
+                          #"SweepEnabled2": ("SOUR2:FREQ:MODE", 0, ""),
+                          "SweepStartFreq1": ("SOUR1:FREQ:STAR", 1, "Hz"),
+                          "SweepStartFreq2": ("SOUR2:FREQ:STAR", 2, "Hz"),
+                          "SweepStopFreq1": ("SOUR1:FREQ:STOP", 1, "Hz"),
+                          "SweepStopFreq2": ("SOUR2:FREQ:STOP", 2, "Hz"),
+                          "SweepTime1": ("SOUR1:SWE:TIME", 1, "s"),
+                          "SweepTime2": ("SOUR2:SWE:TIME", 2, "s"),
+                          "SweepReturnTime1": ("SOUR1:SWE:RTIM", 1, "s"),
+                          "SweepReturnTime2": ("SOUR2:SWE:RTIM", 2, "s")}
+
+
+        _inputChannels = {"OutEnable1": "",
+                          "OutEnable2": "",
+                          "Freq1": "Hz",
+                          "Freq2": "Hz",
+                          "Amp1": "V",
+                          "Amp2": "V",
+                          #"SweepEnabled1": "",
+                          #"SweepEnabled2": "",
+                          "SweepStartFreq1": "Hz",
+                          "SweepStartFreq2": "Hz",
+                          "SweepStopFreq1": "Hz",
+                          "SweepStopFreq2": "Hz",
+                          "SweepTime1": "s",
+                          "SweepTime2": "s",
+                          "SweepReturnTime1": "s",
+                          "SweepReturnTime2": "s"}
+        def __init__(self, name, config, globalDict, instrument="TCPIP0::192.168.168.21::inst0::INSTR"):
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+            self.rm = visa.ResourceManager()
+            self.instrument = self.rm.open_resource( instrument)
+            self.setDefaults()
+            self.initializeChannelsToExternals()
+            self.qtHelper = qtHelper()
+            self.newData = self.qtHelper.newData
+            self.initOutput()            
+        def setValue(self, channel, v):
+            function, index, unit = self._outputLookup[channel]
+            #print(function)
+            if(function == ':OUTP1' or function == ':OUTP2' or function == 'OUTP1:STAT' or function == 'OUTP2:STAT'):
+                #print('YOOYoooOyo I made it in here StandardExternalParameter')
+                command = "{0} {1}".format(function, v)
+            else:
+                command = "{0} {1}".format(function, v.m_as(unit))#, index)
+            #print(command)
+            self.instrument.write(command) #set voltage
+            return v
+        def getValue(self, channel):
+            function, index, unit = self._outputLookup[channel]
+            command = "{0}?".format(function)#, index)
+            try:
+                return Q(float(self.instrument.query(command)), unit) #set voltage
+            except:
+                return self.instrument.query(command)
+        def close(self):
+            del self.instrument
+
     class N6700BPowerSupply(ExternalParameterBase):
         """
         Adjust the current on the N6700B current supply
@@ -77,7 +272,6 @@ if visaEnabled:
 
         def close(self):
             del self.instrument
-
 
     class AFG3102(ExternalParameterBase):
         """
@@ -137,14 +331,6 @@ if visaEnabled:
                           "SweepReturnTime1": "s",
                           "SweepReturnTime2": "s"}
 
-
-
-
-        #_outputLookup = { "Curr1": ("Curr", 1, "A"), "Curr2": ("Curr", 2, "A"), "Curr3": ("Curr", 3, "A"), "Curr4": ("Curr", 4, "A"),
-                          #"Volt1": ("Volt", 1, "V"), "Volt2": ("Volt", 2, "V"), "Volt3": ("Volt", 3, "V"), "Volt4": ("Volt", 4, "V"),
-                          #"OutEnable1": ("OUTP:STAT", 1, ""), "OutEnable2": ("OUTP:STAT", 2, ""),
-                          #"OutEnable3": ("OUTP:STAT", 3, ""), "OutEnable4": ("OUTP:STAT", 4, "")}
-        #_inputChannels = dict({"Curr1":"A", "Curr2":"A", "Curr3":"A", "Curr4":"A", "Volt1":"V", "Volt2":"V", "Volt3":"V", "Volt4":"V"})
         def __init__(self, name, config, globalDict, instrument="QGABField"):
             logger = logging.getLogger(__name__)
             ExternalParameterBase.__init__(self, name, config, globalDict)
@@ -438,7 +624,6 @@ if visaEnabled:
         def close(self):
             del self.instrument
 
-
 if visaEnabled and wavemeterEnabled:
     class LaserWavemeterScan(AgilentPowerSupply):
         """
@@ -541,6 +726,64 @@ if wavemeterEnabled:
             superior.append({'name': 'maxAge', 'type': 'magnitude', 'value': self.settings.maxAge})
             return superior
 
+if HighFinesseWavemeterEnabled:
+    class WavemeterChannel(ExternalParameterBase):
+        """
+        Scan a laser by setting the lock point on the wavemeter lock.
+        setValue is laser frequency
+        currentValue is currently set value
+        currentExternalValue is frequency read from wavemeter
+        """
+        className = "HighFinesseChannel"
+        _outputChannels = { None: "THz"}
+        def __init__(self, name, config, globalDict, instrument="192.168.168.203:8080"):
+            print("the instrument IP is ", instrument)
+            logger = logging.getLogger(__name__)
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+            self.instrument = instrument
+            self.wavemeter = Wavemeter(self.instrument)
+            #logger.info( "LaserWavemeterScan savedValue {0}".format(self.savedValue) )
+            self.channel = 1
+            self.initializeChannelsToExternals()
+            self.initOutput()
+
+
+        def setDefaults(self):
+            ExternalParameterBase.setDefaults(self)
+            self.settings.__dict__.setdefault('channel', 1)
+            self.settings.__dict__.setdefault('maxDeviation', Q(5, 'MHz'))
+            self.settings.__dict__.setdefault('maxAge', Q(2, 's'))
+
+        def setValue(self, channel, value):
+            """
+            Move one steps towards the target, return current value
+            """
+            logger = logging.getLogger(__name__)
+            if value is not None:
+                self.currentFrequency = self.wavemeter.set_frequency(value, self.settings.channel, self.settings.maxAge)
+            logger.debug( "setFrequency {0}, current frequency {1}".format(self.settings.channelSettings[None].value, self.currentFrequency) )
+            print("self.currentFrequency is", self.currentFrequency, ". self.settings.channelSettings[None].value is", self.settings.channelSettings[None].value, "self.settings.maxDeviation is", self.settings.maxDeviation)
+            #arrived = self.currentFrequency is not None and abs(
+            #    self.currentFrequency - self.settings.channelSettings[None].value) < self.settings.maxDeviation
+            #print(arrived)
+            arrived = True
+            return value, arrived
+
+        def currentExternalValue(self, channel):
+            logger = logging.getLogger(__name__)
+            self.lastExternalValue = self.wavemeter.get_frequency(self.settings.channel, self.settings.maxAge )
+            logger.debug( str(self.lastExternalValue) )
+            self.detuning=(self.lastExternalValue)
+            self.currentFrequency = self.wavemeter.get_frequency(self.settings.channel, self.settings.maxAge )
+            return self.lastExternalValue
+
+        def paramDef(self):
+            superior = ExternalParameterBase.paramDef(self)
+            superior.append({'name': 'channel', 'type': 'int', 'value': self.settings.channel})
+            superior.append({'name': 'maxDeviation', 'type': 'magnitude', 'value': self.settings.maxDeviation})
+            superior.append({'name': 'maxAge', 'type': 'magnitude', 'value': self.settings.maxAge})
+            return superior
+            
 class DummyParameter(ExternalParameterBase):
     """
     DummyParameter, used to debug this part of the software.
@@ -583,3 +826,122 @@ class DummySingleParameter(ExternalParameterBase):
     def connectedInstruments(cls):
         return ['Anything will do']
          
+
+SLSoflEnabled = project.isEnabled('hardware','SLS Offset Frequency Lock')
+
+if SLSoflEnabled:
+    import paramiko
+
+    class OffsetFrequencyLock(ExternalParameterBase):
+
+        className = "SLS Offset Frequency Lock"
+        _outputChannels = OrderedDict([
+            ('OffsetFrequency', 'Hz')])
+            
+        def __init__(self, name, config, globalDict, instrument):
+            logger = logging.getLogger(__name__)
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+            project = getProject()
+            instrument_list = project.hardware.get('SLS Offset Frequency Lock')
+            instrument = instrument_list[instrument]
+            ip_addr = instrument.get('ipAddress')
+            user=instrument.get('user')
+            pwd=instrument.get('password')
+            port_no = instrument.get('port')
+            self.ssh_client = paramiko.SSHClient()
+            self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.ssh_client.connect(ip_addr, username=user, password=pwd, port=port_no)
+                
+            #self.initializeChannelsToExternals()
+            self.initOutput()
+            self.qtHelper = qtHelper()
+            self.newData = self.qtHelper.newData	
+                
+        def setValue(self, channel,v):
+            v_channel = self._outputChannels[channel]
+            v=str(v)
+            command='python setOffsetFrequency.py ' + v
+            print(command)
+            self.ssh_client.exec_command(command)	
+
+        def connectedInstruments(self):
+            project = getProject()
+            instrument_list = project.hardware.get('SLS Offset Frequency Lock').keys()
+            return instrument_list
+
+DC_Controller_Enabled = project.isEnabled('hardware', 'Senkolab Four rod DC Controller')    
+
+if DC_Controller_Enabled:
+    try:
+        from DC_Voltage_Control.src.DC_voltage_control_python.dc_ctr_rpc_client import FourRodDCControllerClient
+        from DC_Voltage_Control.src.DC_voltage_control_python.dc_ctr_enum import *
+    except ImportError:
+        importErrorPopup('DC Voltage Control')
+
+
+    class DCVoltageControl(ExternalParameterBase):
+        """
+        Control the voltages on rods and needles for the four rod trap
+        """
+        className = "Four rod DC Voltage Control"
+        _outputChannels = OrderedDict([
+            ('Enable Remote Control', ''),
+            ('Needle_1_Voltage', 'V'),
+            ('Needle_2_Voltage', 'V'),
+            ('Rod_1_Voltage', 'V'),
+            ('Rod_2_Voltage', 'V'),
+            ('Rod_3_Voltage', 'V'),
+            ('Rod_4_Voltage', 'V')])
+
+        _outputLookup = {
+            'Needle_1_Voltage': CHANNEL_N1,
+            'Needle_2_Voltage': CHANNEL_N2,
+            'Rod_1_Voltage': CHANNEL_R1,
+            'Rod_2_Voltage': CHANNEL_R2,
+            'Rod_3_Voltage': CHANNEL_R3,
+            'Rod_4_Voltage': CHANNEL_R4
+        }
+
+        def __init__(self, name, config, globalDict, instrument):
+            logger = logging.getLogger(__name__)
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+            project = getProject()
+            instrument_list = project.hardware.get('Senkolab Four rod DC Controller')
+            instrument = instrument_list[instrument]
+            ip_addr = instrument.get('ipAddress')
+            port = instrument.get('port')
+            self.dc_client = FourRodDCControllerClient(address=ip_addr + ':' + port)
+            
+            # self.initializeChannelsToExternals()
+            self.initOutput()
+            self.qtHelper = qtHelper()
+            self.newData = self.qtHelper.newData
+
+        def setValue(self, channel, v):
+            if channel == 'Enable Remote Control':
+                v = v.m_as('')
+                v = int(v)
+                if v not in (0, 1, 255):
+                    raise ValueError("Not an available mode!!!!!")
+                self.dc_client.set_mode_all(v)
+            else:
+                v = v.m_as('V')
+                v = float(v)
+                v_channel = self._outputLookup[channel]
+                print(v_channel, v)
+                self.dc_client.set_volt(v_channel, v)
+
+        def getExternalValue(self, channel=None):
+            if channel == 'Enable Remote Control':
+                mode = self.dc_client.get_mode(CHANNEL_N1)
+                return Q(mode, '')
+            else:
+                v_channel = self._outputLookup[channel]
+                voltage = self.dc_client.get_volt_adc(v_channel)
+                voltage = round(voltage,4)
+                return Q(voltage, 'V')
+
+        def connectedInstruments(self):
+            project = getProject()
+            instrument_list = project.hardware.get('Senkolab Four rod DC Controller').keys()
+            return instrument_list

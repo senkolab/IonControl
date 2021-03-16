@@ -1,0 +1,49 @@
+2019-11-12 11:53:41,279 ERROR uiModules.MagnitudeSpinBox(MagnitudeSpinBox.py:107 value) value
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 100, in value
+    value = self.expression.evaluateAsMagnitude(text, self.globalDict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 337, in evaluateAsMagnitude
+    return self.exprParser.evaluateAsMagnitude(s, variabledict, listDependencies, useFloat, functiondict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 317, in evaluateAsMagnitude
+    self.parser.parse(s, lexer=self.lexer)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 333, in parse
+    return self.parseopt_notrack(input, lexer, debug, tracking, tokenfunc)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 1120, in parseopt_notrack
+    p.callable(pslice)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 236, in p_expression_name
+    t[0] = self.variableCM[t[1]]
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 883, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 875, in __missing__
+    raise KeyError(key)
+KeyError: 'OFF'
+2019-11-12 11:53:41,731 ERROR uiModules.MagnitudeSpinBoxDelegate(ExceptionLogButton.py:129 myexcepthook) 'OFF'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBoxDelegate.py", line 41, in setModelData
+    value = editor.value()
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 108, in value
+    raise e
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 100, in value
+    value = self.expression.evaluateAsMagnitude(text, self.globalDict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 337, in evaluateAsMagnitude
+    return self.exprParser.evaluateAsMagnitude(s, variabledict, listDependencies, useFloat, functiondict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 317, in evaluateAsMagnitude
+    self.parser.parse(s, lexer=self.lexer)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 333, in parse
+    return self.parseopt_notrack(input, lexer, debug, tracking, tokenfunc)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 1120, in parseopt_notrack
+    p.callable(pslice)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 236, in p_expression_name
+    t[0] = self.variableCM[t[1]]
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 883, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 875, in __missing__
+    raise KeyError(key)
+KeyError: 'OFF'
+2019-11-12 11:56:18,519 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) disconnect() failed between 'newData' and 'unislot'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 60, in setInputChannels
+    channel.newData.disconnect(self.updateHandler)
+TypeError: disconnect() failed between 'newData' and 'unislot'

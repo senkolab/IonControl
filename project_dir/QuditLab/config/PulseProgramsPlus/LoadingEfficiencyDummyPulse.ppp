@@ -1,0 +1,32 @@
+parameter ShutterWait = 100 ms
+parameter WaitToReverseAblationTTL = 10 ms
+parameter CameraTriggerWait = 10 ms
+parameter TrapFlushWait
+parameter DummyFlashInterval
+parameter DummyPulseNumber
+parameter DummyVar
+counter DummyCounter
+shutter init
+masked_shutter OpenAblationShutter
+masked_shutter FlashAblation
+masked_shutter CaptureImage
+masked_shutter TrapRF
+masked_shutter AllLasers
+var PulseCount
+var DummyPulseCount
+exitcode endLabel = 0xffffffffffffffff
+
+set_inv_shutter(OpenAblationShutter)
+update(ShutterWait)
+while True:
+    update(DummyFlashInterval)
+    set_shutter(FlashAblation)
+    update(WaitToReverseAblationTTL)
+    update()
+    set_inv_shutter(FlashAblation)
+update()
+exit( endLabel )
+#set_parameter(TrapRFOnOff 0)
+#update()
+#set_parameter(TrapRFOnOff 1)
+#update()

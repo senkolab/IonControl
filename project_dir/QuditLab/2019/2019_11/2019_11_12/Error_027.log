@@ -1,0 +1,14 @@
+2019-11-12 14:38:36,905 ERROR uiModules.MagnitudeSpinBox(MagnitudeSpinBox.py:110 value) value
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 100, in value
+    if (text == 'OFF' | text == 'ON'):
+TypeError: unsupported operand type(s) for |: 'str' and 'str'
+2019-11-12 14:38:37,376 ERROR uiModules.MagnitudeSpinBoxDelegate(ExceptionLogButton.py:129 myexcepthook) unsupported operand type(s) for |: 'str' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBoxDelegate.py", line 41, in setModelData
+    value = editor.value()
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 111, in value
+    raise e
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 100, in value
+    if (text == 'OFF' | text == 'ON'):
+TypeError: unsupported operand type(s) for |: 'str' and 'str'

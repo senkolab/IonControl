@@ -1,0 +1,80 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_NeutralFluorescence.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">4610</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="EndShutter" type="int">4610</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.5 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">145 us</Element>
+#       <Element name="DetectTime" type="Quantity">20 us</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyVar</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_NeutralFluorescence.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-09-02 21:16:09.546301+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-09-02 21:15:54.606634+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-09-02 21:16:09.822562+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x000001B5731A1A58&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyVar" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1599081353.6817386	1599081353.6817386	1.0	3.0	3	0.8660254037844386	0.8660254037844386
+1599081354.604849	1599081354.604849	1.0376569037656904	1.0	1	0.5	0.5
+1599081355.0926328	1599081355.0926328	1.0753138075313808	4.0	4	1.0	1.0
+1599081355.4793973	1599081355.4793973	1.112970711297071	4.0	4	1.0	1.0
+1599081355.9139662	1599081355.9139662	1.1506276150627615	2.0	2	0.7071067811865476	0.7071067811865476
+1599081356.3702278	1599081356.3702278	1.1882845188284519	2.0	2	0.7071067811865476	0.7071067811865476
+1599081356.7968838	1599081356.7968838	1.2259414225941423	5.0	5	1.118033988749895	1.118033988749895
+1599081357.2547514	1599081357.2547514	1.2635983263598327	2.0	2	0.7071067811865476	0.7071067811865476
+1599081357.6969478	1599081357.6969478	1.301255230125523	1.0	1	0.5	0.5
+1599081358.1381888	1599081358.1381888	1.3389121338912133	0.0	0	0	0.5
+1599081358.568164	1599081358.568164	1.3765690376569037	2.0	2	0.7071067811865476	0.7071067811865476
+1599081359.0510898	1599081359.0510898	1.4142259414225942	0.0	0	0	0.5
+1599081359.466275	1599081359.466275	1.4518828451882846	2.0	2	0.7071067811865476	0.7071067811865476
+1599081359.9037209	1599081359.9037209	1.489539748953975	4.0	4	1.0	1.0
+1599081360.3385682	1599081360.3385682	1.5271966527196654	3.0	3	0.8660254037844386	0.8660254037844386
+1599081360.805867	1599081360.805867	1.5648535564853556	3.0	3	0.8660254037844386	0.8660254037844386
+1599081361.244747	1599081361.244747	1.602510460251046	0.0	0	0	0.5
+1599081361.7520368	1599081361.7520368	1.6401673640167365	3.0	3	0.8660254037844386	0.8660254037844386
+1599081362.2299986	1599081362.2299986	1.6778242677824267	1.0	1	0.5	0.5
+1599081362.7204206	1599081362.7204206	1.715481171548117	2.0	2	0.7071067811865476	0.7071067811865476
+1599081363.2011247	1599081363.2011247	1.7531380753138075	2.0	2	0.7071067811865476	0.7071067811865476
+1599081363.7061985	1599081363.7061985	1.790794979079498	1.0	1	0.5	0.5
+1599081364.1659176	1599081364.1659176	1.8284518828451883	1.0	1	0.5	0.5
+1599081364.672395	1599081364.672395	1.8661087866108788	2.0	2	0.7071067811865476	0.7071067811865476
+1599081365.1505253	1599081365.1505253	1.9037656903765692	3.0	3	0.8660254037844386	0.8660254037844386
+1599081365.644008	1599081365.644008	1.9414225941422596	1.0	1	0.5	0.5
+1599081366.124655	1599081366.124655	1.9790794979079498	3.0	3	0.8660254037844386	0.8660254037844386
+1599081366.619081	1599081366.619081	2.01673640167364	4.0	4	1.0	1.0
+1599081367.0981429	1599081367.0981429	2.054393305439331	1.0	1	0.5	0.5
+1599081367.5941324	1599081367.5941324	2.092050209205021	2.0	2	0.7071067811865476	0.7071067811865476
+1599081368.1149957	1599081368.1149957	2.1297071129707112	5.0	5	1.118033988749895	1.118033988749895
+1599081368.5579107	1599081368.5579107	2.1673640167364017	2.0	2	0.7071067811865476	0.7071067811865476
+1599081369.043146	1599081369.043146	2.205020920502092	1.0	1	0.5	0.5

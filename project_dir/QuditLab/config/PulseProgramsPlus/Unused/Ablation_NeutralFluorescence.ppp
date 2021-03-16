@@ -1,0 +1,58 @@
+###########################################################################
+#
+#  Experiment for collecting neutral fluorescence over time
+#
+
+
+const PMTChannel = 1
+
+
+# masks and shutters
+shutter InitializationShutter 
+masked_shutter NaturalAblation
+shutter EndShutter
+
+
+# times
+parameter ShutterDelayTime 
+parameter WindowStartTime
+parameter DetectTime 
+parameter DummyVar
+
+
+# control parameters
+parameter experiments 
+counter DetectCounters
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+var experimentsleft = 100
+var currentexperiment = 0
+
+def NeutralMeasure():
+    set_shutter(NaturalAblation)
+    update(WindowStartTime)
+    set_counter(DetectCounters)
+    update(DetectTime)
+    clear_counter()
+    set_inv_shutter(NaturalAblation)
+    update(ShutterDelayTime)
+    update()
+
+
+set_shutter( InitializationShutter )
+update(ShutterDelayTime)
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    
+    currentexperiment = 0
+    while currentexperiment < experiments:
+        NeutralMeasure()
+        currentexperiment += 1
+    
+set_shutter(EndShutter)
+update()
+exit( endLabel )

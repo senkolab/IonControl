@@ -1,0 +1,52 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter Ablation
+
+
+# times
+parameter WaitAblationReset
+parameter WaitInitialize
+parameter WindowStartTime
+parameter DetectTime 
+
+# control parameters
+parameter pulses 
+parameter DummyVar = 0
+counter DetectCounters
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+var currentpulse = 0
+
+def NeutralMeasure():
+    set_shutter(Ablation)
+    update(WindowStartTime)
+    set_counter(DetectCounters)
+    update(DetectTime)
+    clear_counter()
+    set_inv_shutter(Ablation)
+    update(WaitAblationReset)
+    update()
+
+set_shutter(ShutterInitialization)
+update(WaitInitialize)
+update()
+
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    
+    while currentpulse < pulses:
+        NeutralMeasure()
+        currentpulse += 1
+    
+update()
+exit( endLabel )

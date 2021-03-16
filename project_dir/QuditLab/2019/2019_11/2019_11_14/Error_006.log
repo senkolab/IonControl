@@ -1,0 +1,20 @@
+2019-11-14 14:51:46,262 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:124 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Documents\IonControl\externalParameter\ExternalParameterUi.py", line 120, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Documents\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Documents\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 735, in __sub__
+    return self._add_sub(other, operator.sub)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 633, in _add_sub
+    _to_magnitude(other, self.force_ndarray))
+TypeError: unsupported operand type(s) for -: 'int' and 'str'
+2019-11-14 14:52:14,608 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) disconnect() failed between 'newData' and 'unislot'
+Traceback (most recent call last):
+  File "C:\Users\ions\Documents\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Documents\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 60, in setInputChannels
+    channel.newData.disconnect(self.updateHandler)
+TypeError: disconnect() failed between 'newData' and 'unislot'

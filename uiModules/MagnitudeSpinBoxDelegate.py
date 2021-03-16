@@ -40,7 +40,11 @@ class MagnitudeSpinBoxDelegateMixin(object):
     def setModelData(self, editor, model, index):
         value = editor.value()
         text = str(editor.text())
-        model.setData(index, text if not isValueExpression(text) else None, QtCore.Qt.UserRole )  # is parsable thus must be a magnitude without math
+        if(value == 'ON' or value == 'OFF'):
+            #print('Hey I made it into MagnitudeSpinBoxDelegation')
+            model.setData(index, None, QtCore.Qt.UserRole )
+        else:
+            model.setData(index, text if not isValueExpression(text) else None, QtCore.Qt.UserRole )  # is parsable thus must be a magnitude without math
         model.setData(index, value, QtCore.Qt.EditRole )    # DisplayRole would be better, for backwards compatibility we leave it at EditRole and distinguish there by type
 
 

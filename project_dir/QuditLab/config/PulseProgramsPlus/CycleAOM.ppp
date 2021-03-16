@@ -1,0 +1,26 @@
+###########################################################################
+#
+#  Cycle cooling AOM for micromotion detection.
+#
+
+
+# masks and shutters
+masked_shutter CoolingAOM
+masked_shutter RepumpAOM
+
+# parameter
+parameter CyclePeriod
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_inv_shutter(RepumpAOM)
+while 1==1:
+    set_inv_shutter(CoolingAOM)
+    update(CyclePeriod)
+    #update()
+    set_shutter(CoolingAOM)
+    update(CyclePeriod)
+    #update()
+    #break
+exit( endLabel )

@@ -1,0 +1,14 @@
+2019-08-20 10:26:32,669 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-08-20 10:26:32,703 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'

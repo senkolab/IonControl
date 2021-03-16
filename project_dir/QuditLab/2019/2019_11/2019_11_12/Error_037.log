@@ -1,0 +1,63 @@
+2019-11-12 16:17:44,898 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) could not convert string to float: 'ON' while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 120, in __init__
+    ExternalParameterBase.__init__(self, name, config, globalDict)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 44, in __init__
+    self.createOutputChannels()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in createOutputChannels
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in <listcomp>
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 194, in __init__
+    super(SlowAdjustOutputChannel, self).__init__(device, deviceName, channelName, globalDict, settings, outputUnit)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 48, in __init__
+    self.expressionValue.value = self.settings.targetValue
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 94, in value
+    self._updateFloatValue()
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 37, in _updateFloatValue
+    self.floatValue = float(self._value)  # cached value as float
+ValueError: could not convert string to float: 'ON'
+2019-11-12 16:18:20,869 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:124 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 120, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+TypeError: unsupported operand type(s) for -: 'int' and 'str'
+2019-11-12 16:18:46,109 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:124 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 120, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 735, in __sub__
+    return self._add_sub(other, operator.sub)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 633, in _add_sub
+    _to_magnitude(other, self.force_ndarray))
+TypeError: unsupported operand type(s) for -: 'int' and 'str'
+2019-11-12 16:19:14,405 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:124 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 120, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+TypeError: unsupported operand type(s) for -: 'int' and 'str'
+2019-11-12 16:19:18,476 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:124 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 120, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+TypeError: unsupported operand type(s) for -: 'int' and 'str'

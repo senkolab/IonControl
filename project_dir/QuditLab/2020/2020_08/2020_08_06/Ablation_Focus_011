@@ -1,0 +1,60 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_Window_Condition-Large.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">4618</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="EndShutter" type="int">4618</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.5 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">145 us</Element>
+#       <Element name="DetectTime" type="Quantity">20 us</Element>
+#       <Element name="WaitForFocusChange" type="Quantity">0 s</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">4294967295</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">WindowTimeStart</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">1</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_Focus.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-08-06 17:45:49.850920+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-08-06 17:45:43.851894+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-08-06 17:45:50.309338+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x00000275A2D54C88&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="WindowTimeStart" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1596735942.8265078	1596735942.8265078	0	191.0	191	6.910137480542627	6.910137480542627
+1596735943.8505034	1596735943.8505034	1	111.0	111	5.267826876426369	5.267826876426369
+1596735944.523086	1596735944.523086	2	184.0	184	6.782329983125268	6.782329983125268
+1596735944.9826946	1596735944.9826946	3	158.0	158	6.284902544988268	6.284902544988268
+1596735945.3410206	1596735945.3410206	4	162.0	162	6.363961030678928	6.363961030678928
+1596735945.8524334	1596735945.8524334	5	122.0	122	5.522680508593631	5.522680508593631
+1596735946.3441665	1596735946.3441665	6	153.0	153	6.18465843842649	6.18465843842649
+1596735946.85448	1596735946.85448	7	125.0	125	5.5901699437494745	5.5901699437494745
+1596735947.3422441	1596735947.3422441	8	229.0	229	7.566372975210778	7.566372975210778
+1596735947.850419	1596735947.850419	9	241.0	241	7.762087348130012	7.762087348130012
+1596735948.3452022	1596735948.3452022	10	248.0	248	7.874007874011811	7.874007874011811
+1596735948.8431866	1596735948.8431866	11	282.0	282	8.396427811873332	8.396427811873332
+1596735949.3505955	1596735949.3505955	12	175.0	175	6.614378277661476	6.614378277661476

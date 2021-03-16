@@ -472,9 +472,11 @@ class AnalysisControl(ControlForm, ControlBase ):
         self.setButtonEnabledState()
 
     def analyze(self, plottedTraceDict ):
+        #print("in analyze")
         self.setPlottedTraceDict(plottedTraceDict)
         self.fitAll()
         failedToPush = self.pushAll()
+        #print(failedToPush)
         return failedToPush
 
     def evaluate(self, name=None):

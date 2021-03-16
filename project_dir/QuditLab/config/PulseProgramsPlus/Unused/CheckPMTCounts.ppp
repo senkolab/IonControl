@@ -1,0 +1,41 @@
+###########################################################################
+#
+#  Check PMT counts for Ion trapping script
+#
+
+
+# masks and shutters
+masked_shutter PMTSwitch
+
+
+# times
+parameter WaitPMT
+parameter DetectTime 
+parameter DummyVar
+
+
+# control parameters
+parameter experiments = 10
+counter DetectCounters
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+var currentexperiment = 0
+
+set_shutter( PMTOpen )
+update(WaitPMT)
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+
+    currentexperiment = 0
+    while currentexperiment < experiments:
+        set_counter(DetectCounters)
+        update(DetectTime)
+        clear_counter()
+        update()
+        currentexperiment += 1
+
+update()
+exit( endLabel )

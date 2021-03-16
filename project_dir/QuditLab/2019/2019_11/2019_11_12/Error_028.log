@@ -1,0 +1,7 @@
+2019-11-12 14:40:41,660 ERROR uiModules.MagnitudeSpinBoxDelegate(ExceptionLogButton.py:129 myexcepthook) local variable 'value' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBoxDelegate.py", line 41, in setModelData
+    value = editor.value()
+  File "C:\Users\ions\Desktop\IonControl\uiModules\MagnitudeSpinBox.py", line 113, in value
+    return value
+UnboundLocalError: local variable 'value' referenced before assignment

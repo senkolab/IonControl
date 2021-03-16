@@ -1,0 +1,38 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+masked_shutter PMT
+counter DetectCounters
+
+# times
+parameter WaitPMTSwitch
+parameter DetectTime 
+
+# control parameters
+parameter DummyVar = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+var currentpulse = 0
+
+set_shutter(PMT)
+update(WaitPMTSwitch, wait_dds=True)
+update(wait_dds=True)
+wait_dds()
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+
+    set_counter(DetectCounters)
+    update(DetectTime)
+    clear_counter()
+    update()
+    
+update()
+exit( endLabel )

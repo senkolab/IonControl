@@ -1,0 +1,78 @@
+parameter ShutterWait = 100 ms
+parameter WaitToReverseAblationTTL = 10 ms
+parameter CameraTriggerWait = 10 ms
+parameter MonitorWaitTime = 500 ms
+parameter experiments
+parameter WaitandSee
+parameter TrapFlushWait
+parameter WaittoFlash
+parameter NumberofPulses
+parameter PulseInterval
+parameter DummyFlashInterval
+shutter init
+masked_shutter OpenAblationShutter
+masked_shutter FlashAblation
+masked_shutter Monitor
+masked_shutter CaptureImage
+masked_shutter TrapRF
+masked_shutter AllLasers
+var currentexperiment
+var PulseCount
+var RemainingWaitTime
+parameter DummyPulseNumber
+var DummyPulseCount
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(init)
+update()
+set_shutter(Monitor)
+update(MonitorWaitTime)
+update()
+set_inv_shutter(Monitor)
+set_shutter(OpenAblationShutter)
+update(ShutterWait)
+update()
+set_shutter(AllLasers)
+update(ShutterWait)
+update()
+currentexperiment = 0
+RemainingWaitTime = WaitandSee - PulseInterval
+while currentexperiment < experiments:
+    PulseCount = 0
+    DummyPulseCount = 0
+    set_shutter(TrapRF)
+    update(WaittoFlash)
+    update()
+    while PulseCount < NumberofPulses:
+        set_shutter(FlashAblation)
+        update(WaitToReverseAblationTTL)
+        update()
+        set_inv_shutter(FlashAblation)
+        update(PulseInterval)
+        update()
+        PulseCount += 1
+    set_inv_shutter(OpenAblationShutter)
+    while DummyPulseCount < DummyPulseNumber:
+        update(DummyFlashInterval)
+        set_shutter(FlashAblation)
+        update(WaitToReverseAblationTTL)
+        update()
+        set_inv_shutter(FlashAblation)
+        DummyPulseCount += 1
+    update(ShutterWait)
+    set_shutter(OpenAblationShutter)
+    set_shutter(CaptureImage)
+    update(CameraTriggerWait)
+    update()
+    set_inv_shutter(CaptureImage)
+    update(ShutterWait)
+    update()
+    set_inv_shutter(TrapRF)
+    update(TrapFlushWait)
+    update()
+    currentexperiment += 1
+exit(endLabel)
+#set_parameter(TrapRFOnOff 0)
+#update()
+#set_parameter(TrapRFOnOff 1)
+#update()

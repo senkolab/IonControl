@@ -1,0 +1,210 @@
+###########################################################################
+#
+#  Optical pumping code
+#
+
+# Constants
+
+const PMTChannel = 1
+
+# Shutters
+
+shutter InitializationShutter 
+masked_shutter Cool138
+masked_shutter Cool137
+masked_shutter Cool135
+masked_shutter Cool133
+masked_shutter OpticalPump138
+masked_shutter OpticalPump137
+masked_shutter OpticalPump135
+masked_shutter OpticalPump133
+masked_shutter HyperfineMeasure137
+masked_shutter HyperfineMeasure135
+masked_shutter HyperfineMeasure133
+shutter EndShutter
+
+# Times
+
+parameter CoolingTime 
+parameter PumpingTime
+parameter DetectTime
+parameter MeasureTime
+
+# Experiment Parameters
+parameter IsotopeNumber 
+
+# Control Parameters
+
+parameter Experiments 
+counter DetectCounter = 0
+counter MeasureCounter = 0
+
+# excitcodes
+
+exitcode endLabel = 0xffffffff
+
+# internal variables
+
+var experimentsleft = 100
+var currentexperiment = 0
+
+def CoolingOn():
+	if IsotopeNumber==138:
+		set_shutter(Cooling138)
+		update()
+	    
+	if IsotopeNumber==137:
+		set_shutter(Cooling137)
+		update()
+	    
+	if IsotopeNumber==135:
+		set_shutter(Cooling135)
+		update()
+	    
+	if IsotopeNumber==133:
+		set_shutter(Cooling133)
+		update()
+		
+def CoolingOff():
+	if IsotopeNumber==138:
+		set_inv_shutter(Cooling138)
+		update()
+	    
+	if IsotopeNumber==137:
+		set_inv_shutter(Cooling137)
+		update()
+	    
+	if IsotopeNumber==135:
+		set_inv_shutter(Cooling135)
+		update()
+	    
+	if IsotopeNumber==133:
+		set_inv_shutter(Cooling133)
+		update()
+		
+def CoolingFiniteTime():
+	if IsotopeNumber==138:
+	    set_shutter(Cooling138)
+		update(CoolingTime)
+		set_inv_shutter(Cooling138)
+		update()
+	    
+	if IsotopeNumber==137:
+	    set_shutter(Cooling137)
+		update(CoolingTime)
+		set_inv_shutter(Cooling137)
+		update()
+	    
+	if IsotopeNumber==135:
+	    set_shutter(Cooling135)
+		update(CoolingTime)
+		set_inv_shutter(Cooling135)
+		update()
+	    
+	if IsotopeNumber==133:
+	    set_shutter(Cooling133)
+		update(CoolingTime)
+		set_inv_shutter(Cooling133)
+		update()		
+	    
+
+def OpticalPump():
+	if IsotopeNumber==138:
+		set_shutter(OpticalPump138)
+		update(PumpingTime)
+	    set_inv_shutter(OpticalPump138)
+		update()
+	if IsotopeNumber==137:
+		set_shutter(OpticalPump137)
+		update(PumpingTime)
+	    set_inv_shutter(OpticalPump137)
+		update()
+	if IsotopeNumber==135:
+		set_shutter(OpticalPump135)
+		update(PumpingTime)
+	    set_inv_shutter(OpticalPump135)
+		update()
+	if IsotopeNumber==133:
+		set_shutter(OpticalPump133)
+		update(PumpingTime)
+	    set_inv_shutter(OpticalPump133)
+		update()
+
+def DetectIons():
+    if IsotopeNumber==138:
+	    set_shutter(Cooling138)
+		set_counter(DetectCounter)
+		update(DetectTime)
+		set_inv_shutter(Cooling138)
+		update()
+        clear_counter()		
+	if IsotopeNumber==137:
+	    set_shutter(Cooling137)
+		set_counter(DetectCounter)
+		update(DetectTime)
+		set_inv_shutter(Cooling137)
+		update()
+        clear_counter()		
+	if IsotopeNumber==135:
+	    set_shutter(Cooling135)
+		set_counter(DetectCounter)
+		update(DetectTime)
+		set_inv_shutter(Cooling135)
+		update()   
+		clear_counter()
+	if IsotopeNumber==133:
+	    set_shutter(Cooling133)
+		set_counter(DetectCounter)
+		update(DetectTime)
+		set_inv_shutter(Cooling133)
+		update()	
+		clear_counter()
+    
+def HyperfineQubitMeasure():
+    if IsotopeNumber==138:
+	    # No hyperfine structure in 138
+	    update()
+	if IsotopeNumber==137:
+	    set_shutter(HyperfineMeasure137)
+		set_counter(MeasureCounter)
+		update(MeasureTime)
+		set_inv_shutter(HyperfineMeasure137)
+		update()
+        clear_counter()		
+	if IsotopeNumber==135:
+	    set_shutter(HyperfineMeasure135)
+		set_counter(MeasureCounter)
+		update(MeasureTime)
+		set_inv_shutter(HyperfineMeasure135)
+		update()
+        clear_counter()	
+	if IsotopeNumber==133:
+	    set_shutter(HyperfineMeasure133)
+		set_counter(MeasureCounter)
+		update(MeasureTime)
+		set_inv_shutter(HyperfineMeasure133)
+		update()
+        clear_counter()	
+
+
+set_shutter( InitializationShutter )
+update()
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    
+    CurrentExperiment = 0
+	
+	DetectIons()
+	CoolingOn()
+    while CurrentExperiment < Experiments:
+		update(CoolingTime)
+		CoolingOff()
+		OpticalPump()
+        HyperfineQubitMeasure()
+		CoolingOn()
+        CurrentExperiment += 1
+    
+set_shutter(EndShutter)
+update()
+exit( endLabel )

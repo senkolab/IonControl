@@ -69,6 +69,7 @@ class ExternalParameterControlModel(CategoryTreeModel):
             inst.displayName = inst.channelName if inst.multipleChannels else inst.device.name
             inst.toolTip = None
             valueSlot = functools.partial(self.showValue, listIndex)
+            #print("setParameterList%s"%valueSlot)
             targetValueSlot = functools.partial(self.onTargetChanged, listIndex)
             inst.valueChanged.connect(valueSlot)
             inst.targetChanged.connect(targetValueSlot)
@@ -83,6 +84,7 @@ class ExternalParameterControlModel(CategoryTreeModel):
         id=inst.name if inst.multipleChannels else inst.device.name
         node = self.nodeDict[id]
         modelIndex=self.indexFromNode(node, 2)
+        #print("showValue: %s"%modelIndex)
         self.dataChanged.emit(modelIndex, modelIndex)
 
     def onTargetChanged(self, listIndex, value):
@@ -94,6 +96,11 @@ class ExternalParameterControlModel(CategoryTreeModel):
             
     def setValue(self, index, value):
         node=self.nodeFromIndex(index)
+        if(value == 'ON' or value == 'OFF'):
+            if(value == 'ON'):
+                value= 1
+            else:
+                value = 0
         self._setValue(node.content, value)
 
     def _setValue(self, inst, value):
@@ -104,6 +111,11 @@ class ExternalParameterControlModel(CategoryTreeModel):
  
     def setStrValue(self, index, strValue):
         node=self.nodeFromIndex(index)
+        if(strValue == 'ON' or strValue == 'OFF'):
+            if(strValue == 'ON'):
+                strValue= 1
+            else:
+                strValue = 0
         node.content.string = strValue
         return True
         
@@ -115,6 +127,12 @@ class ExternalParameterControlModel(CategoryTreeModel):
                 value = targetValue
             logger = logging.getLogger(__name__)
             logger.debug("setValueFollowup {0}".format(inst.value))
+            #print(value)
+            if(value == 'ON' or value == 'OFF'):
+                if(value == 'ON'):
+                    value = 1
+                else:
+                    value = 0
             if not inst.setValue(value):
                 delay = int(inst.settings.delay.m_as('ms'))
                 QtCore.QTimer.singleShot(delay, functools.partial(self.setValueFollowup, inst, None))
@@ -128,6 +146,11 @@ class ExternalParameterControlModel(CategoryTreeModel):
                 for inst in self.parameterList:
                     if inst.name==name:
                         break
+                if(value == 'ON' or value == 'OFF'):
+                    if(value == 'ON'):
+                        value = 1
+                    else:
+                        value = 0
                 inst.savedValue = value    # set saved value to make this new value the default
                 node = self.nodeFromContent(inst)
                 self.setValue(self.indexFromNode(node, 1), value)
@@ -138,6 +161,12 @@ class ExternalParameterControlModel(CategoryTreeModel):
         for inst in self.parameterList:
             if (name is None or inst.name == name) and inst.hasDependency:
                 value = self.expression.evaluateAsMagnitude(inst.string, self.controlUi.globalDict)
+                if(value == 'ON' or value == 'OFF'):
+                    if(value == 'ON'):
+                        value = 1
+                    else:
+                        value = 0
+                #print(value)
                 self._setValue(inst, value)
                 inst.savedValue = value   # set saved value to make this new value the default
                 node = self.nodeFromContent(inst)

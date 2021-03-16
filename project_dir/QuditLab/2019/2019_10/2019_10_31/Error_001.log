@@ -1,0 +1,9 @@
+2019-10-31 14:05:25,054 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) not enough values to unpack (expected 2, got 1) while enabling instrument 
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InterProcessParameters.py", line 19, in __init__
+    host, port = instrument.split(':')
+ValueError: not enough values to unpack (expected 2, got 1)

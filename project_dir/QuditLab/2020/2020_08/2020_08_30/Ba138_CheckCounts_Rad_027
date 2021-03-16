@@ -1,0 +1,53 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/CheckCounts.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">13374</Element>
+#       <Element name="EndShutter" type="int">13374</Element>
+#       <Element name="WaitPMT" type="Quantity">2 s</Element>
+#       <Element name="DetectTime" type="Quantity">0.1 s</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyVar</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ba138_CheckCounts_Rad.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-08-30 19:26:27.546572+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-08-30 19:26:26.190428+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-08-30 19:26:27.553161+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000023B207C6400&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyVar" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1598815583.0074635	1598815583.0074635	1.0	441.0	441	10.5	10.5
+1598815586.1887352	1598815586.1887352	2.0	451.0	451	10.618380290797651	10.618380290797651
+1598815586.4053557	1598815586.4053557	3.0	467.0	467	10.805091392487155	10.805091392487155
+1598815586.4851081	1598815586.4851081	4.0	463.0	463	10.758717395675006	10.758717395675006
+1598815586.6605332	1598815586.6605332	5.0	507.0	507	11.258330249197702	11.258330249197702
+1598815586.776653	1598815586.776653	6.0	495.0	495	11.124297730643494	11.124297730643494
+1598815586.9422562	1598815586.9422562	7.0	439.0	439	10.476163419878482	10.476163419878482
+1598815587.0816274	1598815587.0816274	8.0	453.0	453	10.641898326896381	10.641898326896381
+1598815587.2371542	1598815587.2371542	9.0	455.0	455	10.665364503850771	10.665364503850771
+1598815587.3954122	1598815587.3954122	10.0	531.0	531	11.521718621802913	11.521718621802913

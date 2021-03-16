@@ -220,19 +220,19 @@ class ExperimentUi(WidgetContainerBase,WidgetContainerForm):
 
         # Wavemeter Interlock
         self.wavemeterInterlock = None
-        wmSetup = self.project.hardware.get('HighFinesse Wavemeter')
-        if wmSetup:
-            wavemeters = {name: v.get("uri") for name, v in wmSetup.items() if v.get('enabled')}
-            if wavemeters:
-                self.wavemeterInterlock = Interlock(wavemeters=wavemeters, config=self.config)
-                self.wavemeterInterlockUi = WavemeterInterlockUi(wavemeterNames=list(wavemeters.keys()),
-                                                                 channels=self.wavemeterInterlock.channels,
-                                                                 contexts=self.wavemeterInterlock.contexts)
-                self.wavemeterInterlockUi.setupUi(self.wavemeterInterlockUi)
-                self.interlockDock = QtWidgets.QDockWidget("Wavemeter Interlock")
-                self.interlockDock.setObjectName("Wavemeter Interlock")
-                self.interlockDock.setWidget(self.wavemeterInterlockUi)
-                self.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.interlockDock)
+        #wmSetup = self.project.hardware.get('HighFinesse Wavemeter')
+        #if wmSetup:
+        #    wavemeters = {name: v.get("uri") for name, v in wmSetup.items() if v.get('enabled')}
+        #    if wavemeters:
+        #        self.wavemeterInterlock = Interlock(wavemeters=wavemeters, config=self.config)
+        #        self.wavemeterInterlockUi = WavemeterInterlockUi(wavemeterNames=list(wavemeters.keys()),
+        #                                                         channels=self.wavemeterInterlock.channels,
+        #                                                         contexts=self.wavemeterInterlock.contexts)
+        #        self.wavemeterInterlockUi.setupUi(self.wavemeterInterlockUi)
+        #        self.interlockDock = QtWidgets.QDockWidget("Wavemeter Interlock")
+        #        self.interlockDock.setObjectName("Wavemeter Interlock")
+        #        self.interlockDock.setWidget(self.wavemeterInterlockUi)
+        #        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.interlockDock)
 
         # Global Variables
         self.globalVariablesUi = GlobalVariablesUi(self.config)
@@ -1003,7 +1003,6 @@ if __name__ == '__main__':
     project = Project() #loads in the project through the config files/config GUIs
     logger = logging.getLogger("")
     setID('TrappedIons.FPGAControlProgram') #Makes the icon in the Windows taskbar match the icon set in Qt Designer
-
     overrideConfigFile = project.projectConfig.get('configurationFile')
     overrideFileType = {'.yml': 'yaml', '.yaml': 'yaml', '.db': 'sqlite'}.get(os.path.splitext(overrideConfigFile)[1], 'sqlite') if overrideConfigFile else None
     loadFromDate = project.projectConfig.get('configurationFile')
@@ -1013,4 +1012,5 @@ if __name__ == '__main__':
             ui.setupUi(ui)
             LoggingSetup.qtHandler.textWritten.connect(ui.onMessageWrite)
             ui.show()
+            print('This will be exited now.')
             sys.exit(app.exec_())

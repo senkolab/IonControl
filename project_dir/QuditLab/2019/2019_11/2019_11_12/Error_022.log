@@ -1,0 +1,7 @@
+2019-11-12 11:48:32,945 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) disconnect() failed between 'newData' and 'unislot'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 60, in setInputChannels
+    channel.newData.disconnect(self.updateHandler)
+TypeError: disconnect() failed between 'newData' and 'unislot'

@@ -1,0 +1,24 @@
+parameter DummyCounter
+parameter WaitTime
+parameter WhileNum
+parameter Timestep
+counter TestCounter
+shutter init
+masked_shutter TestCodeShutter
+var DummyWhileCount
+exitcode endLabel = 0xffffffffffffffff
+
+#set_shutter(init)
+#update()
+#set_shutter(TestCodeShutter)
+#update(WaitTime)
+#set_inv_shutter(TestCodeShutter)
+DummyWhileCount = 0
+while not pipe_empty():
+    apply_next_scan_point()
+    set_counter(TestCounter)
+    update(Timestep)
+    update()
+    clear_counter()
+    update()
+exit( endLabel )

@@ -1,0 +1,100 @@
+###########################################################################
+#
+#  Time of Flight code for characterising ablation plumes
+#
+
+
+const PMTChannel = 0
+
+
+# masks and shutters
+shutter InitializationShutter 
+masked_shutter AblationTTL
+masked_shutter TrapRF
+shutter EndShutter
+masked_shutter Camera_Switch
+masked_shutter CameraTTL
+masked_shutter AblationShutter
+
+# times
+parameter ShutterDelayTime 
+parameter DetectTime 
+parameter TrapStartDelay
+parameter WaitForCoolTime
+parameter WaitForCameraTime
+parameter ThresholdCount
+parameter DummyPulse
+
+# control parameters
+parameter experiments 
+counter DetectCounters = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+var experimentsleft = 100
+var currentexperiment = 0
+var testvar = 100
+var DummyPulseCount
+
+def IonDirectTrap():
+    set_inv_shutter(TrapRF)
+    update(ShutterDelayTime)
+    set_shutter(AblationTTL)
+    update(TrapStartDelay)
+    set_shutter(TrapRF)
+    update(WaitForCoolTime)
+    set_counter(DetectCounters)
+    update(DetectTime)
+    set_inv_shutter(AblationTTL)
+    clear_counter()
+    update()
+    testvar = load_count(PMTChannel)
+    update(ShutterDelayTime)
+    update()
+
+def CameraTakePic():
+    set_inv_shutter(AblationShutter)
+    update(ShutterDelayTime)
+    DummyPulseCount = 0
+    while DummyPulseCount < DummyPulse:
+        set_shutter(AblationTTL)
+        update(ShutterDelayTime)
+        set_inv_shutter(AblationTTL)
+        update(WaitForCameraTime)
+        DummyPulseCount += 1
+    set_shutter(Camera_Switch)
+    update()
+    update(WaitForCameraTime)
+    set_shutter(CameraTTL)
+    update(ShutterDelayTime)
+    update()
+    set_inv_shutter(CameraTTL)
+    update(ShutterDelayTime)
+    update()
+    set_shutter(AblationShutter)
+    update()
+    set_inv_shutter(Camera_Switch)
+    update()
+
+set_shutter( InitializationShutter )
+update(ShutterDelayTime)
+
+clear_counter()
+update()
+
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    
+    currentexperiment = 0
+    while currentexperiment < experiments:
+        IonDirectTrap()
+        if testvar > ThresholdCount:
+            CameraTakePic()
+        currentexperiment += 1
+    
+set_shutter(EndShutter)
+update()
+exit( endLabel )

@@ -1,0 +1,422 @@
+2019-11-07 13:49:10,822 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:49:10,937 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:49:10,957 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:49:11,969 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:49:12,206 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:49:12,499 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:08,201 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:09,465 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:09,802 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:09,977 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:12,722 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:12,938 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:13,113 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:14,809 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:14,986 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system. while enabling instrument s
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 295, in __init__
+    self.synthesizer = self.rm.open_resource( instrument)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1703, in open_resource
+    info = self.resource_info(resource_name, extended=True)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\highlevel.py", line 1663, in resource_info
+    ret, err = self.visalib.parse_resource_extended(self.session, resource_name)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1383, in parse_resource_extended
+    alias_if_exists)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_RSRC_NFOUND (-1073807343): Insufficient location information or the requested device or resource is not present in the system.
+2019-11-07 13:51:19,210 ERROR persist.ValueHistory(ValueHistory.py:146 add) (psycopg2.IntegrityError) null value in column "value" violates not-null constraint
+DETAIL:  Failing row contains (2, null, null, null, null, 2019-11-07 13:50:37.100778-05).
+ [SQL: 'INSERT INTO history_value (source_id, value, bottom, top, unit, upd_date) VALUES (%(source_id)s, %(value)s, %(bottom)s, %(top)s, %(unit)s, %(upd_date)s)'] [parameters: {'source_id': 2, 'value': None, 'bottom': None, 'top': None, 'unit': None, 'upd_date': datetime.datetime(2019, 11, 7, 13, 50, 37, 100778)}] (Background on this error at: http://sqlalche.me/e/gkpj)
+2019-11-07 13:51:34,875 ERROR persist.ValueHistory(ValueHistory.py:146 add) (psycopg2.IntegrityError) null value in column "value" violates not-null constraint
+DETAIL:  Failing row contains (3, null, null, null, null, 2019-11-07 13:50:37.100778-05).
+ [SQL: 'INSERT INTO history_value (source_id, value, bottom, top, unit, upd_date) VALUES (%(source_id)s, %(value)s, %(bottom)s, %(top)s, %(unit)s, %(upd_date)s)'] [parameters: {'source_id': 3, 'value': None, 'bottom': None, 'top': None, 'unit': None, 'upd_date': datetime.datetime(2019, 11, 7, 13, 50, 37, 100778)}] (Background on this error at: http://sqlalche.me/e/gkpj)
+2019-11-07 13:51:45,625 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:51:47,720 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:51:49,773 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:51:51,833 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:51:55,652 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:51:59,690 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.
+2019-11-07 13:52:04,043 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) VI_ERROR_TMO (-1073807339): Timeout expired before operation completed. while enabling instrument asdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 297, in __init__
+    self.initializeChannelsToExternals()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 58, in initializeChannelsToExternals
+    self.outputChannels[cname].settings.value = self.getValue(cname)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 310, in getValue
+    answer = self.synthesizer.query(":FREQ:CW?")
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 569, in query
+    return self.read()
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 413, in read
+    message = self._read_raw().decode(enco)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\resources\messagebased.py", line 386, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\functions.py", line 1584, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\pyvisa\ctwrapper\highlevel.py", line 188, in _return_handler
+    raise errors.VisaIOError(ret_value)
+pyvisa.errors.VisaIOError: VI_ERROR_TMO (-1073807339): Timeout expired before operation completed.

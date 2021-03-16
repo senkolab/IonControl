@@ -1,0 +1,25 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+masked_shutter Beam_Samplers_Toggle
+
+# times
+parameter WaitToggleTime
+
+# control parameters
+parameter DummyVar = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+set_shutter(Beam_Samplers_Toggle)
+update(WaitToggleTime)
+update()
+set_inv_shutter(Beam_Samplers_Toggle)
+
+exit( endLabel )

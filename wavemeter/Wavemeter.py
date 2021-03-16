@@ -9,6 +9,7 @@ from functools import partial
 from PyQt5 import QtCore, QtNetwork
 from time import time
 from collections import defaultdict
+import http.client
 
 from modules.quantity import Q
 
@@ -40,24 +41,39 @@ class Wavemeter(QtCore.QObject):
     def getWavemeterData(self, channel, course=None):
         """Get the data from the wavemeter at the specified channel."""
         if not self.queryRunning[channel]:
-            self.query = self.address + "/wavemeter/wavemeter/wavemeter-status?channel={0}".format(int(channel))
+            self.query = self.address + "?channel={0}".format(int(channel))
             if course is not None:
-                self.query += "&course={0}".format(course.m_as('GHz'))
-            reply = self.am.get( QtNetwork.QNetworkRequest(QtCore.QUrl(self.query)))
-            reply.error.connect( partial(self.onWavemeterError, int(channel), reply ) )
-            reply.finished.connect(partial(self.onWavemeterData, int(channel), reply))
-            self.queryRunning[channel] = True
+                self.query += "&course={0}".format(course.m_as('THz'))
+            #reply = self.am.get( QtNetwork.QNetworkRequest(QtCore.QUrl(self.query)))
+            #reply.error.connect( partial(self.onWavemeterError, int(channel), reply ) )
+            #reply.finished.connect(partial(self.onWavemeterData, int(channel), reply))
+            #print(self.query)            
+            self.connection = http.client.HTTPConnection(self.address, timeout = 5)
+            self.connection.request("GET", self.query)
+            reply = self.connection.getresponse()
+            self.onWavemeterData(int(channel), reply)
+            #print(reply)
+            data = reply.read()
+            #print(data)
+            print("Status is: ", reply.status, " Reason is: ", reply.reason)
+            self.connection.close()
+            self.queryRunning[channel] = False
+            
 
     def onWavemeterData(self, channel, reply):
         """Execute when reply is received from the wavemeter."""
         logger = logging.getLogger(__name__)
         self.queryRunning[channel] = False
-        if reply.error()==0:
-            data = reply.readAll()
+        print(reply)
+        if reply.status==200 and reply.reason == "OK":
+            data = reply.read()
+            #print(data)
             logger.debug( str( self.query ) )
             logger.debug( "reply: '{0}'".format(data))
-            result = Q( round(float(data), 4), 'GHz' )
-            if result.m_as('GHz')<0 and self.callbackFailureCount[channel]<self.nMaxAttempts:
+            result = Q( round(float(data), 5), 'THz' )
+            #print(result.m_as('THz'))
+            if result.m_as('THz')<0 and self.callbackFailureCount[channel]<self.nMaxAttempts:
+                print("result: ", result.m_as('THz'))
                 self.getWavemeterData(channel)
                 self.callbackFailureCount[channel] += 1                
             else:    
@@ -67,8 +83,9 @@ class Wavemeter(QtCore.QObject):
                     self.callbackFuncs.pop(channel)(result)
         elif channel in self.callbackFuncs:
             self.callbackFuncs.pop(channel)(None)
-        reply.finished.disconnect()  # necessary to make reply garbage collectable
-        reply.error.disconnect()
+        #reply.finished.disconnect()  # necessary to make reply garbage collectable
+        self.connection.close()
+        #reply.error.disconnect()
         
     def get_frequency(self, channel, max_age = None):
         return self.set_frequency(None, channel, max_age if max_age else Q(3, 's'))

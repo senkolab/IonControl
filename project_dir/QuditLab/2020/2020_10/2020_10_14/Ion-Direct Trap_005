@@ -1,0 +1,106 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ion-Direct Trap.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">5144</Element>
+#       <Element name="AblationTTL_mask" type="int">256</Element>
+#       <Element name="AblationTTL" type="int">256</Element>
+#       <Element name="TrapRF_mask" type="int">8192</Element>
+#       <Element name="TrapRF" type="int">8192</Element>
+#       <Element name="EndShutter" type="int">5144</Element>
+#       <Element name="Camera_Switch_mask" type="int">4096</Element>
+#       <Element name="Camera_Switch" type="int">0</Element>
+#       <Element name="CameraTTL_mask" type="int">2048</Element>
+#       <Element name="CameraTTL" type="int">2048</Element>
+#       <Element name="AblationShutter_mask" type="int">1024</Element>
+#       <Element name="AblationShutter" type="int">1024</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.1 s</Element>
+#       <Element name="DetectTime" type="Quantity">100 ms</Element>
+#       <Element name="TrapStartDelay" type="Quantity">142 us</Element>
+#       <Element name="WaitForCoolTime" type="Quantity">2 s</Element>
+#       <Element name="WaitForCameraTime" type="Quantity">2 s</Element>
+#       <Element name="TrappedIonThreshold" type="int">80</Element>
+#       <Element name="DummyPulse" type="int">4</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="testvar" type="Quantity">100</Element>
+#       <Element name="DummyPulseCount" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">TrapStartDelay</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str">us</Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ion-Direct Trap</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-10-14 18:39:42.958399+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-10-14 18:38:01.979357+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-10-14 18:39:42.961264+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000022BDC0BF2B0&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="TrapStartDelay" xAxisUnit="us" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1602700679.1046271	1602700679.1046271	110.0	49.0	49	3.5	3.5
+1602700681.9767814	1602700681.9767814	112.0	42.0	42	3.24037034920393	3.24037034920393
+1602700684.8226607	1602700684.8226607	114.0	47.0	47	3.427827300200522	3.427827300200522
+1602700687.7626007	1602700687.7626007	116.0	42.0	42	3.24037034920393	3.24037034920393
+1602700690.6564183	1602700690.6564183	118.0	37.0	37	3.0413812651491097	3.0413812651491097
+1602700693.5692768	1602700693.5692768	120.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602700696.5928223	1602700696.5928223	122.0	37.0	37	3.0413812651491097	3.0413812651491097
+1602700699.7748065	1602700699.7748065	124.0	31.0	31	2.7838821814150108	2.7838821814150108
+1602700703.0372648	1602700703.0372648	126.0	38.0	38	3.082207001484488	3.082207001484488
+1602700706.250764	1602700706.250764	128.0	47.0	47	3.427827300200522	3.427827300200522
+1602700709.4914005	1602700709.4914005	130.0	34.0	34	2.9154759474226504	2.9154759474226504
+1602700712.3494995	1602700712.3494995	132.0	45.0	45	3.3541019662496847	3.3541019662496847
+1602700715.2619114	1602700715.2619114	134.0	36.0	36	3.0	3.0
+1602700718.1726654	1602700718.1726654	136.0	29.0	29	2.692582403567252	2.692582403567252
+1602700721.029834	1602700721.029834	138.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602700723.7299523	1602700723.7299523	140.0	32.0	32	2.8284271247461903	2.8284271247461903
+1602700726.369504	1602700726.369504	142.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602700728.9269226	1602700728.9269226	144.0	30.0	30	2.7386127875258306	2.7386127875258306
+1602700731.5470333	1602700731.5470333	146.0	38.0	38	3.082207001484488	3.082207001484488
+1602700734.0629609	1602700734.0629609	148.0	45.0	45	3.3541019662496847	3.3541019662496847
+1602700736.4166296	1602700736.4166296	150.0	32.0	32	2.8284271247461903	2.8284271247461903
+1602700738.7574646	1602700738.7574646	152.0	43.0	43	3.278719262151	3.278719262151
+1602700741.107759	1602700741.107759	154.0	46.0	46	3.391164991562634	3.391164991562634
+1602700743.4687574	1602700743.4687574	156.0	42.0	42	3.24037034920393	3.24037034920393
+1602700745.5694811	1602700745.5694811	158.0	43.0	43	3.278719262151	3.278719262151
+1602700747.6680524	1602700747.6680524	160.0	44.0	44	3.3166247903554	3.3166247903554
+1602700749.8058343	1602700749.8058343	162.0	41.0	41	3.2015621187164243	3.2015621187164243
+1602700751.8850834	1602700751.8850834	164.0	41.0	41	3.2015621187164243	3.2015621187164243
+1602700753.8676429	1602700753.8676429	166.0	47.0	47	3.427827300200522	3.427827300200522
+1602700755.7705371	1602700755.7705371	168.0	32.0	32	2.8284271247461903	2.8284271247461903
+1602700757.6536298	1602700757.6536298	170.0	41.0	41	3.2015621187164243	3.2015621187164243
+1602700759.5630603	1602700759.5630603	172.0	45.0	45	3.3541019662496847	3.3541019662496847
+1602700761.4183648	1602700761.4183648	174.0	38.0	38	3.082207001484488	3.082207001484488
+1602700763.1069102	1602700763.1069102	176.0	42.0	42	3.24037034920393	3.24037034920393
+1602700764.8237004	1602700764.8237004	178.0	39.0	39	3.122498999199199	3.122498999199199
+1602700766.5399032	1602700766.5399032	180.0	37.0	37	3.0413812651491097	3.0413812651491097
+1602700768.2397575	1602700768.2397575	182.0	44.0	44	3.3166247903554	3.3166247903554
+1602700769.8089077	1602700769.8089077	184.0	33.0	33	2.8722813232690143	2.8722813232690143
+1602700771.3422732	1602700771.3422732	186.0	52.0	52	3.605551275463989	3.605551275463989
+1602700772.8759794	1602700772.8759794	188.0	35.0	35	2.958039891549808	2.958039891549808
+1602700774.4211004	1602700774.4211004	190.0	31.0	31	2.7838821814150108	2.7838821814150108
+1602700775.8715916	1602700775.8715916	192.0	40.0	40	3.1622776601683795	3.1622776601683795
+1602700777.2605827	1602700777.2605827	194.0	51.0	51	3.570714214271425	3.570714214271425
+1602700778.654634	1602700778.654634	196.0	45.0	45	3.3541019662496847	3.3541019662496847
+1602700780.026651	1602700780.026651	198.0	34.0	34	2.9154759474226504	2.9154759474226504
+1602700781.43929	1602700781.43929	200.0	41.0	41	3.2015621187164243	3.2015621187164243

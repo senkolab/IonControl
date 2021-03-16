@@ -1,0 +1,57 @@
+###########################################################################
+#
+#  Time of Flight code for characterising ablation plumes
+#
+
+
+const PMTChannel = 1
+
+
+# masks and shutters
+shutter InitializationShutter 
+masked_shutter NaturalAblation
+shutter EndShutter
+
+
+# times
+parameter ShutterDelayTime 
+parameter DetectTime 
+parameter WindowTimeStart
+
+
+# control parameters
+parameter experiments 
+counter DetectCounters = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+# internal variables
+var experimentsleft = 100
+var currentexperiment = 0
+
+def timeFlightNeutral():
+    set_shutter(NaturalAblation)
+    update(WindowTimeStart)
+    set_counter(DetectCounters)
+    update(DetectTime)
+    set_inv_shutter(NaturalAblation)
+    clear_counter()
+    update(ShutterDelayTime)
+    update()
+
+
+set_shutter( InitializationShutter )
+update(ShutterDelayTime)
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    
+    currentexperiment = 0
+    while currentexperiment < experiments:
+        timeFlightNeutral()
+        currentexperiment += 1
+    
+set_shutter(EndShutter)
+update()
+exit( endLabel )

@@ -1,0 +1,9 @@
+2019-11-12 09:51:51,921 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) 'RG4000WFGenerator' object has no attribute 'newData'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 64, in setInputChannels
+    channel.newData.connect(self.updateHandler)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InputChannel.py", line 14, in newData
+    return self.device.newData
+AttributeError: 'RG4000WFGenerator' object has no attribute 'newData'

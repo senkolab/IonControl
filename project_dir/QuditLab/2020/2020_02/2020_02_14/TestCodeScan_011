@@ -1,0 +1,51 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/TestCode.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="DummyCounter" type="int">0</Element>
+#       <Element name="WaitTime" type="Quantity">1 s</Element>
+#       <Element name="TestCounter" type="int">1</Element>
+#       <Element name="init" type="int">0</Element>
+#       <Element name="TestCodeShutter_mask" type="int">4</Element>
+#       <Element name="TestCodeShutter" type="int">4</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyCounter</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">AblationWait</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, None_raw</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-02-14 20:49:57.884090+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-02-14 20:49:39.151257+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-02-14 20:49:57.889553+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="None_raw" _topColumn="top" _xColumn="x" _yColumn="None" fill="True" name="None" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000021997901550&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyCounter" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1581713376.2542436	1581713376.2542436	0.0	nan	None
+1581713379.1494823	1581713379.1494823	1.0	nan	None
+1581713380.992061	1581713380.992061	2.0	nan	None
+1581713382.6086564	1581713382.6086564	3.0	nan	None
+1581713384.3502526	1581713384.3502526	4.0	nan	None
+1581713386.0647864	1581713386.0647864	5.0	nan	None
+1581713387.9108846	1581713387.9108846	6.0	nan	None
+1581713389.8860047	1581713389.8860047	7.0	nan	None
+1581713391.874791	1581713391.874791	8.0	nan	None
+1581713393.8857014	1581713393.8857014	9.0	nan	None
+1581713395.896125	1581713395.896125	10.0	nan	None

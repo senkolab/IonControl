@@ -1,0 +1,146 @@
+2019-11-12 10:18:02,804 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:18:02,819 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:18:02,828 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:02,855 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:04,048 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:18:04,057 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:04,095 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:18:04,111 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:16,989 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:18:17,006 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:17,639 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'OFF\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'OFF\n\n'
+2019-11-12 10:18:17,686 ERROR uiModules.CategoryTree(ExceptionLogButton.py:129 myexcepthook) could not convert string to float: 'ON\n\n'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\uiModules\CategoryTree.py", line 151, in data
+    return self.dataLookup.get( (role, col), self.dataAllColLookup.get(role, lambda node: None))(node)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 42, in <lambda>
+    (QtCore.Qt.DisplayRole, 2): lambda node: str(node.content.externalValue),
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 126, in externalValue
+    return self.device.getExternalValue(self.channelName)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 282, in getExternalValue
+    value = Q( float( self.instrument.query(command)), unit )
+ValueError: could not convert string to float: 'ON\n\n'
+2019-11-12 10:24:53,308 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) disconnect() failed between 'newData' and 'unislot'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 60, in setInputChannels
+    channel.newData.disconnect(self.updateHandler)
+TypeError: disconnect() failed between 'newData' and 'unislot'
+2019-11-12 10:24:56,719 ERROR externalParameter.InstrumentLoggingDisplay(ExceptionLogButton.py:129 myexcepthook) disconnect() failed between 'newData' and 'unislot'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 122, in setupParameters
+    self.tableModel.setInputChannels( inputChannels )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\InstrumentLoggingDisplay.py", line 60, in setInputChannels
+    channel.newData.disconnect(self.updateHandler)
+TypeError: disconnect() failed between 'newData' and 'unislot'

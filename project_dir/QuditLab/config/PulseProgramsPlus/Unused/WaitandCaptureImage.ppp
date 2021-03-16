@@ -1,0 +1,37 @@
+parameter ShutterWait = 100 ms
+parameter WaitToReverseAblationTTL = 10 ms
+parameter CameraTriggerWait = 10 ms
+parameter MonitorWaitTime = 500 ms
+parameter experiments
+parameter WaitandSee
+parameter TrapFlushWait
+parameter WaittoFlash
+shutter init
+masked_shutter OpenAblationShutter
+masked_shutter FlashAblation
+masked_shutter Monitor
+masked_shutter CaptureImage
+masked_shutter TrapRF
+masked_shutter AllLasers
+masked_shutter ExperimentOn
+var currentexperiment
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ExperimentOn)
+update()
+currentexperiment = 0
+while currentexperiment < experiments:
+    update(WaitandSee)
+    update()
+    set_shutter(CaptureImage)
+    update(CameraTriggerWait)
+    update()
+    set_inv_shutter(CaptureImage)
+    update(ShutterWait)
+    update()
+    currentexperiment += 1
+exit(endLabel)
+#set_parameter(TrapRFOnOff 0)
+#update()
+#set_parameter(TrapRFOnOff 1)
+#update()

@@ -1,0 +1,116 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_Fluorescence.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">4608</Element>
+#       <Element name="AblationPulse_mask" type="int">256</Element>
+#       <Element name="AblationPulse" type="int">256</Element>
+#       <Element name="EndShutter" type="int">4608</Element>
+#       <Element name="PulseTime" type="Quantity">0.2 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">145.0 us</Element>
+#       <Element name="DetectTime" type="Quantity">1 us</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">WindowStartTime</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str">us</Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_NeutralFluorescence_Nat.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-11-30 19:54:38.218532+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-11-30 19:54:24.598966+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-11-30 19:54:38.221323+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x000002088065B710&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="WindowStartTime" xAxisUnit="us" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1606766064.1782076	1606766064.1782076	138.0	0.0	0	0	0.5
+1606766064.5925808	1606766064.5925808	138.25	0.0	0	0	0.5
+1606766064.7905262	1606766064.7905262	138.5	0.0	0	0	0.5
+1606766064.9996502	1606766064.9996502	138.75	0.0	0	0	0.5
+1606766065.220906	1606766065.220906	139.0	0.0	0	0	0.5
+1606766065.4126034	1606766065.4126034	139.25	0.0	0	0	0.5
+1606766065.610573	1606766065.610573	139.5	0.0	0	0	0.5
+1606766065.7924614	1606766065.7924614	139.75	0.0	0	0	0.5
+1606766065.996538	1606766065.996538	140.0	0.0	0	0	0.5
+1606766066.2015462	1606766066.2015462	140.25	0.0	0	0	0.5
+1606766066.3929307	1606766066.3929307	140.5	0.0	0	0	0.5
+1606766066.5972526	1606766066.5972526	140.75	0.0	0	0	0.5
+1606766066.798272	1606766066.798272	141.0	0.0	0	0	0.5
+1606766066.9994	1606766066.9994	141.25	0.0	0	0	0.5
+1606766067.1995637	1606766067.1995637	141.5	1.0	1	0.5	0.5
+1606766067.3993924	1606766067.3993924	141.75	0.0	0	0	0.5
+1606766067.613325	1606766067.613325	142.0	1.0	1	0.5	0.5
+1606766067.810393	1606766067.810393	142.25	1.0	1	0.5	0.5
+1606766067.9982896	1606766067.9982896	142.5	1.0	1	0.5	0.5
+1606766068.1997273	1606766068.1997273	142.75	3.0	3	0.8660254037844386	0.8660254037844386
+1606766068.4014373	1606766068.4014373	143.0	1.0	1	0.5	0.5
+1606766068.6121526	1606766068.6121526	143.25	0.0	0	0	0.5
+1606766068.8110037	1606766068.8110037	143.5	0.0	0	0	0.5
+1606766068.9955099	1606766068.9955099	143.75	0.0	0	0	0.5
+1606766069.1991274	1606766069.1991274	144.0	0.0	0	0	0.5
+1606766069.408549	1606766069.408549	144.25	0.0	0	0	0.5
+1606766069.5970101	1606766069.5970101	144.5	2.0	2	0.7071067811865476	0.7071067811865476
+1606766069.7971675	1606766069.7971675	144.75	0.0	0	0	0.5
+1606766069.999468	1606766069.999468	145.0	0.0	0	0	0.5
+1606766070.209266	1606766070.209266	145.25	0.0	0	0	0.5
+1606766070.3963292	1606766070.3963292	145.5	0.0	0	0	0.5
+1606766070.596526	1606766070.596526	145.75	0.0	0	0	0.5
+1606766070.7992043	1606766070.7992043	146.0	0.0	0	0	0.5
+1606766071.0091238	1606766071.0091238	146.25	0.0	0	0	0.5
+1606766071.2128549	1606766071.2128549	146.5	0.0	0	0	0.5
+1606766071.3987749	1606766071.3987749	146.75	0.0	0	0	0.5
+1606766071.6106768	1606766071.6106768	147.0	0.0	0	0	0.5
+1606766071.7987945	1606766071.7987945	147.25	0.0	0	0	0.5
+1606766071.998288	1606766071.998288	147.5	0.0	0	0	0.5
+1606766072.2005243	1606766072.2005243	147.75	0.0	0	0	0.5
+1606766072.4008512	1606766072.4008512	148.0	0.0	0	0	0.5
+1606766072.6120546	1606766072.6120546	148.25	0.0	0	0	0.5
+1606766072.7991982	1606766072.7991982	148.5	0.0	0	0	0.5
+1606766073.0002651	1606766073.0002651	148.75	0.0	0	0	0.5
+1606766073.2101576	1606766073.2101576	149.0	0.0	0	0	0.5
+1606766073.4158406	1606766073.4158406	149.25	0.0	0	0	0.5
+1606766073.6111493	1606766073.6111493	149.5	0.0	0	0	0.5
+1606766073.808951	1606766073.808951	149.75	0.0	0	0	0.5
+1606766074.0168777	1606766074.0168777	150.0	0.0	0	0	0.5
+1606766074.2177725	1606766074.2177725	150.25	0.0	0	0	0.5
+1606766074.4178116	1606766074.4178116	150.5	0.0	0	0	0.5
+1606766074.617272	1606766074.617272	150.75	0.0	0	0	0.5
+1606766074.81285	1606766074.81285	151.0	0.0	0	0	0.5
+1606766075.0002437	1606766075.0002437	151.25	0.0	0	0	0.5
+1606766075.2158325	1606766075.2158325	151.5	0.0	0	0	0.5
+1606766075.4017768	1606766075.4017768	151.75	0.0	0	0	0.5
+1606766075.6135228	1606766075.6135228	152.0	0.0	0	0	0.5
+1606766075.7990415	1606766075.7990415	152.25	0.0	0	0	0.5
+1606766076.0202613	1606766076.0202613	152.5	0.0	0	0	0.5
+1606766076.2082484	1606766076.2082484	152.75	0.0	0	0	0.5
+1606766076.4147103	1606766076.4147103	153.0	0.0	0	0	0.5
+1606766076.6007674	1606766076.6007674	153.25	0.0	0	0	0.5
+1606766076.8088064	1606766076.8088064	153.5	0.0	0	0	0.5
+1606766077.0187612	1606766077.0187612	153.75	0.0	0	0	0.5
+1606766077.2166517	1606766077.2166517	154.0	0.0	0	0	0.5
+1606766077.413764	1606766077.413764	154.25	0.0	0	0	0.5
+1606766077.6095412	1606766077.6095412	154.5	0.0	0	0	0.5
+1606766077.8185723	1606766077.8185723	154.75	0.0	0	0	0.5
+1606766078.0094588	1606766078.0094588	155.0	0.0	0	0	0.5

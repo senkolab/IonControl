@@ -1,0 +1,21 @@
+2019-06-19 16:50:13,805 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:50:13,821 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:51:19,178 ERROR dedicatedCounters.DedicatedCountersTableModel(DedicatedCountersTableModel.py:70 setPlotName) No match for Plot
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\dedicatedCounters\DedicatedCountersTableModel.py", line 65, in setPlotName
+    self.plotDisplayData.renameAt(row, strvalue)
+  File "C:\Users\ions\Desktop\IonControl\modules\SequenceDict.py", line 65, in renameAt
+    raise KeyError('renameAt: "{0}" key already exists')
+KeyError: 'renameAt: "{0}" key already exists'

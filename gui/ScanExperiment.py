@@ -722,14 +722,20 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
                 self.context.rawDataFile.close()
                 self.context.rawDataFile = None
                 logging.getLogger(__name__).info("Closed raw data file")
+            #print("Before Trace for: %s"%self.context.plottedTraceList[0].traceCollection)
             for trace in ([self.context.currentTimestampTrace]+[self.context.plottedTraceList[0].traceCollection] if self.context.plottedTraceList else[]):
                 if trace:
                     trace.description["traceFinalized"] = datetime.now(pytz.utc)
                     if trace.autoSave:
                         trace.save()
+            #print("Before saveData if: %s"%self.dataAnalysis())
             if saveData:
+                #print("In saveData")
                 failedList = self.dataAnalysis()
+                #print("failedList: %s"%failedList)
                 self.registerMeasurement(failedList)
+                #print("failedList2: %s"%failedList)
+            #print("Before histogramSave if: %s"%self.context.scan.histogramSave)
             if self.context.scan.histogramSave:
                 self.onSaveHistogram(self.context.scan.histogramFilename if self.context.scan.histogramFilename else None)
             self.context.dataFinalized = reason
@@ -737,8 +743,11 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
             self.allDataSignal.emit(allData)
         
     def dataAnalysis(self):
+        #print("in dataAnalysis: %s"%self.context.analysisName)
         if self.context.analysisName != self.analysisControlWidget.currentAnalysisName:
+            #print("inside if of dataAnalysis")
             self.analysisControlWidget.onLoadAnalysisConfiguration( self.context.analysisName )
+        #print("return of dataAnalysis: %s"%self.analysisControlWidget.analyze(dict(((evaluation.name, plottedTrace) for evaluation, plottedTrace in zip(self.context.evaluation.evalList, self.context.plottedTraceList)))))
         return self.analysisControlWidget.analyze(dict(((evaluation.name, plottedTrace) for evaluation, plottedTrace in zip(self.context.evaluation.evalList, self.context.plottedTraceList))))
                 
             
@@ -1040,6 +1049,7 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
                                                                                        top=pushvar.maximum if pushvar.maximum else None))   
         # add Plots
         measurement.plottedTraceList = self.context.plottedTraceList
+        #print("HEre")
         self.measurementLog.container.addMeasurement( measurement )
             
                 

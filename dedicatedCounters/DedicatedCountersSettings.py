@@ -40,7 +40,7 @@ class Settings(object):
         self.integrationTime = Q(100, 'ms')
         self.displayUnit = CountrateConversion.DisplayUnit()
         self.unit = 0
-        self.pointsToKeep = 400
+        self.pointsToKeep = 500
         self.counterDict = dict(zip(list(['Count {0}'.format(i) for i in range(16)]), list(i for i in range(16))))
         self.adcDict = dict(zip(list(['ADC {0}'.format(i) for i in range(4)]), list(i for i in range(4))))
         self.plotDisplayData = SequenceDict()

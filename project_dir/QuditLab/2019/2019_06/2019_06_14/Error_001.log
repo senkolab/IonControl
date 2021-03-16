@@ -1,0 +1,192 @@
+2019-06-19 16:35:59,887 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:35:59,919 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:37:14,635 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:37:14,635 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:41:05,287 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:41:05,287 ERROR pyqtgraph.dockarea.Dock(ExceptionLogButton.py:129 myexcepthook) 'NoneType' object has no attribute 'type'
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 185, in resizeEvent
+    self.setOrientation()
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\dockarea\Dock.py", line 155, in setOrientation
+    if self.container().type() == 'tab':
+AttributeError: 'NoneType' object has no attribute 'type'
+2019-06-19 16:42:44,113 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,190 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,190 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,190 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,331 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,347 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,347 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,362 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,378 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument
+2019-06-19 16:42:44,378 ERROR pyqtgraph.graphicsItems.AxisItem(ExceptionLogButton.py:129 myexcepthook) [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 525, in paint
+    specs = self.generateDrawSpecs(painter)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pyqtgraph\pyqtgraph\graphicsItems\AxisItem.py", line 824, in generateDrawSpecs
+    tickLevels = self.tickValues(self.range[0], self.range[1], lengthInPixels)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 208, in tickValues
+    values = self.zoomLevel.tickValues(minVal, maxVal, minSpc=minSpacing)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 118, in tickValues
+    ticks, skipFactor = spec.makeTicks(utcMin, utcMax, minSpc)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 74, in makeTicks
+    x = self.step(minVal, n)
+  File "C:\Users\ions\Desktop\IonControl\pyqtgraphAddons\DateAxisItem.py", line 39, in stepper
+    d = datetime.utcfromtimestamp(val)
+OSError: [Errno 22] Invalid argument

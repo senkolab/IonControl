@@ -1,0 +1,73 @@
+parameter ShutterWait = 100 ms
+parameter WaitToReverseAblationTTL = 10 ms
+parameter CameraTriggerWait = 10 ms
+parameter TrapFlushWait
+parameter WaittoFlash
+parameter NumberofPulses
+parameter PulseInterval
+parameter DummyFlashInterval
+parameter DummyPulseNumber
+parameter DummyVar
+counter DummyCounter
+shutter init
+masked_shutter OpenAblationShutter
+masked_shutter FlashAblation
+masked_shutter CaptureImage
+masked_shutter TrapRF
+masked_shutter AllLasers
+var PulseCount
+var DummyPulseCount
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(init)
+update()
+set_shutter(OpenAblationShutter)
+update(ShutterWait)
+update()
+set_shutter(AllLasers)
+update(ShutterWait)
+update()
+PulseCount = 0
+DummyPulseCount = 0
+set_shutter(TrapRF)
+update(WaittoFlash)
+update()
+while PulseCount < NumberofPulses:
+    set_shutter(FlashAblation)
+    update(WaitToReverseAblationTTL)
+    update()
+    set_inv_shutter(FlashAblation)
+    update(PulseInterval)
+    update()
+    PulseCount += 1
+set_inv_shutter(OpenAblationShutter)
+while DummyPulseCount < DummyPulseNumber:
+    update(DummyFlashInterval)
+    set_shutter(FlashAblation)
+    update(WaitToReverseAblationTTL)
+    update()
+    set_inv_shutter(FlashAblation)
+    DummyPulseCount += 1
+while not pipe_empty():
+    apply_next_scan_point()
+    set_counter(DummyCounter)
+    update(ShutterWait)
+    update()
+    clear_counter()
+    update()
+exit( endLabel )
+#update(ShutterWait)
+#set_shutter(OpenAblationShutter)
+#set_shutter(CaptureImage)
+#update(CameraTriggerWait)
+#update()
+#set_inv_shutter(CaptureImage)
+#update(ShutterWait)
+#update()
+#set_inv_shutter(TrapRF)
+#update(TrapFlushWait)
+#update()
+#set_parameter(TrapRFOnOff 0)
+#update()
+#set_parameter(TrapRFOnOff 1)
+#update()

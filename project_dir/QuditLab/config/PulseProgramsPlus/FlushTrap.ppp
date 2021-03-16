@@ -1,0 +1,26 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+masked_shutter TrapRF
+
+# times
+parameter RFWait
+parameter DummyVar = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    set_inv_shutter(TrapRF)
+    update(RFWait)
+    update()
+    set_shutter(TrapRF)
+    update(RFWait)
+    update()
+exit( endLabel )

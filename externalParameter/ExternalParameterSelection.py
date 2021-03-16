@@ -81,6 +81,8 @@ class SelectionUi(SelectionForm, SelectionBase):
 
     def outputChannels(self):
         self._outputChannels = OrderedDict(itertools.chain(*[p.outputChannelList() for p in self.enabledParametersObjects.values()]))
+        x = OrderedDict(itertools.chain(*[p.outputChannelList() for p in self.enabledParametersObjects.values()]))
+        #print("TheList: %s"%x)
         return self._outputChannels
         
     def inputChannels(self):

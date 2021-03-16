@@ -1,0 +1,97 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_Focus.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">5154</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="EndShutter" type="int">5154</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.5 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">145 us</Element>
+#       <Element name="DetectTime" type="Quantity">20 us</Element>
+#       <Element name="WaitForFocusChange" type="int">0</Element>
+#       <Element name="DummyVar" type="int">0</Element>
+#       <Element name="experiments" type="int">0</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">4294967295</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">DummyVar</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">1</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_Focus.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-08-27 01:28:41.110852+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-08-27 01:28:39.230952+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-08-27 01:28:41.271788+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000026764B5BF98&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="DummyVar" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1598491718.6858869	1598491718.6858869	0	nan	None
+1598491719.213003	1598491719.213003	1	nan	None
+1598491719.213003	1598491719.213003	2	nan	None
+1598491719.213003	1598491719.213003	3	nan	None
+1598491719.214277	1598491719.214277	4	nan	None
+1598491719.214277	1598491719.214277	5	nan	None
+1598491719.214277	1598491719.214277	6	nan	None
+1598491719.214277	1598491719.214277	7	nan	None
+1598491719.214277	1598491719.214277	8	nan	None
+1598491719.214277	1598491719.214277	9	nan	None
+1598491719.214277	1598491719.214277	10	nan	None
+1598491719.214277	1598491719.214277	11	nan	None
+1598491719.214277	1598491719.214277	12	nan	None
+1598491719.214277	1598491719.214277	13	nan	None
+1598491719.214277	1598491719.214277	14	nan	None
+1598491719.215398	1598491719.215398	15	nan	None
+1598491719.215398	1598491719.215398	16	nan	None
+1598491719.215398	1598491719.215398	17	nan	None
+1598491719.215398	1598491719.215398	18	nan	None
+1598491719.215398	1598491719.215398	19	nan	None
+1598491719.215398	1598491719.215398	20	nan	None
+1598491719.215398	1598491719.215398	21	nan	None
+1598491719.215398	1598491719.215398	22	nan	None
+1598491719.215398	1598491719.215398	23	nan	None
+1598491719.215398	1598491719.215398	24	nan	None
+1598491719.215398	1598491719.215398	25	nan	None
+1598491719.215398	1598491719.215398	26	nan	None
+1598491719.215398	1598491719.215398	27	nan	None
+1598491719.215398	1598491719.215398	28	nan	None
+1598491719.215398	1598491719.215398	29	nan	None
+1598491719.2164211	1598491719.2164211	30	nan	None
+1598491719.2164211	1598491719.2164211	31	nan	None
+1598491719.2164211	1598491719.2164211	32	nan	None
+1598491719.2164211	1598491719.2164211	33	nan	None
+1598491719.2164211	1598491719.2164211	34	nan	None
+1598491719.2164211	1598491719.2164211	35	nan	None
+1598491719.2164211	1598491719.2164211	36	nan	None
+1598491719.2164211	1598491719.2164211	37	nan	None
+1598491719.2164211	1598491719.2164211	38	nan	None
+1598491719.2164211	1598491719.2164211	39	nan	None
+1598491719.2164211	1598491719.2164211	40	nan	None
+1598491719.2164211	1598491719.2164211	41	nan	None
+1598491719.2164211	1598491719.2164211	42	nan	None
+1598491719.2164211	1598491719.2164211	43	nan	None
+1598491719.217476	1598491719.217476	44	nan	None
+1598491719.217476	1598491719.217476	45	nan	None
+1598491719.217476	1598491719.217476	46	nan	None
+1598491719.217476	1598491719.217476	47	nan	None
+1598491719.217476	1598491719.217476	48	nan	None

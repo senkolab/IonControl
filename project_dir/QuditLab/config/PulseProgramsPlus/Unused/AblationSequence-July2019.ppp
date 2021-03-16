@@ -1,0 +1,17 @@
+parameter WarmUpTime
+parameter AblationTime
+shutter init
+masked_shutter ablation
+masked_shutter AblationToTrap
+
+set_shutter(init)
+update()
+set_shutter(ablation)
+update(WarmUpTime)
+update()
+set_shutter(AblationToTrap)
+update(AblationTime)
+update()
+set_inv_shutter(ablation)
+set_inv_shutter(AblationToTrap)
+update()

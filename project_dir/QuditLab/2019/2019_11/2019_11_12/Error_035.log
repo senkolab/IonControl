@@ -1,0 +1,22 @@
+2019-11-12 15:59:13,949 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:119 setValueFollowup) could not convert string to float: 'OFF'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 115, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 231, in setValue
+    self.expressionValue.value = targetValue  # TODO: still unclear whether that makes sense
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 94, in value
+    self._updateFloatValue()
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 37, in _updateFloatValue
+    self.floatValue = float(self._value)  # cached value as float
+ValueError: could not convert string to float: 'OFF'
+2019-11-12 15:59:47,552 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:119 setValueFollowup) could not convert string to float: 'ON'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 115, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 231, in setValue
+    self.expressionValue.value = targetValue  # TODO: still unclear whether that makes sense
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 94, in value
+    self._updateFloatValue()
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 37, in _updateFloatValue
+    self.floatValue = float(self._value)  # cached value as float
+ValueError: could not convert string to float: 'ON'

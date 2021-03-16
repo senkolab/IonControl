@@ -73,5 +73,9 @@ hardware:
     dllPath: str
   VISA:
     description: communication with peripherals (e.g. GPIB, RS232, USB, Ethernet)
+  DG4000 AWG:
+    description: Rigol arbitrary waveform generator
   HighFinesse Wavemeter:
     description: HighFinesse Wavemeter from Toptica photonics for reading laser wavelengths, with Java applet web interface
+  SLS Offset Frequency Lock:
+    description: Stable laser system offset frequency lock for the 1762 nm system, used to change the frequency of the laser with respect to the cavity resonance

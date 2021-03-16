@@ -91,7 +91,23 @@ hardware:
         rootCertificates: path
   VISA:
     description: communication with peripherals (e.g. GPIB, RS232, USB, Ethernet)
+  DG4000 AWG:
+    description: Rigol arbitrary waveform generator
+    fields:
+        Visa Address: str
   HighFinesse Wavemeter:
     description: HighFinesse Wavemeter from Toptica photonics for reading laser wavelengths, with Java applet web interface
     fields:
         uri: str
+  Senkolab Four rod DC Controller:
+    description: Interface with custom DC controller. Check github.com/senkolab/DC_Voltage_Control
+    fields:
+        ipAddress: str
+        port: str
+  SLS Offset Frequency Lock:
+    description: Interface with SLS Offset Frequency Lock
+    fields:
+        ipAddress: str
+        user: str
+        password: str
+        port: str

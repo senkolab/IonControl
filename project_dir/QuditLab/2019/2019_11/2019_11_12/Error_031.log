@@ -1,0 +1,92 @@
+2019-11-12 15:35:23,913 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) 'OFF' while enabling instrument sdf
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 120, in __init__
+    ExternalParameterBase.__init__(self, name, config, globalDict)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 44, in __init__
+    self.createOutputChannels()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in createOutputChannels
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in <listcomp>
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 194, in __init__
+    super(SlowAdjustOutputChannel, self).__init__(device, deviceName, channelName, globalDict, settings, outputUnit)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 47, in __init__
+    self.expressionValue.string = self.settings.strValue
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 110, in string
+    val, dependencies = self.expression.evaluateAsMagnitude(self._string, self._globalDict, listDependencies=True)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 337, in evaluateAsMagnitude
+    return self.exprParser.evaluateAsMagnitude(s, variabledict, listDependencies, useFloat, functiondict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 317, in evaluateAsMagnitude
+    self.parser.parse(s, lexer=self.lexer)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 333, in parse
+    return self.parseopt_notrack(input, lexer, debug, tracking, tokenfunc)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 1120, in parseopt_notrack
+    p.callable(pslice)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 236, in p_expression_name
+    t[0] = self.variableCM[t[1]]
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 883, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 875, in __missing__
+    raise KeyError(key)
+KeyError: 'OFF'
+2019-11-12 15:35:24,789 ERROR externalParameter.ExternalParameterSelection(ExternalParameterSelection.py:125 onEnableChanged) 'OFF' while enabling instrument dg
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 123, in onEnableChanged
+    self.enableInstrument(parameter)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterSelection.py", line 153, in enableInstrument
+    instance = self.classdict[parameter.className](parameter.name, parameter.settings, self.globalDict, parameter.instrument)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 120, in __init__
+    ExternalParameterBase.__init__(self, name, config, globalDict)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 44, in __init__
+    self.createOutputChannels()
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in createOutputChannels
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterBase.py", line 49, in <listcomp>
+    for channel, unit in self._outputChannels.items()] )
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 194, in __init__
+    super(SlowAdjustOutputChannel, self).__init__(device, deviceName, channelName, globalDict, settings, outputUnit)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 47, in __init__
+    self.expressionValue.string = self.settings.strValue
+  File "C:\Users\ions\Desktop\IonControl\gui\ExpressionValue.py", line 110, in string
+    val, dependencies = self.expression.evaluateAsMagnitude(self._string, self._globalDict, listDependencies=True)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 337, in evaluateAsMagnitude
+    return self.exprParser.evaluateAsMagnitude(s, variabledict, listDependencies, useFloat, functiondict)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 317, in evaluateAsMagnitude
+    self.parser.parse(s, lexer=self.lexer)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 333, in parse
+    return self.parseopt_notrack(input, lexer, debug, tracking, tokenfunc)
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\site-packages\ply\yacc.py", line 1120, in parseopt_notrack
+    p.callable(pslice)
+  File "C:\Users\ions\Desktop\IonControl\modules\Expression.py", line 236, in p_expression_name
+    t[0] = self.variableCM[t[1]]
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 883, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "C:\ProgramData\Miniconda3\envs\IonControl\lib\collections\__init__.py", line 875, in __missing__
+    raise KeyError(key)
+KeyError: 'OFF'
+2019-11-12 15:35:42,518 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:119 setValueFollowup) unsupported operand type(s) for -: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 115, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 228, in setValue
+    newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 23, in nextValue
+    temp = target-current
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 735, in __sub__
+    return self._add_sub(other, operator.sub)
+  File "c:\users\rich\desktop\new folder\ioncontrol\src\pint\pint\quantity.py", line 633, in _add_sub
+    _to_magnitude(other, self.force_ndarray))
+TypeError: unsupported operand type(s) for -: 'int' and 'str'
+2019-11-12 15:35:44,986 ERROR externalParameter.ExternalParameterUi(ExternalParameterUi.py:119 setValueFollowup) 'str' object has no attribute 'm_as'
+Traceback (most recent call last):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\ExternalParameterUi.py", line 115, in setValueFollowup
+    if not inst.setValue(value):
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\OutputChannel.py", line 229, in setValue
+    reportvalue, arrived = self.encpasulate_value(self.device.setValue(self.channelName, newvalue), second=arrived)
+  File "C:\Users\ions\Desktop\IonControl\externalParameter\StandardExternalParameter.py", line 139, in setValue
+    command = "{0} {1}".format(function, v.m_as(unit))#, index)
+AttributeError: 'str' object has no attribute 'm_as'

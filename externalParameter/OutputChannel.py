@@ -44,7 +44,13 @@ class OutputChannel(QtCore.QObject):
         self.persistence = DBPersist()
         self.outputUnit = outputUnit
         self.setDefaults()
-        self.expressionValue.string = self.settings.strValue
+        x = self.settings.strValue
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
+        self.expressionValue.string = x
         self.expressionValue.value = self.settings.targetValue
         self.expressionValue.valueChanged.connect(self.onExpressionUpdate)
 
@@ -59,6 +65,11 @@ class OutputChannel(QtCore.QObject):
 
     def onExpressionUpdate(self, name, value, string, origin):
         if origin == 'recalculate':
+            if(value == 'ON' or value == 'OFF'):
+                if(value == 'ON'):
+                    value = 1
+                else:
+                    value = 0
             self.setValue(value)
             self.targetChanged.emit(value)
 
@@ -68,7 +79,13 @@ class OutputChannel(QtCore.QObject):
         
     @property
     def value(self):
-        return self.settings.value
+        x = self.settings.value
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
+        return x
     
     def setValue(self, targetValue):
         """
@@ -76,9 +93,20 @@ class OutputChannel(QtCore.QObject):
         it should return False. The user should call repeatedly until the intended value is reached
         and True is returned.
         """
+        x = targetValue
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
         self.settings.targetValue = targetValue
         self.expressionValue.value = targetValue
         reportvalue = self.device.setValue(self.channelName, targetValue)
+        if(reportvalue == 'ON' or reportvalue == 'OFF'):
+            if(reportvalue == 'ON'):
+                reportvalue = 1
+            else:
+                reportvalue = 0
         self.settings.value = reportvalue
         self.valueChanged.emit(self.settings.value)
         return True
@@ -100,7 +128,13 @@ class OutputChannel(QtCore.QObject):
         """
         save current value
         """
-        if self.savedValue is None or overwrite:
+        x = self.savedValue
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
+        if x is None or overwrite:
             self.savedValue = self.value
         return self.savedValue
 
@@ -123,7 +157,13 @@ class OutputChannel(QtCore.QObject):
         
     @property
     def externalValue(self):
-        return self.device.getExternalValue(self.channelName)
+        x = self.device.getExternalValue(self.channelName)
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
+        return x
     
     @property
     def dimension(self):
@@ -131,7 +171,13 @@ class OutputChannel(QtCore.QObject):
     
     @property
     def useExternalValue(self):
-        return self.device.useExternalValue(self.channelName)
+        x = self.device.useExternalValue(self.channelName)
+        if(x == 'ON' or x == 'OFF'):
+            if(x == 'ON'):
+                x = 1
+            else:
+                x = 0
+        return x
 
     @property
     def hasDependency(self):
@@ -151,15 +197,31 @@ class OutputChannel(QtCore.QObject):
 
     @string.setter
     def string(self, s):
+        if(s == 'ON' or s == 'OFF'):
+            if(s == 'ON'):
+                s = 1
+            else:
+                s = 0
         self.settings.strValue = s
         self.expressionValue.string = s
         
     @property
     def strValue(self):
+        value = self.expressionValue.string
+        if(value == 'ON' or value == 'OFF'):
+            if(value == 'ON'):
+                value = 1
+            else:
+                value = 0
         return self.expressionValue.string
 
     @strValue.setter
     def strValue(self, s):
+        if(s == 'ON' or s == 'OFF'):
+            if(s == 'ON'):
+                s = 1
+            else:
+                s = 0
         self.settings.strValue = s
         self.expressionValue.string = s
 
@@ -187,6 +249,11 @@ class OutputChannel(QtCore.QObject):
         """
         for param, change, data in changes:
             if change=='value':
+                if(data == 'ON' or data == 'OFF'):
+                    if(data == 'ON'):
+                        data = 1
+                    else:
+                        data = 0
                 setattr( self.settings, param.name(), data)       
         
 class SlowAdjustOutputChannel(OutputChannel):
@@ -224,6 +291,11 @@ class SlowAdjustOutputChannel(OutputChannel):
         if targetValue is not None:
             if self.settings.targetValue != targetValue:
                 self.settings.targetValue = targetValue
+                if(self.externalValue == 'ON' or self.externalValue == 'OFF'):
+                    if(self.externalValue == 'ON'):
+                        self.externalValue = 1
+                    else:
+                        self.externalValue = 0
                 self.settings.value = self.externalValue
             newvalue, arrived = nextValue(self.settings.value, targetValue, self.settings.stepsize, self.settings.jump)
             reportvalue, arrived = self.encpasulate_value(self.device.setValue(self.channelName, newvalue), second=arrived)
@@ -240,6 +312,11 @@ class SlowAdjustOutputChannel(OutputChannel):
 
     def onExpressionUpdate(self, name, value, string, origin):
         if origin == 'recalculate':
+            if(value == 'ON' or value == 'OFF'):
+                if(value == 'ON'):
+                    value = 1
+                else:
+                    value = 0
             self.settings.targetValue = value
             self.targetChanged.emit(value)
             self.useTracker.take(self.name)

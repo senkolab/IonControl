@@ -1,0 +1,61 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ion-Direct Trap.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">4632</Element>
+#       <Element name="NaturalAblation_mask" type="int">256</Element>
+#       <Element name="NaturalAblation" type="int">256</Element>
+#       <Element name="TrapRF_mask" type="int">8192</Element>
+#       <Element name="TrapRF" type="int">8192</Element>
+#       <Element name="EndShutter" type="int">4632</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.1 s</Element>
+#       <Element name="DetectTime" type="Quantity">100 ms</Element>
+#       <Element name="TrapStartDelay" type="Quantity">142 us</Element>
+#       <Element name="WaitForCoolTime" type="Quantity">2 s</Element>
+#       <Element name="experiments" type="int">20</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">18446744073709551615</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">TrapStartDelay</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">0</Element>
+#       <Element name="xUnit" type="str">us</Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ion-Direct Trap</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-10-02 20:23:21.146315+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-10-02 20:20:47.414935+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-10-02 20:24:12.931677+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x0000012F960C22E8&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="TrapStartDelay" xAxisUnit="us" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1601669978.7468536	1601669978.7468536	142.0	46.75	935	0.7644442425710328	0.7644442425710328
+1601670047.315857	1601670047.315857	142.5	46.3	926	0.7607562027351469	0.7607562027351469
+1601670116.324786	1601670116.324786	143.0	44.2	884	0.7433034373659253	0.7433034373659253
+1601670168.8775637	1601670168.8775637	143.5	43.3	866	0.7356969484781081	0.7356969484781081
+1601670201.4796212	1601670201.4796212	144.0	46.5	930	0.7623975340988454	0.7623975340988454
+1601670230.4844182	1601670230.4844182	144.5	48.55	971	0.7790218225441442	0.7790218225441442
+1601670275.3449717	1601670275.3449717	145.0	46.15	923	0.7595228765481656	0.7595228765481656
+1601670336.6576426	1601670336.6576426	145.5	44.7	894	0.7474958193863027	0.7474958193863027
+1601670379.323011	1601670379.323011	146.0	47.25	945	0.7685213074469699	0.7685213074469699
+1601670411.0138762	1601670411.0138762	146.5	45.95	919	0.7578753195612059	0.7578753195612059
+1601670452.782759	1601670452.782759	147.0	46.75	935	0.7644442425710328	0.7644442425710328
+1601670136.7653084	1601670136.7653084	147.5	46.45	929	0.7619875327064085	0.7619875327064085

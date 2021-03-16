@@ -1,0 +1,65 @@
+# <?xml version="1.0" ?>
+# <DataFileHeader>
+#   <Variables>
+#     <Element name="PulseProgram" type="dict">
+#       <Element name="PulseProgram" type="str">C:/Users/ions/Documents/IonControl/project_dir/QuditLab/config/PulseProgramsPlus/Ablation_Focus.ppp</Element>
+#       <Element name="NULL" type="Quantity">0</Element>
+#       <Element name="FFFFFFFF" type="Quantity">18446744073709551615</Element>
+#       <Element name="INTERRUPT_EXITCODE" type="Quantity">18446198715942174720</Element>
+#       <Element name="InitializationShutter" type="int">5154</Element>
+#       <Element name="NaturalAblation_mask" type="int">0</Element>
+#       <Element name="NaturalAblation" type="int">0</Element>
+#       <Element name="EndShutter" type="int">5154</Element>
+#       <Element name="ShutterDelayTime" type="Quantity">0.5 s</Element>
+#       <Element name="WindowStartTime" type="Quantity">145 us</Element>
+#       <Element name="DetectTime" type="Quantity">20 us</Element>
+#       <Element name="WaitForFocusChange" type="int">0</Element>
+#       <Element name="experiments" type="int">1</Element>
+#       <Element name="DetectCounters" type="int">1</Element>
+#       <Element name="endLabel" type="Quantity">4294967295</Element>
+#       <Element name="experimentsleft" type="Quantity">100</Element>
+#       <Element name="currentexperiment" type="Quantity">0</Element>
+#       <Element name="inlinevar_1" type="Quantity">1</Element>
+#     </Element>
+#     <Element name="Scan" type="dict">
+#       <Element name="scanParameter" type="str">WindowTimeStart</Element>
+#       <Element name="scanTarget" type="str">Internal</Element>
+#       <Element name="scantype" type="int">0</Element>
+#       <Element name="scanMode" type="int">1</Element>
+#       <Element name="xUnit" type="str"></Element>
+#       <Element name="xExpression" type="str"></Element>
+#       <Element name="loadPP" type="bool">True</Element>
+#       <Element name="loadPPName" type="str">Ablation_Focus.ppp</Element>
+#       <Element name="parallelInternalScanParameter" type="str">None</Element>
+#     </Element>
+#     <ColumnSpec>timeTickFirst, timeTickLast, x, PMT Count, PMT Count_raw, PMT Count_bottom, PMT Count_top</ColumnSpec>
+#     <Element name="comment" type="str"></Element>
+#     <Element name="lastDataAquired" type="datetime">2020-08-25 17:16:40.879261+00:00</Element>
+#     <Element name="name" type="str"></Element>
+#     <Element name="traceCreation" type="datetime">2020-08-25 17:16:30.823501+00:00</Element>
+#     <Element name="traceFinalized" type="datetime">2020-08-25 17:16:41.027616+00:00</Element>
+#     <TracePlottingList>
+#       <TracePlotting _bottomColumn="PMT Count_bottom" _filtColumn="None" _fitFunction="None" _heightColumn="height" _rawColumn="PMT Count_raw" _topColumn="PMT Count_top" _xColumn="x" _yColumn="PMT Count" fill="True" name="PMT Count" properties="&lt;trace.PlottedTrace.PlottedTraceProperties object at 0x000002C6086CF0F0&gt;" style="0" type="0" windowName="Scan Data" xAxisLabel="WindowTimeStart" xAxisUnit="" yAxisLabel="None">
+#         <PlottedTraceProperties averageSameX="False" averageType="0" combinePoints="0"/>
+#       </TracePlotting>
+#     </TracePlottingList>
+#   </Variables>
+# </DataFileHeader>
+1598375788.9172418	1598375788.9172418	0	0.0	0	0	0.5
+1598375790.820628	1598375790.820628	1	0.0	0	0	0.5
+1598375791.007746	1598375791.007746	2	0.0	0	0	0.5
+1598375791.38255	1598375791.38255	3	2.0	2	0.7071067811865476	0.7071067811865476
+1598375792.0165617	1598375792.0165617	4	0.0	0	0	0.5
+1598375792.6648378	1598375792.6648378	5	0.0	0	0	0.5
+1598375793.2855012	1598375793.2855012	6	0.0	0	0	0.5
+1598375793.902068	1598375793.902068	7	1.0	1	0.5	0.5
+1598375794.5408506	1598375794.5408506	8	1.0	1	0.5	0.5
+1598375795.1724205	1598375795.1724205	9	1.0	1	0.5	0.5
+1598375795.7979715	1598375795.7979715	10	0.0	0	0	0.5
+1598375796.4371467	1598375796.4371467	11	0.0	0	0	0.5
+1598375797.0648627	1598375797.0648627	12	0.0	0	0	0.5
+1598375797.725683	1598375797.725683	13	6.0	6	1.224744871391589	1.224744871391589
+1598375798.340593	1598375798.340593	14	0.0	0	0	0.5
+1598375798.961044	1598375798.961044	15	0.0	0	0	0.5
+1598375799.6039948	1598375799.6039948	16	0.0	0	0	0.5
+1598375800.244497	1598375800.244497	17	0.0	0	0	0.5

@@ -1,0 +1,45 @@
+databaseConnection:
+  database: quditlab
+  echo: false
+  host: localhost
+  password: ''
+  port: 5432
+  user: python
+hardware:
+  DG4000 AWG:
+    null:
+      Visa Address: ''
+      enabled: true
+  HighFinesse Wavemeter:
+    Wavemeter1:
+      enabled: true
+      uri: 192.168.168.203:8080
+  Opal Kelly FPGA:
+    null:
+      bitFile: ./FPGA_Ions/IonControl-firmware-no-div.bit
+      device: Pulser
+      enabled: true
+      uploadOnStartup: true
+  SLS Offset Frequency Lock:
+    null:
+      enabled: true
+      ipAddress: 192.168.168.14
+      password: raspberry
+      port: '22'
+      user: pi
+  Senkolab Four rod DC Controller:
+    null:
+      enabled: true
+      ipAddress: 192.168.168.8
+      port: '50051'
+  VISA:
+    null:
+      enabled: true
+showGui: false
+software:
+  Pulser:
+    null:
+      enabled: true
+      hardware: Opal Kelly FPGA
+useCustomDatabaseName: false
+version: 2.0

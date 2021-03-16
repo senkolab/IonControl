@@ -97,9 +97,14 @@ class MagnitudeSpinBox(QtWidgets.QAbstractSpinBox):
         try:
             text = str(self.lineEdit().text()).strip()
             if len(text) > 0:
-                value = self.expression.evaluateAsMagnitude(text, self.globalDict)
-                if self._dimension is not None and value.dimensionality != self._dimension.dimensionality:
-                    raise DimensionMismatch("Got unit '{0}' expected '{1}'".format(value.dimensionality, self._dimension.dimensionality))
+                if (text == 'OFF' or text == 'ON'):
+                    #print('Hey I made it in here MagnitudeSpinBox')
+                    value = text
+                    pass
+                else:
+                    value = self.expression.evaluateAsMagnitude(text, self.globalDict)
+                    if self._dimension is not None and value.dimensionality != self._dimension.dimensionality:
+                        raise DimensionMismatch("Got unit '{0}' expected '{1}'".format(value.dimensionality, self._dimension.dimensionality))
             else:
                 value = self.emptyStringValue
         except Exception as e:
