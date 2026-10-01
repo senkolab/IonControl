@@ -973,4 +973,4 @@ if __name__ == "__main__":
     MainWindow.setCentralWidget(ui)
     MainWindow.show()
     sys.exit(app.exec_())
-    print(config)
+    #print(config)

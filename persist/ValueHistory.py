@@ -129,9 +129,11 @@ class ValueHistoryStore:
                         top = top.m_as(unit)
                 if space is not None and source is not None:
                     paramObj = self.getSource(space, source)
+                    #print(paramObj)
                     if is_Q(value):
                         value, unit = value.m, "{:~}".format(value.units)
                     elem = ValueHistoryEntry(paramObj, value, unit, upd_date)
+                    #print(f'\n{elem}\n')
                     self.session.add(elem)
                     elem.value = value
                     if bottom is not None:

@@ -11,7 +11,6 @@ from functools import partial
 
 from gui.ScanProgress import ScanProgress
 
-
 class ScanException(Exception):
     pass
 

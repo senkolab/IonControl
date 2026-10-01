@@ -124,7 +124,7 @@ class MeanEvaluation(EvaluationBase):
                     values = countarray
                 return values, timestamps
         return [], []
-
+        
 class NumberEvaluation(EvaluationBase):
     name = 'Number'
     tooltip = "Number of results" 
@@ -137,6 +137,116 @@ class NumberEvaluation(EvaluationBase):
         if not countarray:
             return EvaluationResult()
         return EvaluationResult(len(countarray), raw=len(countarray))
+        
+class PMTindex0Evaluation(EvaluationBase):
+    name = 'PMT idx 0'
+    tooltip = "First index results of PMT" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        return EvaluationResult(list(countarray)[0], raw=list(countarray)[0])
+
+class PMTindex1Evaluation(EvaluationBase):
+    name = 'PMT idx 1'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=1:
+            return EvaluationResult(list(countarray)[0], raw=list(countarray)[0])
+        else:
+            return EvaluationResult(list(countarray)[1], raw=list(countarray)[1])
+
+class PMTindex2Evaluation(EvaluationBase):
+    name = 'PMT idx 2'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=2:
+            return EvaluationResult(list(countarray)[len(countarray)-1], raw=list(countarray)[len(countarray)-1])
+        else:
+            return EvaluationResult(list(countarray)[2], raw=list(countarray)[2])
+
+class PMTindex3Evaluation(EvaluationBase):
+    name = 'PMT idx 3'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=3:
+            return EvaluationResult(list(countarray)[len(countarray)-1], raw=list(countarray)[len(countarray)-1])
+        else:
+            return EvaluationResult(list(countarray)[3], raw=list(countarray)[3])
+
+class PMTindex4Evaluation(EvaluationBase):
+    name = 'PMT idx 4'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=4:
+            return EvaluationResult(list(countarray)[len(countarray)-1], raw=list(countarray)[len(countarray)-1])
+        else:
+            return EvaluationResult(list(countarray)[4], raw=list(countarray)[4])
+
+class PMTindex5Evaluation(EvaluationBase):
+    name = 'PMT idx 5'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=5:
+            return EvaluationResult(list(countarray)[len(countarray)-1], raw=list(countarray)[len(countarray)-1])
+        else:
+            return EvaluationResult(list(countarray)[5], raw=list(countarray)[5])
+
+class PMTindex6Evaluation(EvaluationBase):
+    name = 'PMT idx 6'
+    tooltip = "Number of results" 
+    sourceType = enum('Counter','Result')
+    def __init__(self, globalDict=None, settings=None):
+        EvaluationBase.__init__(self, globalDict, settings)
+        
+    def evaluate(self, data, evaluation, expected=None, ppDict=None, globalDict=None):
+        countarray = evaluation.getChannelData(data)
+        if not countarray:
+            return EvaluationResult()
+        elif len(countarray) <=6:
+            return EvaluationResult(list(countarray)[len(countarray)-1], raw=list(countarray)[len(countarray)-1])
+        else:
+            return EvaluationResult(list(countarray)[6], raw=list(countarray)[6])
+
 
 class FeedbackEvaluation(EvaluationBase):
     name = 'Feedback'

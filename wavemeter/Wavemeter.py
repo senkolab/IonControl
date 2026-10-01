@@ -54,8 +54,8 @@ class Wavemeter(QtCore.QObject):
             self.onWavemeterData(int(channel), reply)
             #print(reply)
             data = reply.read()
-            #print(data)
-            print("Status is: ", reply.status, " Reason is: ", reply.reason)
+            print(data)
+            print("Wavemeter connection status is: ", reply.status, " Reason is: ", reply.reason)
             self.connection.close()
             self.queryRunning[channel] = False
             
@@ -64,7 +64,7 @@ class Wavemeter(QtCore.QObject):
         """Execute when reply is received from the wavemeter."""
         logger = logging.getLogger(__name__)
         self.queryRunning[channel] = False
-        print(reply)
+        #print(reply)
         if reply.status==200 and reply.reason == "OK":
             data = reply.read()
             #print(data)
@@ -73,7 +73,7 @@ class Wavemeter(QtCore.QObject):
             result = Q( round(float(data), 5), 'THz' )
             #print(result.m_as('THz'))
             if result.m_as('THz')<0 and self.callbackFailureCount[channel]<self.nMaxAttempts:
-                print("result: ", result.m_as('THz'))
+                #print("result: ", result.m_as('THz'))
                 self.getWavemeterData(channel)
                 self.callbackFailureCount[channel] += 1                
             else:    
