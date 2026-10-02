@@ -1,0 +1,198 @@
+###########################################################################
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingCoolLaserOne
+masked_shutter ShelvingCoolLaserTwo
+masked_shutter AWGEventTrigger
+masked_shutter ExpStart
+
+#counter
+counter PMT
+
+# times
+parameter PiPulseTime_m2
+parameter PiPulseTime_m1
+parameter PiPulseTime_zero
+parameter PiPulseTime_p1
+parameter PiPulseTime_p2
+parameter StartState
+parameter AWGTriggerOnTime
+parameter AWGTriggerOffTime
+parameter SegmentTransitionTime
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter CoolTimeStart
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+parameter CoolCycleNum
+parameter CoolPulseStep
+
+#variables
+var ExperimentCount
+var CoolCycle
+var CoolTime
+var PulseTime
+var num_awg_pulses
+var i
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def shelving_cool_one():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserOne)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def shelving_cool_two():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserTwo)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def toggle_AWG():
+    set_shutter(AWGEventTrigger)
+    update(AWGTriggerOnTime)
+    set_inv_shutter(AWGEventTrigger)
+    update(AWGTriggerOffTime)
+
+def measure_different_state():
+    if OpticalPumpTime>0:
+        optical_pump()
+    pulse_shelving()
+    set_shutter(AWGEventTrigger)
+    set_shutter(FluorescenceLasers)
+    set_counter(PMT)
+    update(PMTIntTime)
+    set_inv_shutter(AWGEventTrigger)
+    set_inv_shutter(FluorescenceLasers)
+    clear_counter()
+    update(SegmentTransitionTime)
+    
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:    
+        set_shutter(ExpStart)
+        update(AWGTriggerOnTime)
+        set_inv_shutter(ExpStart)
+        update()
+        CoolCycle = 0
+        CoolTime = CoolTimeStart
+        while CoolCycle<CoolCycleNum:
+            CoolTime = CoolTime + CoolPulseStep
+            shelving_cool_one()
+            shelving_cool_two()
+            CoolCycle = CoolCycle + 1
+        if RepumpTime>0:
+            repump_shelve()
+        if OpticalPumpTime>0:
+            optical_pump()
+
+        #e.g. if start state 4, toggle AWG 4 times
+        num_awg_pulses = StartState
+        i = 0
+        while i < num_awg_pulses:
+            toggle_AWG()
+            i = i + 1
+
+        PulseTime = PiPulseTime_m2
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+
+        #if start state 4, toggle AWG 2 times
+        num_awg_pulses = 6-StartState
+        i = 0
+        while i < num_awg_pulses:
+            toggle_AWG()
+            i = i + 1
+        
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        #Measure all states
+        PulseTime = PiPulseTime_m2
+        measure_different_state()
+
+        PulseTime = PiPulseTime_m1
+        measure_different_state()
+
+        PulseTime = PiPulseTime_zero
+        measure_different_state()
+
+        PulseTime = PiPulseTime_p1
+        measure_different_state()
+
+        PulseTime = PiPulseTime_p2
+        measure_different_state()
+
+        ExperimentCount = ExperimentCount + 1
+    
+
+exit( endLabel )

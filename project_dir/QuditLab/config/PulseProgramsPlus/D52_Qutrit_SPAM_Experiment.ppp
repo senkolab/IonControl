@@ -1,0 +1,171 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingCoolLaserOne
+masked_shutter ShelvingCoolLaserTwo
+masked_shutter AWGEventTrigger
+
+#counter
+counter PMT
+
+# times
+parameter PiPulseTime_m1
+parameter PiPulseTime_p1
+parameter StartState
+parameter AWGTriggerWaitTime
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter OpticalPumpTimeForCool
+parameter RepumpTimeForCool
+parameter CoolTimeStart
+parameter SwitchFreqWaitTime
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+parameter CoolCycleNum
+parameter CoolPulseStep
+
+#variables
+var ExperimentCount
+var CoolCycle
+var CoolTime
+var PulseTime
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def shelving_cool_one():
+    set_shutter(RepumpShelve)
+    update(RepumpTimeForCool)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTimeForCool)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserOne)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def shelving_cool_two():
+    set_shutter(RepumpShelve)
+    update(RepumpTimeForCool)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTimeForCool)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserTwo)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def switch_AWG_freq():
+    set_shutter(AWGEventTrigger)
+    update(AWGTriggerWaitTime)
+    set_inv_shutter(AWGEventTrigger)
+    update(AWGTriggerWaitTime)
+    
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:    
+        CoolCycle = 0
+        CoolTime = CoolTimeStart
+        while CoolCycle<CoolCycleNum:
+            CoolTime = CoolTime + CoolPulseStep
+            shelving_cool_one()
+            shelving_cool_two()
+            CoolCycle = CoolCycle + 1
+        if RepumpTime>0:
+            repump_shelve()
+        if OpticalPumpTime>0:
+            optical_pump()
+        if StartState == 1:
+            switch_AWG_freq()
+            PulseTime = PiPulseTime_m1
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+            switch_AWG_freq()
+            switch_AWG_freq()
+        if StartState == 2:
+            switch_AWG_freq()
+            switch_AWG_freq()
+            PulseTime = PiPulseTime_p1
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+            switch_AWG_freq()        
+        turn_on_fluorescence()
+        get_PMT_count()
+        turn_off_fluorescence()
+        switch_AWG_freq()
+        if OpticalPumpTime>0:
+            optical_pump()
+        PulseTime = PiPulseTime_m1
+        pulse_shelving()
+        turn_on_fluorescence()
+        get_PMT_count()
+        turn_off_fluorescence()
+        switch_AWG_freq()
+        if OpticalPumpTime>0:
+            optical_pump()
+        PulseTime = PiPulseTime_p1
+        pulse_shelving()
+        turn_on_fluorescence()
+        get_PMT_count()
+        turn_off_fluorescence()
+        switch_AWG_freq()
+        ExperimentCount = ExperimentCount + 1
+    
+
+exit( endLabel )

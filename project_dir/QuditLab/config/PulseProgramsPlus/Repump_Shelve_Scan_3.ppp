@@ -1,0 +1,75 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+
+#counter
+counter PMT
+
+# times
+parameter PulseTime
+parameter GeneralWaitTime 
+parameter RepumpTime
+parameter PMTIntTime
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+
+const PMTd = 0
+
+#variables
+var ExperimentCount
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_inv_shutter(FluorescenceLasers)
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    set_shutter(FluorescenceLasers)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:
+        if PulseTime>0:
+            pulse_shelving()
+        Shelved = False
+        while Shelved == False:
+            get_PMT_count()
+            counts = load_count()
+            if counts < 200:
+                Shelved = True
+        if RepumpTime>0:
+            repump_shelve()
+        get_PMT_count(PMTRepump)
+        ExperimentCount = ExperimentCount + 1
+    
+
+exit( endLabel )

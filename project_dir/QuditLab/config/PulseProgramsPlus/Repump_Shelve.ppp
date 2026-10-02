@@ -1,0 +1,32 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelveRepump
+
+# times
+parameter PulseTime
+parameter GeneralWaitTime 
+
+# control parameters
+parameter DummyVar = 0
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+while not pipe_empty():
+    update()
+    apply_next_scan_point()
+    set_shutter(ShelveRepump)
+    update(PulseTime)
+    set_inv_shutter(ShelveRepump)
+    update()
+
+exit( endLabel )

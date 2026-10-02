@@ -1,0 +1,279 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter INIT_ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingCoolLaserOne
+masked_shutter ShelvingCoolLaserTwo
+masked_shutter AWGTrigger
+masked_shutter F1PumpLasers
+masked_shutter AllLasersOn
+masked_shutter Just650Laser
+masked_shutter Shutter614nm
+masked_shutter F1MechShutter
+
+#masked_shutter test
+
+
+
+#counter
+counter PMT
+
+# times
+parameter PulseTime
+parameter InitPulseTime
+parameter GeneralWaitTime 
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter OpticalPumpTimeForCool
+parameter RepumpTimeForCool
+parameter CoolTimeStart
+parameter CoolTimeFluor
+parameter F1PumpTime
+parameter F1PumpTime_long
+parameter LineTriggerBool
+parameter AWGEventTriggerWait
+parameter DCrystalWait
+parameter MechShutter614Wait
+parameter F1MechShutterWait
+parameter RamseyWaitTime
+# control parameters
+parameter DummyVar
+parameter DummyAWGTableLen
+parameter Experiments
+parameter CoolCycleNumOne
+parameter CoolCycleNumTwo
+parameter CoolPulseStep
+parameter InitReps
+parameter F1PumpReps
+parameter Total_segs
+
+#variables
+var ExperimentCount
+var Repetitions
+var CoolCycle
+var CoolTime
+var TriggerCondition = 0b00000001
+var seg_num
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def init_pulse_shelving():
+    set_shutter(INIT_ShelvingLaser)
+    update(InitPulseTime)
+    set_inv_shutter(INIT_ShelvingLaser)
+    update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def Ramsey_pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def AWG_event_trigger():
+    set_shutter(AWGTrigger)
+    update(AWGEventTriggerWait)
+    set_inv_shutter(AWGTrigger)
+    update(AWGEventTriggerWait)
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(AllLasersOn)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def F1_pump():
+    set_shutter(F1PumpLasers)
+    update(F1PumpTime)
+    set_inv_shutter(AllLasersOn)
+    update()
+    set_shutter(Just650Laser)
+    update(GeneralWaitTime)
+    set_inv_shutter(Just650Laser)
+    update()
+
+def F1_pump_long():
+    set_shutter(F1PumpLasers)
+    update(F1PumpTime_long)
+    set_inv_shutter(AllLasersOn)
+    update()
+    set_shutter(Just650Laser)
+    update(GeneralWaitTime)
+    set_inv_shutter(Just650Laser)
+    update()
+
+def shelving_cool_one():
+    set_shutter(RepumpShelve)
+    update(RepumpTimeForCool)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTimeForCool)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserOne)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def shelving_cool_two():
+    set_shutter(RepumpShelve)
+    update(RepumpTimeForCool)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTimeForCool)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserTwo)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:
+
+        #set_shutter(Shutter614nm)
+        #update(MechShutter614Wait)
+
+
+
+        set_shutter(RepumpShelve)
+        update()
+
+        if CoolTimeFluor>0:
+            turn_on_fluorescence()
+            update(CoolTimeFluor)
+            turn_off_fluorescence()
+
+        set_inv_shutter(AllLasersOn)
+        update()
+        CoolCycle = 0
+        CoolTime = CoolTimeStart
+        while CoolCycle<CoolCycleNumOne:
+            CoolTime = CoolTime + CoolPulseStep
+            shelving_cool_one()
+            #shelving_cool_two()
+            CoolCycle = CoolCycle + 1
+        
+        if CoolCycleNumOne > 0:
+            AWG_event_trigger()
+            AWG_event_trigger()
+
+
+        repump_shelve()
+
+        seg_num = 1
+        F1Repetitions = 0
+        while F1Repetitions < F1PumpReps:
+
+            update(GeneralWaitTime)
+            if F1PumpTime>0:
+                F1_pump()
+            update(GeneralWaitTime)
+
+            init_pulse_shelving()
+            update(GeneralWaitTime)
+            repump_shelve()
+            update(GeneralWaitTime)
+            F1Repetitions = F1Repetitions + 1
+            update(GeneralWaitTime)
+
+
+        Repetitions = 0
+        while Repetitions<InitReps:
+            repump_shelve()
+            update(GeneralWaitTime)
+            init_pulse_shelving()
+            update(GeneralWaitTime)
+            Repetitions = Repetitions + 1
+
+        if RepumpTime>0:
+            repump_shelve()
+
+        AWG_event_trigger()
+        seg_num = seg_num + 1
+        update(AWGEventTriggerWait)
+
+        pulse_shelving()
+        seg_num = seg_num + 2 #Shelving for herald 
+        update()
+
+        turn_on_fluorescence()    #
+        get_PMT_count()           # Herald 1
+        turn_off_fluorescence()   # 
+
+        pulse_shelving()
+        seg_num = seg_num + 2 #de-shelving for herald
+        update()
+
+        wait_trigger(TriggerCondition)
+
+        Ramsey_pulse_shelving()
+
+        seg_num = seg_num + 2
+
+        turn_on_fluorescence()
+        get_PMT_count()
+        turn_off_fluorescence()
+        
+        update()
+        while seg_num < Total_segs:
+
+            pulse_shelving()
+
+
+            turn_on_fluorescence()
+            get_PMT_count()
+            turn_off_fluorescence()
+
+
+            update()
+            seg_num = seg_num + 2
+
+        AWG_event_trigger()
+        ExperimentCount = ExperimentCount + 1
+    
+
+exit( endLabel )

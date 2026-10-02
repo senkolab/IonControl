@@ -1,0 +1,394 @@
+###########################################################################
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingCoolLaserOne
+masked_shutter ShelvingCoolLaserTwo
+masked_shutter AWGEventTrigger
+masked_shutter ExpStart
+
+#counter
+counter PMT
+
+# times
+parameter PiPulseTime_m2
+parameter PiPulseTime_m1
+parameter PiPulseTime_zero
+parameter PiPulseTime_p1
+parameter PiPulseTime_p2
+parameter StartState
+parameter AWGTriggerOnTime
+parameter AWGTriggerOffTime
+parameter SegmentTransitionTime
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter CoolTimeStart
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+parameter CoolCycleNum
+parameter CoolPulseStep
+
+#variables
+var ExperimentCount
+var CoolCycle
+var CoolTime
+var PulseTime
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def shelving_cool_one():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserOne)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def shelving_cool_two():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserTwo)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+    
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:    
+        set_shutter(ExpStart)
+        update(AWGTriggerOnTime)
+        set_inv_shutter(ExpStart)
+        update()
+        CoolCycle = 0
+        CoolTime = CoolTimeStart
+        while CoolCycle<CoolCycleNum:
+            CoolTime = CoolTime + CoolPulseStep
+            shelving_cool_one()
+            shelving_cool_two()
+            CoolCycle = CoolCycle + 1
+        if RepumpTime>0:
+            repump_shelve()
+        if OpticalPumpTime>0:
+            optical_pump()
+        if StartState == 1:
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            PulseTime = PiPulseTime_m2
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+        if StartState == 2:
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            PulseTime = PiPulseTime_m1
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+        if StartState == 3:
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            PulseTime = PiPulseTime_zero
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+        if StartState == 4:
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            PulseTime = PiPulseTime_p1
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+        if StartState == 5:
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+            PulseTime = PiPulseTime_p2
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+
+            set_shutter(AWGEventTrigger)
+            update(AWGTriggerOnTime)
+            set_inv_shutter(AWGEventTrigger)
+            update(AWGTriggerOffTime)
+
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        PulseTime = PiPulseTime_m2
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+#        PulseTime = PiPulseTime_m2
+#        if OpticalPumpTime>0:
+#            optical_pump()
+#        pulse_shelving()
+#        set_shutter(AWGEventTrigger)
+#        update(AWGTriggerWaitTime)
+#        set_inv_shutter(AWGEventTrigger)
+#        update(AWGTriggerWaitTime)
+#        turn_on_fluorescence()
+#        get_PMT_count()
+#        turn_off_fluorescence()
+
+        PulseTime = PiPulseTime_m1
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        PulseTime = PiPulseTime_zero
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        PulseTime = PiPulseTime_p1
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        PulseTime = PiPulseTime_p2
+        if OpticalPumpTime>0:
+            optical_pump()
+        pulse_shelving()
+        set_shutter(AWGEventTrigger)
+        set_shutter(FluorescenceLasers)
+        set_counter(PMT)
+        update(PMTIntTime)
+        set_inv_shutter(AWGEventTrigger)
+        set_inv_shutter(FluorescenceLasers)
+        clear_counter()
+        update(SegmentTransitionTime)
+
+        ExperimentCount = ExperimentCount + 1
+    
+
+exit( endLabel )

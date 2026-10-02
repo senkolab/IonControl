@@ -1,0 +1,197 @@
+#Ba138_LoadSingle.py created 2020-08-26 20:29:28.755609
+
+from datetime import datetime
+from ctypes import cdll,c_long, c_ulong, c_uint32,byref,create_string_buffer,c_bool,c_char_p,c_int,c_int16,c_double, sizeof, c_voidp
+import pyvisa #install this module and VISA library 
+from time import sleep
+from numpy import array
+
+import numpy as np
+from PIL import Image
+from pyspin.spin import Default, Spinner
+import os
+import sys
+import glob
+import time
+import gc
+from PIL import ImageGrab
+from datetime import date
+sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
+from Functions_Trap import *
+from Functions_Data import *
+from TLPM import TLPM
+script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
+
+ResetLasers = bool(getGlobal("LasersReset"))
+
+CurrLoadAttempts = getGlobal("LoadAttempts")
+if int(CurrLoadAttempts) != 0:
+    setGlobal("LoadAttempts", 0, "")
+MaxTrapAttempts = getGlobal("MaxTrapAttemps")
+BGNumStDevs = getGlobal("BGCheckNumStDevs")
+CoolSweepsNum = int(getGlobal("NumCoolSweeps"))
+PulsesPer = SetPulsesPer(138, script_functions)
+CurrPMTInt = getGlobal("PMT_Integration_Time").magnitude #ms
+TrapPMTInt = getGlobal("PMT_Integration_Time_Trapping").magnitude #ms
+if CurrPMTInt != TrapPMTInt:
+    setGlobal("PMT_Integration_Time", TrapPMTInt, 'ms')
+
+
+BGCountsProgram = "PMT_CheckCounts_For-Script_BG"
+CountsProgram = "PMT_CheckCounts_For-Script_Even"
+PulseAblationProgram = "PulseAblation_For-Script_Meas_Even_Nat"
+PulseAblationDummyProgram = "PulseAblation_For-Script_Dummy_Ba138"
+
+PulseEnergy = 140
+IonizationPower = 12
+RepumpPower = 218
+FluorPower = 121
+WindowStart, WindowWidth = 160, 55
+NumberofRepumps = 25
+nm389freq = 769.21831
+angle = 290
+
+(Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba138", script_functions)
+SetNeutralFluorWindow(WindowStart, WindowWidth, script_functions)
+
+FlushTrapRF(script_functions)
+
+if ResetLasers:
+    print("Resetting lasers")
+    SendLasersToTrap(CountsProgram, script_functions)
+    ResetAblation(script_functions)
+
+BaseFolder = r"Z:\Lab Data\Sessions"
+filename0 = f"Ba138 AI {time.strftime('%d%m', time.localtime())}.txt"
+filenameNC = f"Ba138 AI Neutral {time.strftime('%d%m', time.localtime())}.txt"
+filename0, base_folder = GetDataFilePath(filename0, NewFile=False)
+filenameNC, base_folder = GetDataFilePath(filenameNC, NewFile=False)
+
+IonTrapped = False
+AttemptCount = 0
+ZeroNeutralCount = 0
+while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 10:
+    if scriptIsStopped():
+        if CurrPMTInt != TrapPMTInt:
+            setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
+        #WriteString = f"{time.strftime('%H:%M:%S', time.gmtime())}\tNone trapped after {AttemptCount} attempts\n"
+        #SaveDataToTextFile(filename0, WriteString)
+        break
+        
+    if AttemptCount == 0:
+        AblationPulsesDummy = getGlobal("AblationPulsesDummy")
+        if AblationPulsesDummy != 1:
+            setGlobal("AblationPulsesDummy", 1, "")
+        setScan(PulseAblationDummyProgram)
+        startScan(globalOverrides=list(), wait=False)
+        stopScan()
+        if AblationPulsesDummy != 1:
+            setGlobal("AblationPulsesDummy", AblationPulsesDummy, "")
+        #AttemptCount += 1
+    FlushTrapRF(script_functions)
+    
+    (BGydataAvg, BGydataStd) = GetPMTCounts(BGCountsProgram, script_functions, bg=True) 
+
+    setScan(PulseAblationProgram)
+    startScan(globalOverrides=list(), wait=True)
+    data = getAllData()['PMT Count'] #Returns all data associated with scan.
+    NeutralCounts = data[1]
+    stopScan()
+
+    print(f"\n Neutral counts is:{NeutralCounts[0]}\n")
+    if NeutralCounts[0] <= 0.1:
+        ZeroNeutralCount += 1
+    else:
+        ZeroNeutralCount = 0
+    WriteStringNC = f"{NeutralCounts[0]:0.1f}\n"
+    SaveDataToTextFile(filenameNC, WriteStringNC)
+
+    setScan(PulseAblationDummyProgram)
+    startScan(globalOverrides=list(), wait=False)
+    SweepCool493(Freq493, CoolSweepsNum, script_functions)
+    stopScan()
+    #Returns IonTrapped boolean
+    (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
+    IonTrapped = CheckIonTrappedNoIsotopeCycle(ydataAvg, ydataStd, AttemptCount, "Ba138", script_functions, Comm=True)
+    #IonTrapped = CheckIonTrappedNoIsotopeCycleNoCMD(ydataAvg, ydataStd, AttemptCount, "Ba138", script_functions)
+    AttemptCount += 1
+    setGlobal("LoadAttempts", AttemptCount, "")
+    gc.collect()
+if CurrPMTInt != TrapPMTInt:
+    setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
+
+if len(NeutralCounts) > 1:
+    NeutralString = f"{np.mean(NeutralCounts):0.1f}, {np.std(NeutralCounts):0.1f}"
+else:
+    NeutralString = f"{NeutralCounts[0]:0.1f}"
+if IonTrapped:
+    WriteString = f"{Freq553:0.6f} {Freq493:0.6f} {Freq650:0.6f} {WindowStart:0.3f} {WindowWidth:0.3f} {CoolSweepsNum} {PulsesPer} {PulseEnergy} {IonizationPower} {RepumpPower} {FluorPower} {NumberofRepumps}"
+    WriteString += ""#Extra metadata from Ba137 trapping
+    SaveDataToTextFile(filename0, WriteString)
+    stamp_it = time.strftime('%H%M%S', time.localtime())
+    #for i in range(0, 3):
+    #    setScan("Toggle_repump")
+    #    startScan(globalOverrides=list(), wait=True)
+    #    stopScan()
+    #    time.sleep(1)
+    SweepCool493(Freq493, 2, script_functions)
+    time.sleep(5)
+    (image1dataAvg, image1dataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
+    time.sleep(1)
+    setScan("Set_Camera")
+    startScan(globalOverrides=list(), wait=False)
+    time.sleep(5)
+    #image = ImageGrab.grab()
+    #image.save('testTHISIMAGE1.png')
+    #for i in range(0, 10):
+    images_filename = f"Ion Image 1 {image1dataAvg} {stamp_it}.bmp"
+    filepath_image = base_folder + "\\" + images_filename
+    acquireBlackflyFrame(filepath_image)
+    time.sleep(1)
+    stopScan()
+    setScan("Toggle_Beam_Samplers")
+    startScan(globalOverrides=list(), wait=True)
+    stopScan()
+    time.sleep(1)
+    tlPM = TLPM()
+    deviceCount = c_uint32()
+    tlPM.findRsrc(byref(deviceCount))
+    resourceName = create_string_buffer(1024)
+    for i in range(0, deviceCount.value):
+        tlPM.getRsrcName(c_int(i), resourceName)
+        tlPM.open(resourceName, c_bool(True), c_bool(False))
+        power =  c_double()
+        tlPM.measPower(byref(power))
+        if i == 0:
+            pw1 = str(power.value)
+            break
+        #if i == 1:
+        #    pw2 = str(power.value)
+        #if i == 2:
+        #    pw3 = str(power.value)
+        print(power.value)
+    tlPM.close()
+    setScan("Toggle_Beam_Samplers")
+    startScan(globalOverrides=list(), wait=True)
+    stopScan()
+    WriteString = f"{stamp_it} {AttemptCount} {ydataAvg:0.1f} {NeutralString} {pw1} {nm389freq} {angle}"
+    SaveDataToTextFile(filename0, WriteString)
+    CurrWhichIon = int(getGlobal("WhichIon").magnitude)
+    if not CurrWhichIon == 138:
+        setGlobal("WhichIon", 138, "")
+    (image2dataAvg, image2dataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
+    time.sleep(1)
+    setScan("Set_Camera")
+    startScan(globalOverrides=list(), wait=False)
+    time.sleep(5)
+    #image = ImageGrab.grab()
+    #image.save('testTHISIMAGE2.png')
+    #for i in range(11, 20):
+    images_filename = f"Ion Image 2 {image2dataAvg} {stamp_it}.bmp"
+    filepath_image = base_folder + "\\" + images_filename
+    acquireBlackflyFrame(filepath_image)
+    time.sleep(5)
+    stopScan()
+else:
+    WriteString = f"{time.strftime('%H:%M:%S', time.gmtime())}\tNone trapped after {AttemptCount} attempts\n"
+    SaveDataToTextFile(filename0, WriteString)

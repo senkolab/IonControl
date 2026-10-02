@@ -1,0 +1,34 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter Initialization
+masked_shutter Ablation
+
+
+# times
+parameter WaitAblationReset
+parameter WaitInitialize
+
+# control parameters
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(Initialization)
+update(WaitInitialize)
+update()
+
+while 1>0:
+    set_shutter(Ablation)
+    update(WaitAblationReset)
+    update()
+    set_inv_shutter(Ablation)
+    update(WaitAblationReset)
+    update()
+    
+update()
+exit( endLabel )

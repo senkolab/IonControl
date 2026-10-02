@@ -32,7 +32,8 @@ while not pipe_empty():
     update()
     apply_next_scan_point()
     
-    while currentpulse < pulses:
+    #while currentpulse < pulses:
+    while True:
         set_shutter(NaturalAblation)
         update(WaitAblationReset)
         update()

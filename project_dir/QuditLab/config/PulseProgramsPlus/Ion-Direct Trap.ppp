@@ -91,8 +91,8 @@ while not pipe_empty():
     currentexperiment = 0
     while currentexperiment < experiments:
         IonDirectTrap()
-        if testvar > ThresholdCount:
-            CameraTakePic()
+        #if testvar > ThresholdCount:
+        #    CameraTakePic()
         currentexperiment += 1
     
 set_shutter(EndShutter)

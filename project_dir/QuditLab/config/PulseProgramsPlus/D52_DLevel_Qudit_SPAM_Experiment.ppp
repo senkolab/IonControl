@@ -1,0 +1,328 @@
+###########################################################################
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingCoolLaserOne
+masked_shutter ShelvingCoolLaserTwo
+masked_shutter AWGEventTrigger
+masked_shutter ExpStart
+
+#counter
+counter PMT
+
+parameter Isotope
+
+# times
+parameter Ba137_f4_m4
+parameter Ba137_f4_m3
+parameter Ba137_f4_m2
+parameter Ba137_f4_m1
+parameter Ba137_f4_m0
+parameter PiPulseTime_ba137_f4_m4
+parameter PiPulseTime_ba137_f4_m3
+parameter PiPulseTime_ba137_f4_m2
+parameter PiPulseTime_ba137_f4_m1
+parameter PiPulseTime_ba137_f4_m0
+
+
+parameter Ba137_f3_m3
+parameter Ba137_f3_m2
+parameter Ba137_f3_m1
+parameter Ba137_f3_m0
+parameter PiPulseTime_ba137_f3_m3
+parameter PiPulseTime_ba137_f3_m2
+parameter PiPulseTime_ba137_f3_m1
+parameter PiPulseTime_ba137_f3_m0
+
+parameter Ba137_f2_m2
+parameter Ba137_f2_m1
+parameter Ba137_f2_m0
+parameter PiPulseTime_ba137_f2_m2
+parameter PiPulseTime_ba137_f2_m1
+parameter PiPulseTime_ba137_f2_m0
+
+parameter Ba137_f1_m1
+parameter Ba137_f1_m0
+parameter PiPulseTime_ba137_f1_m1
+parameter PiPulseTime_ba137_f1_m0
+
+parameter StartState
+parameter StartState_Trans
+parameter AWGTriggerOnTime
+parameter AWGTriggerOffTime
+parameter SegmentTransitionTime
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter CoolTimeStart
+parameter ZeroTime
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+parameter CoolCycleNum
+parameter CoolPulseStep
+
+#variables
+var ExperimentCount
+var CoolCycle
+var CoolTime
+var PulseTime
+var i
+var num_awg_pulses
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def shelving_cool_one():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserOne)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def shelving_cool_two():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+    set_shutter(ShelvingCoolLaserTwo)
+    update(CoolTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def toggle_AWG():
+    set_shutter(AWGEventTrigger)
+    update(AWGTriggerOnTime)
+    set_inv_shutter(AWGEventTrigger)
+    update(AWGTriggerOffTime)
+    update()
+
+def pump_measure():
+    if OpticalPumpTime>0:
+        optical_pump()
+    pulse_shelving()
+    set_shutter(FluorescenceLasers)
+    get_PMT_count()
+    set_inv_shutter(FluorescenceLasers)
+    update()
+    toggle_AWG()
+    update(SegmentTransitionTime)
+
+var TotalStates
+#TotalStates = 1
+if Isotope == 137:
+    #Add up the total number of levels being used - D dimension
+    if Ba137_f4_m4:
+        TotalStates = TotalStates + 1
+    if Ba137_f4_m3:
+        TotalStates = TotalStates + 1
+    if Ba137_f4_m2:
+        TotalStates = TotalStates + 1
+    if Ba137_f4_m1:
+        TotalStates = TotalStates + 1
+    if Ba137_f4_m0:
+        TotalStates = TotalStates + 1
+    if Ba137_f3_m3:
+        TotalStates = TotalStates + 1
+    if Ba137_f3_m2:
+        TotalStates = TotalStates + 1
+    if Ba137_f3_m1:
+        TotalStates = TotalStates + 1
+    if Ba137_f3_m0:
+        TotalStates = TotalStates + 1
+    if Ba137_f2_m2:
+        TotalStates = TotalStates + 1
+    if Ba137_f2_m1:
+        TotalStates = TotalStates + 1
+    if Ba137_f2_m0:
+        TotalStates = TotalStates + 1
+    if Ba137_f1_m1:
+        TotalStates = TotalStates + 1
+    if Ba137_f1_m0:
+        TotalStates = TotalStates + 1
+    
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    if Isotope == 137:
+        #Pick which pulse time to use for the start state
+        if StartState_Trans == 0:
+            PulseTime = ZeroTime #state remaining in ground state
+        if StartState_Trans == 1:
+            PulseTime = PiPulseTime_ba137_f4_m4
+        if StartState_Trans == 2:
+            PulseTime = PiPulseTime_ba137_f4_m3
+        if StartState_Trans == 3:
+            PulseTime = PiPulseTime_ba137_f4_m2
+        if StartState_Trans == 4:
+            PulseTime = PiPulseTime_ba137_f4_m1
+        if StartState_Trans == 5:
+            PulseTime = PiPulseTime_ba137_f4_m0
+        if StartState_Trans == 6:
+            PulseTime = PiPulseTime_ba137_f3_m3
+        if StartState_Trans == 7:
+            PulseTime = PiPulseTime_ba137_f3_m2
+        if StartState_Trans == 8:
+            PulseTime = PiPulseTime_ba137_f3_m1
+        if StartState_Trans == 9:
+            PulseTime = PiPulseTime_ba137_f3_m0
+        if StartState_Trans == 10:
+            PulseTime = PiPulseTime_ba137_f2_m2
+        if StartState_Trans == 11:
+            PulseTime = PiPulseTime_ba137_f2_m1
+        if StartState_Trans == 12:
+            PulseTime = PiPulseTime_ba137_f2_m0
+        if StartState_Trans == 13:
+            PulseTime = PiPulseTime_ba137_f1_m1
+        if StartState_Trans == 14:
+            PulseTime = PiPulseTime_ba137_f1_m0
+    while ExperimentCount<Experiments: 
+        #set_shutter(ExpStart)
+        #update(AWGTriggerOnTime)
+        #set_inv_shutter(ExpStart)
+        update()
+        #Do cooling
+        CoolCycle = 0
+        CoolTime = CoolTimeStart
+        while CoolCycle<CoolCycleNum:
+            CoolTime = CoolTime + CoolPulseStep
+            shelving_cool_one()
+            shelving_cool_two()
+            CoolCycle = CoolCycle + 1
+        if RepumpTime>0:
+            repump_shelve()
+        if OpticalPumpTime>0:
+            optical_pump()
+        update()
+
+        if StartState > 0: #Only transfer if not StartState 0 (ground state)
+            #Initialize population in the start state StartState
+            #e.g. if start state 4, toggle AWG 4 times
+            num_awg_pulses = StartState
+            i = 0
+            while i < num_awg_pulses:
+                toggle_AWG()
+                update(SegmentTransitionTime)
+                i = i + 1
+            if OpticalPumpTime>0:
+                optical_pump()
+            pulse_shelving()
+            #Return AWG to first (dummy) segment
+            #if start state 4, toggle AWG d-4 times
+            num_awg_pulses = TotalStates-StartState
+            i = 0
+            while i < num_awg_pulses:
+                toggle_AWG()
+                update(SegmentTransitionTime)
+                i = i + 1
+            toggle_AWG()
+            update(SegmentTransitionTime)
+        #Measure the fluorescence before doing the full measurements, to see if shelving was successful
+        set_shutter(FluorescenceLasers)
+        get_PMT_count()
+        set_inv_shutter(FluorescenceLasers)
+        update(SegmentTransitionTime)
+
+        toggle_AWG()
+        update(SegmentTransitionTime)
+        #Measure each state
+        if Isotope == 137:
+            if Ba137_f4_m4:
+                PulseTime = PiPulseTime_ba137_f4_m4
+                pump_measure()
+            if Ba137_f4_m3:
+                PulseTime = PiPulseTime_ba137_f4_m3
+                pump_measure()
+            if Ba137_f4_m2:
+                PulseTime = PiPulseTime_ba137_f4_m2
+                pump_measure()
+            if Ba137_f4_m1:
+                PulseTime = PiPulseTime_ba137_f4_m1
+                pump_measure()
+            if Ba137_f4_m0:
+                PulseTime = PiPulseTime_ba137_f4_m0
+                pump_measure()
+
+            if Ba137_f3_m3:
+                PulseTime = PiPulseTime_ba137_f3_m3
+                pump_measure()
+            if Ba137_f3_m2:
+                PulseTime = PiPulseTime_ba137_f3_m2
+                pump_measure()
+            if Ba137_f3_m1:
+                PulseTime = PiPulseTime_ba137_f3_m1
+                pump_measure()
+            if Ba137_f3_m0:
+                PulseTime = PiPulseTime_ba137_f3_m0
+                pump_measure()
+
+            if Ba137_f2_m2:
+                PulseTime = PiPulseTime_ba137_f2_m2
+                pump_measure()
+            if Ba137_f2_m1:
+                PulseTime = PiPulseTime_ba137_f2_m1
+                pump_measure()
+            if Ba137_f2_m0:
+                PulseTime = PiPulseTime_ba137_f2_m0
+                pump_measure()
+
+            if Ba137_f1_m1:
+                PulseTime = PiPulseTime_ba137_f1_m1
+                pump_measure()
+            if Ba137_f1_m0:
+                PulseTime = PiPulseTime_ba137_f1_m0
+                pump_measure()
+
+        ExperimentCount = ExperimentCount + 1
+exit( endLabel )

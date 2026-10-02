@@ -1,0 +1,97 @@
+###########################################################################
+#
+#  pulse a number of times for script - trapping Ba138 and other even isotopes
+#
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter RepumpShelve
+masked_shutter OpticalPumpLasers
+
+#counter
+counter PMT1
+counter PMT2
+
+# times
+parameter PulseTime
+parameter GeneralWaitTime 
+parameter RepumpTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter RepumpTimeFull
+
+# control parameters
+parameter DummyVar
+parameter Experiments
+
+#variables
+var ExperimentCount
+var which
+
+# excitcodes
+exitcode endLabel = 0xffffffffffffffff
+
+set_shutter(ShutterInitialization)
+update()
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def repump_shelve():
+    set_shutter(RepumpShelve)
+    update(RepumpTime)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def repump_shelve_full():
+    set_shutter(RepumpShelve)
+    update(RepumpTimeFull)
+    set_inv_shutter(RepumpShelve)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    update()
+
+def get_PMT_count(which):
+    if which==0:
+        set_counter(PMT1)
+    else:
+        set_counter(PMT2)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def turn_on_fluorescence():
+    set_shutter(FluorescenceLasers)
+    update()
+
+def turn_off_fluorescence():
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+while not pipe_empty():
+    apply_next_scan_point()
+    ExperimentCount = 0
+    while ExperimentCount<Experiments:
+        optical_pump()
+        pulse_shelving()
+        which=0
+        get_PMT_count(which)
+        repump_shelve()
+        turn_on_fluorescence()
+        which=1
+        get_PMT_count(which)
+        turn_off_fluorescence()
+        repump_shelve_full()
+        ExperimentCount = ExperimentCount + 1
+
+exit( endLabel )

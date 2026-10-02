@@ -21,5 +21,8 @@ set_shutter(Beam_Samplers_Toggle)
 update(WaitToggleTime)
 update()
 set_inv_shutter(Beam_Samplers_Toggle)
+update(WaitToggleTime)
+update()
+
 
 exit( endLabel )

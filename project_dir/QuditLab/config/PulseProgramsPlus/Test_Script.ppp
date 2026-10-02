@@ -3,14 +3,22 @@
 #  pulse a number of times for script - trapping Ba138 and other even isotopes
 #
 
-
 # masks and shutters
-masked_shutter PMT
+shutter Default_AWGTTL_Off
+shutter Default_AWGTTL_On
+masked_shutter ExpStart
+masked_shutter AWGTTL
+
 counter DetectCounters
+counter WallVoltage
 
 # times
-parameter WaitPMTSwitch
+parameter WaitTime
+parameter WaitTimeTTLOff
 parameter DetectTime 
+parameter Experiments
+parameter DummyWait
+parameter SamplerWait
 
 # control parameters
 parameter DummyVar = 0
@@ -20,19 +28,87 @@ exitcode endLabel = 0xffffffffffffffff
 
 # internal variables
 var currentpulse = 0
+var ExperimentCount
+#var TriggerCondition = 0b00000001
+var TriggerCondition = 0b00000001
+#var TriggerCondition = 0x01010000
+#set_shutter(PMT)
+#update(WaitPMTSwitch, wait_dds=True)
+#update(wait_dds=True)
+#wait_dds()
 
-set_shutter(PMT)
-update(WaitPMTSwitch, wait_dds=True)
-update(wait_dds=True)
-wait_dds()
+set_shutter(Default_AWGTTL_Off)
 while not pipe_empty():
-    update()
     apply_next_scan_point()
+    ExperimentCount = 0
+    
+    while ExperimentCount<Experiments:
+        #set_shutter(ExpStart)
+        #update(WaitTime)
+        #set_inv_shutter(ExpStart)
+        #update()
+        
+        wait_trigger(TriggerCondition)
+        
+        update(DummyWait)
 
-    set_counter(DetectCounters)
-    update(DetectTime)
-    clear_counter()
-    update()
+        set_counter(WallVoltage)
+        #set_counter(ExpTime)
+        update(WaitTime)
+        clear_counter()
+        update(SamplerWait)
+
+        
+        set_shutter(ExpStart)
+        update()
+
+
+
+        #update(WaitTimeTTLOff)
+
+        #set_shutter(AWGTTL)
+        #update(DummyWait)
+        #set_inv_shutter(AWGTTL)
+        #update(DummyWait)
+
+        #set_shutter(AWGTTL)
+        #update(DummyWait)
+        #set_inv_shutter(AWGTTL)
+        #update(DummyWait)
+
+        #set_shutter(AWGTTL)
+        #update(DummyWait)
+        #set_inv_shutter(AWGTTL)
+        #update(DummyWait)
+
+        #set_shutter(AWGTTL)
+        #update(WaitTime)
+        #set_inv_shutter(AWGTTL)
+        #update(WaitTime)
+
+        #set_shutter(AWGTTL)
+        #update(WaitTime)
+        #set_inv_shutter(AWGTTL)
+        #update(WaitTime)
+
+        #set_shutter(AWGTTL)
+        #update(WaitTime)
+        #set_inv_shutter(AWGTTL)
+        #update(WaitTime)
+
+        #set_shutter(AWGTTL)
+        #update(WaitTime)
+        #set_inv_shutter(AWGTTL)
+        #update(WaitTime)
+        #set_counter(DetectCounters)
+        #update(DetectTime)
+        #clear_counter()
+        #update()
+
+        ExperimentCount = ExperimentCount+1
+    #set_counter(DetectCounters)
+    #update(DetectTime)
+    #clear_counter()
     
 update()
 exit( endLabel )

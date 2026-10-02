@@ -1,0 +1,142 @@
+# Perform a pulse time scan on a transition driven with parallel tone drive.
+# Cools, initializes, waits for line trigger, plays parallel tones, measures, then repeats.
+# Cooling is performed to about the Doppler cooling limit.
+# Initialization is performed with polarization-based optical pumping.
+# Measurement is performed on qudit of arbitrary size.
+# Oscillator driving the transition is assumed to be the AWG.
+
+# Assume AWG table structure:
+# - 0: dummy pulse
+# - 1: multitone pulse
+# - 2-n: dummy pulse followed by deshelving pulse
+# NOTE: final deshelving pulse is NOT followed by a dummy pulse, so the table resets to the start for the next experiment
+
+# Future expansion may add support for:
+# - ground state cooling
+# - narrowband optical pumping
+# - initialization heralding
+# - RFSoC driving the parallel tones
+
+
+# masks and shutters
+shutter ShutterInitialization
+masked_shutter ShelvingLaser
+masked_shutter FluorescenceLasers
+masked_shutter OpticalPumpLasers
+masked_shutter ShelvingRepumpLaser
+
+# counter
+counter PMT
+
+
+# times
+parameter PulseTime
+parameter DeshelvePulseTime
+parameter PMTIntTime
+parameter OpticalPumpTime
+parameter CoolTimeFluor
+parameter AWGEventTriggerWait
+parameter LineTrigWait
+
+# control parameters
+parameter Experiments
+parameter MeasuredStates
+
+# variables
+var ExperimentCount
+var Repetitions
+var CoolCycle
+var CoolTime
+var StateIndex
+var TriggerCondition = 0b00000001
+
+# exit codes
+exitcode endLabel = 0xffffffffffffffff
+
+
+def pulse_shelving():
+    set_shutter(ShelvingLaser)
+    update(PulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def pulse_deshelving():
+    set_shutter(ShelvingLaser)
+    update(DeshelvePulseTime)
+    set_inv_shutter(ShelvingLaser)
+    update()
+
+def get_PMT_count():
+    set_counter(PMT)
+    update(PMTIntTime)
+    clear_counter()
+    update()
+
+def doppler_cool():
+    set_shutter(FluorescenceLasers)
+    set_shutter(ShelvingRepumpLaser)
+    update(CoolTimeFluor)
+    set_inv_shutter(FluorescenceLasers)
+    set_inv_shutter(ShelvingRepumpLaser)
+    update()
+
+def optical_pump():
+    set_shutter(OpticalPumpLasers)
+    set_shutter(ShelvingRepumpLaser)
+    update(OpticalPumpTime)
+    set_inv_shutter(OpticalPumpLasers)
+    set_inv_shutter(ShelvingRepumpLaser)
+    update()
+
+def measure():
+    set_shutter(FluorescenceLasers)
+    update()
+    get_PMT_count()
+    set_inv_shutter(FluorescenceLasers)
+    update()
+
+
+# set initial state of the apparatus
+set_shutter(ShutterInitialization)
+update()
+
+# perform scan
+while not pipe_empty():
+    apply_next_scan_point()
+
+    ExperimentCount = 0
+    while ExperimentCount < Experiments:
+        # assume AWG is initialized to first table entry - dummy pulse before the multitone pulse
+        # doppler cooling
+        if CoolTimeFluor > 0:
+            doppler_cool()
+
+        # optical pumping
+        if OpticalPumpTime > 0:
+            optical_pump()
+
+        # wait for AC mains line trigger
+        wait_trigger(TriggerCondition)
+        update(LineTrigWait)
+
+        # apply shelving pulse - sends AWG to next pulse on table
+        if PulseTime > 0:
+            pulse_shelving()
+
+        # measure qudit state
+        # measure |0> in ground state
+        StateIndex = 0
+        measure()
+        StateIndex = StateIndex + 1
+
+        # measure states in metastable state
+        while StateIndex < MeasuredStates:
+            # deshelve population
+            pulse_deshelving()
+
+            measure()
+            StateIndex = StateIndex + 1
+
+        ExperimentCount = ExperimentCount + 1
+
+exit(endLabel)
