@@ -70,3 +70,4 @@ src/objecthash/
 src/pyqtgraph/
 src/pint/
 *.log
+*.zip
