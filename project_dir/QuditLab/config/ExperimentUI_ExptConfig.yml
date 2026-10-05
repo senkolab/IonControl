@@ -8,7 +8,7 @@ databaseConnection:
 hardware:
   DG4000 AWG:
     null:
-      Visa Address: ''
+      Visa Address: TCPIP::192.168.168.21::INSTR
       enabled: true
   HighFinesse Wavemeter:
     Wavemeter1:
@@ -20,6 +20,11 @@ hardware:
       device: Pulser
       enabled: true
       uploadOnStartup: true
+  Rigol DP832:
+    null:
+      defaultQueryDelayMs: 0
+      defaultTimeoutMs: 0
+      enabled: true
   SLS Offset Frequency Lock:
     null:
       enabled: true
@@ -29,13 +34,13 @@ hardware:
       user: pi
   Senkolab Four rod DC Controller:
     null:
-      enabled: true
-      ipAddress: 192.168.168.8
+      enabled: false
+      ipAddress: 192.168.168.26
       port: '50051'
   VISA:
     null:
       enabled: true
-showGui: false
+showGui: true
 software:
   Pulser:
     null:

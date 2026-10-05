@@ -111,3 +111,8 @@ hardware:
         user: str
         password: str
         port: str
+  Rigol DP832:
+    description: Rigol DP832 external parameter category
+    fields:
+      defaultTimeoutMs: int
+      defaultQueryDelayMs: int

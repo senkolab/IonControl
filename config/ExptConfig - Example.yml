@@ -49,6 +49,8 @@ hardware:
     enabled: true
   VISA:
     enabled: true
+  Rigol DP832:
+    enabled: true
 
 #This section defines the settings to use to connect to the database.
 #Yes, the password is plain text. Don't use one you care deeply about.
