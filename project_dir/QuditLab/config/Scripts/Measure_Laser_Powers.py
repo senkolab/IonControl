@@ -30,6 +30,11 @@ DARK_PRESET = "All_CW_beams_off"
 NORMAL_PRESET = "PMT_CheckCounts_For-Script_Even"  # re-enables all CW AOMs through its InitializeShutters
 SETTLE_S = 1.0
 COUNT = 20
+SETTLE_POLL_S = 0.25  # after a preset starts, poll the meter until the last SETTLE_WINDOW readings agree, then average
+SETTLE_MAX_S = 10.0
+SETTLE_WINDOW = 4
+SETTLE_REL = 0.01  # readings agree when their spread is within this fraction of their mean plus SETTLE_ABS_UW
+SETTLE_ABS_UW = 0.05
 ROUTING_FACTOR = 10.0  # first beam must read at least this many times the dark reading
 MAX_DARK_UW = 1.0  # a dark reading above this means light is reaching the meter with every CW beam supposedly off; abort rather than misreport routing
 MIN_SIGNAL_UW = 0.001  # floor on the dark reading used for the routing check, so a ~0 dark can't pass noise
@@ -85,6 +90,25 @@ def read_uW(pm, wavelength_nm):
     return r, r.value * 1e6, stdev_uW
 
 
+# Function wait_stable: poll the meter until the last SETTLE_WINDOW readings agree, so the average is not taken while the beams or the meter are
+# still changing. Warns and carries on if it never settles within SETTLE_MAX_S. Returns True if it settled
+def wait_stable(pm, wavelength_nm, what):
+    pm.set_wavelength(wavelength_nm)
+    recent = []
+    for i in range(int(SETTLE_MAX_S / SETTLE_POLL_S)):
+        recent.append(pm.read() * 1e6)
+        recent = recent[-SETTLE_WINDOW:]
+        if len(recent) == SETTLE_WINDOW:
+            mean = sum(recent) / SETTLE_WINDOW
+            if max(recent) - min(recent) <= SETTLE_REL * abs(mean) + SETTLE_ABS_UW:
+                return True
+        time.sleep(SETTLE_POLL_S)
+    consolePrint(
+        f"{what}: reading still changing after {SETTLE_MAX_S:0.0f} s (last {recent[0]:0.3f} to {recent[-1]:0.3f} uW), averaging anyway", error=True
+    )
+    return False
+
+
 # Functions range_hi, range_text: format a beam's acceptable range, where a max of None means no upper limit
 def range_hi(row):
     return "none" if row["max_uW"] is None else f"{row['max_uW']:0.1f}"
@@ -99,6 +123,7 @@ def measure_beam(pm, beam):
     label, wavelength, meter, preset, lo, hi = beam
     with preset_held(preset):
         time.sleep(SETTLE_S)
+        wait_stable(pm, wavelength, f"{meter} {label} nm")
         r, raw, stdev = read_uW(pm, wavelength)
     return dict(
         timestamp=r.timestamp,
@@ -117,6 +142,7 @@ def measure_beam(pm, beam):
 def measure_meter(pm, key, beams):
     with preset_held(DARK_PRESET):
         time.sleep(SETTLE_S)
+        wait_stable(pm, beams[0][1], f"{key} dark")
         r, dark, dark_stdev = read_uW(pm, beams[0][1])
     consolePrint(f"{key}: dark = {dark:0.3f} uW (stdev {dark_stdev:0.3f})")
     if dark > MAX_DARK_UW:
