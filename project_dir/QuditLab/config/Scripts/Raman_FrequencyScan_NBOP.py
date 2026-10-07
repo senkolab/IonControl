@@ -67,14 +67,14 @@ fs = 4e9
 #target_freq = 8028.89995 #in MHz [2,2,1,1]
 
 target_freq = 8037.75032 #in MHz [2,0,1,0]
-RamanPulseTime = 40 #in us
+RamanPulseTime = 3000 #in us
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 freq_step = 0.004 # MHz
 freq_range_factor = 7 # kHz    
 
-stop_time = 400
-time_step = 7
+stop_time = 1000
+time_step = 30
 
 '''
 target_freq = 8031.85285 + 0.085#in MHz [2,1,1,1] (11.707 MHz)

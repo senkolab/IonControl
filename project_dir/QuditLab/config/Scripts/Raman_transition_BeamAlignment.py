@@ -34,6 +34,7 @@ from scipy.optimize import curve_fit
 sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
 from Functions_Data import *
 from Functions_Measurement import *
+from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 from Functions_RFSoC import upload_dac0
 script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData, createTrace, closeTrace, plotPoint, scriptIsStopped)
 
@@ -48,14 +49,14 @@ line_trigger = True
 
 pulse_program = "Raman_Calibration_NBOP_2RFSoCs_Ba137"
 
-f_offset = float(getGlobal('f_offset'))
-f_upper = float(getGlobal('f_upper'))
+f_offset = getGlobal('f_offset')
+f_upper = getGlobal('f_upper')
 
-pitime_n2 = float(getGlobal('pitime_n2')) #13.48#
-pitime_n1 = float(getGlobal('pitime_n1'))
-pitime_0 = float(getGlobal('pitime_0')) #23.734#
-pitime_p1 = float(getGlobal('pitime_p1'))
-pitime_p2 = float(getGlobal('pitime_p2'))
+pitime_n2 = getGlobal('pitime_n2') # [-1, 4, -3]
+pitime_n1 = getGlobal('pitime_n1') # [-2, 3, -3]
+pitime_0 = getGlobal('pitime_0') # [0, 2, 0]
+pitime_p1 = getGlobal('pitime_p1') # [2, 4, 3]
+pitime_p2 = getGlobal('pitime_p2') # [2, 4, 4]
 ref_pitimes_list = [pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]
 
 threshold = 11
@@ -67,12 +68,12 @@ fs = 4e9
 freq_peak  = 17.5207
 target_freq = 8037.75032 #in MHz
 
-dummy_pulse_time = 35
+dummy_pulse_time = 600
 
 
 stop_time = 3000
 start_time = 0
-time_step = 10
+time_step = 100
 
 shelving_transition  = [[0,2,0]]
 init_state = shelving_transition[0][0]
@@ -89,10 +90,6 @@ rep_rate_stabilisation, centre_freq, rep_rate = RepRateMode_CenterFreq(target_fr
 
 f_offset_index = [0,2,0]
 f_upper_index = [0,4,-2]
-
-
-
-pitime_ref_index = [[-2,4,-4],[-2,3,-3],[2,4,2],[2,4,3],[2,4,4]]
 
 init_n2_index = [[-1,3,-2],[0,3,0],[1,4,0],[2,4,3]]
 init_n1_index = [[-2,3,-1],[0,3,0],[1,4,2],[2,4,3]]
@@ -111,17 +108,19 @@ init_freqs_0 = list(Get_1762_EOM_Freqs_an1an2(init_0_index,f_offset,f_upper))
 init_freqs_p1 = list(Get_1762_EOM_Freqs_an1an2(init_p1_index,f_offset,f_upper))
 init_freqs_p2 = list(Get_1762_EOM_Freqs_an1an2(init_p2_index,f_offset,f_upper))
 
-init_times_n2 = list(Get_1762_PiTimes(init_n2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_n1 = list(Get_1762_PiTimes(init_n1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_0 = list(Get_1762_PiTimes(init_0_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p1 = list(Get_1762_PiTimes(init_p1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p2 = list(Get_1762_PiTimes(init_p2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
+init_times_n2 = list(get_pi_times(init_n2_index,ref_pitimes_list))
+init_times_n1 = list(get_pi_times(init_n1_index,ref_pitimes_list))
+init_times_0 = list(get_pi_times(init_0_index,ref_pitimes_list))
+init_times_p1 = list(get_pi_times(init_p1_index,ref_pitimes_list))
+init_times_p2 = list(get_pi_times(init_p2_index,ref_pitimes_list))
 
 init_freqs_array = [init_freqs_n2,init_freqs_n1,init_freqs_0,init_freqs_p1,init_freqs_p2]
 init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_times_p2]
 
+
 shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))[0]
-ShelvingPulseTime = list(Get_1762_PiTimes(shelving_transition,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))[0]
+ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))[0]
+
 
 output_file_freqs = fr'Z:\Lab Data\D52_Calibration_Ba137\New_initialized_calibration_freq_files\New_initialized_calibration_freq_files_{dt_string}.txt'
 

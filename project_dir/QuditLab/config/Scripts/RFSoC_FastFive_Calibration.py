@@ -7,7 +7,7 @@
 do_pi_time_calibration = True
 line_trigger = True
 check_3pt_coherence = True
-do_rough_scan = True
+do_rough_scan = False
 steps_per_pi_time = 4
 
 import time
