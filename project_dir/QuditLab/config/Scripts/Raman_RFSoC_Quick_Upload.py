@@ -14,7 +14,7 @@ TABLE_DAC0 = [
         [0, [
             # f_MHz, phase_rad, amp, duration_us, phase_mode,
             # rep_rate_mode, enable, phase_latency_cycles, label
-            [tone_1, 0.0,1.0, 5e6,
+            [tone_1, 0.0,0.05, 5e6,
              0, 0, True, 0, "DAC0 tone 0"],
         ]],
         #[1, [

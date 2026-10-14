@@ -1,12 +1,12 @@
 #Set_rod_voltages_test.py created 2026-09-29 11:04:44.253123
 #script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
     
-Push_Vertical_Down = -0.00
-Push_Vertical_Up = 0.08
-Push_Horizontal_Up = 0.07
-Push_Horizontal_Down = -0.07
-Squeeze_1_4_V = 0.0
-Squeeze_2_3_V = 3.0
+Push_Vertical_Down = -0.06
+Push_Vertical_Up = 0.06
+Push_Horizontal_Up = 0.08
+Push_Horizontal_Down = -0.08
+Squeeze_1_4_V = 0.5
+Squeeze_2_3_V = 3.5
 
 Rod_1_set_V = Push_Vertical_Down + Push_Horizontal_Up + Squeeze_1_4_V
 Rod_2_set_V = Push_Vertical_Up + Push_Horizontal_Up + Squeeze_2_3_V

@@ -40,13 +40,13 @@ centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper)
 
 #centre_freq = 610.4188 + 20.7737
 #centre_freq = 604.5756 + 1.139
-centre_freq = 610.710
+#centre_freq = 610.753
 centre_freq = centre_freq 
 freq_step = 0.003
 freq_range_factor = 8
 threshold = 11
 
-SetPulseTime = 40 #us
+SetPulseTime = 3000 #us
 opt_pump_time = 1000
 
 PulseTime = getGlobal("Shelving_Pulse_Time")

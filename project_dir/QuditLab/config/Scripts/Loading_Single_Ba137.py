@@ -48,7 +48,7 @@ PulseEnergy = 110
 IonizationPower = 10
 WindowStart, WindowWidth = 160, 55
 
-wait_before_checking_ion = 10 #secs
+wait_before_checking_ion = 20 #secs
 
 (Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba137", script_functions)
 SetNeutralFluorWindow(WindowStart, WindowWidth, script_functions)
