@@ -79,12 +79,12 @@ rep_rate_enable = 1
 
 target_freq = 8037.75032 #in MHz [2,0,1,0]
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
-RamanPulseTime = 65.4 #in us
+RamanPulseTime = 185 #in us
 iden_string = '[S, 2, 0, S, 1, 0]'
 
-stop_time = 36000
+stop_time = 20000
 start_time = 0.1
-time_step = 100
+time_step = 3000
 init_state = shelving_transition[0][0]
 
 wait_in_ket = 1
@@ -245,19 +245,19 @@ def phase_ramsey_scans(init_state, ShelvingPulseTime, RamanPulseTime, start_wait
                     [0, [
                         # f_MHz, phase_rad, amp, duration_us, phase_mode,
                         # rep_rate_mode, enable, phase_latency_cycles, label
-                        [tone_1, 0.0, 0.5, RamanPulseTime,
+                        [tone_1, 0.0, 0.5, RamanPulseTime/2,
                         1, 0, True, 0, "T1U1"],
                         [tone_1, 0.0, 0.5, wait_time,
                         1, 0, False, 0, "Wait"],
-                        [tone_1, 0.0, 0.5, RamanPulseTime,
+                        [tone_1, 0.0, 0.5, RamanPulseTime/2,
                         1, 0, True, 0, "T1U2"],
                     ]],
                     [1, [
-                        [tone_2, 0, 0.5, RamanPulseTime,
+                        [tone_2, 0, 0.5, RamanPulseTime/2,
                         1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "T2U1"],
                         [tone_2, 0, 0.5, wait_time,
                         1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "Wait"],
-                        [tone_2, 0.0, 0.5, RamanPulseTime,
+                        [tone_2, 0.0, 0.5, RamanPulseTime/2,
                         1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "T2U2"],
                     ]],
                 ]],

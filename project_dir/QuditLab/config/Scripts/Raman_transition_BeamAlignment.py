@@ -1,5 +1,3 @@
-#Raman_transition_BeamAlignment.py created 2026-08-04 14:20:11.526527
-
 #Raman_FrequencyScan_NBOP.py created 2026-07-31 11:36:52.300832
 
 #RFSoC_FrequencyScansPiTimeCalibrations_NBOP.py created 2025-09-26 19:55:38.769639
@@ -34,48 +32,65 @@ from scipy.optimize import curve_fit
 sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
 from Functions_Data import *
 from Functions_Measurement import *
-from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 from Functions_RFSoC import upload_dac0
+from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData, createTrace, closeTrace, plotPoint, scriptIsStopped)
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 
-do_pi_time_calibration = True
-get_calibration_values_only = True
+dummy_flag = False
 
 line_trigger = True
 
-
-
 pulse_program = "Raman_Calibration_NBOP_2RFSoCs_Ba137"
 
-f_offset = getGlobal('f_offset')
-f_upper = getGlobal('f_upper')
+dummy_pulse_time = 86
 
-pitime_n2 = getGlobal('pitime_n2') # [-1, 4, -3]
-pitime_n1 = getGlobal('pitime_n1') # [-2, 3, -3]
-pitime_0 = getGlobal('pitime_0') # [0, 2, 0]
-pitime_p1 = getGlobal('pitime_p1') # [2, 4, 3]
-pitime_p2 = getGlobal('pitime_p2') # [2, 4, 4]
+f_offset = float(getGlobal('f_offset'))
+f_upper = float(getGlobal('f_upper'))
+
+pitime_n2 = float(getGlobal('pitime_n2')) #13.48#
+pitime_n1 = float(getGlobal('pitime_n1'))
+pitime_0 = float(getGlobal('pitime_0')) #23.734#
+pitime_p1 = float(getGlobal('pitime_p1'))
+pitime_p2 = float(getGlobal('pitime_p2'))
 ref_pitimes_list = [pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]
 
 threshold = 11
-F1PumpTime = 0.5
-F1PumpReps = 30
+F1PumpTime = 1.5
+F1PumpReps = 40
 InitReps = 0
 fs = 4e9
 
-freq_peak  = 17.5207
-target_freq = 8037.75032 #in MHz
+#target_freq = 2.95073618 #in MHz [2,0,2.1]
+#target_freq = 8034.80359 #in MHz [2,1,1,0]
+#target_freq = 8043.64346 #in MHz [2,-1,1,-1]
+#target_freq = 8046.58987 #in MHz [2,-2,1,-1]
+#target_freq = 8028.89995 #in MHz [2,2,1,1]
 
-dummy_pulse_time = 600
+target_freq = 8037.75032 #in MHz [2,0,1,0]
+RamanPulseTime = 209 #in us
+shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 
-stop_time = 3000
-start_time = 0
-time_step = 100
+stop_time = 500
+time_step = 50
 
-shelving_transition  = [[0,2,0]]
+'''
+target_freq = 8031.85285 + 0.085#in MHz [2,1,1,1] (11.707 MHz)
+RamanPulseTime = 76 #in us
+shelving_transition  = [[1,4,1],[1,4,-1],[1,3,3]]
+freq_step = 0.001 # MHz
+freq_range_factor = 10 # kHz    
+
+stop_time = 300
+time_step = 18
+'''
+rep_rate_enable = 1
+
+
+
+
 init_state = shelving_transition[0][0]
 
 
@@ -91,38 +106,30 @@ rep_rate_stabilisation, centre_freq, rep_rate = RepRateMode_CenterFreq(target_fr
 f_offset_index = [0,2,0]
 f_upper_index = [0,4,-2]
 
-init_n2_index = [[-1,3,-2],[0,3,0],[1,4,0],[2,4,3]]
-init_n1_index = [[-2,3,-1],[0,3,0],[1,4,2],[2,4,3]]
-init_0_index = [[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]]
-init_p1_index = [[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]]
-init_p2_index = [[-2,3,-1],[-1,3,0],[0,3,2],[1,3,3]]
+list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
+[[-2,3,-1],[0,3,0],[1,4,0],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]],
+[[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[0,3,2],[1,3,3]]
+]
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 year = datetime.datetime.now().strftime("%Y")
 month = datetime.datetime.now().strftime("%m")
 day = datetime.datetime.now().strftime("%d")
 
-init_freqs_n2 = list(Get_1762_EOM_Freqs_an1an2(init_n2_index,f_offset,f_upper))
-init_freqs_n1 = list(Get_1762_EOM_Freqs_an1an2(init_n1_index,f_offset,f_upper))
-init_freqs_0 = list(Get_1762_EOM_Freqs_an1an2(init_0_index,f_offset,f_upper))
-init_freqs_p1 = list(Get_1762_EOM_Freqs_an1an2(init_p1_index,f_offset,f_upper))
-init_freqs_p2 = list(Get_1762_EOM_Freqs_an1an2(init_p2_index,f_offset,f_upper))
-
-init_times_n2 = list(get_pi_times(init_n2_index,ref_pitimes_list))
-init_times_n1 = list(get_pi_times(init_n1_index,ref_pitimes_list))
-init_times_0 = list(get_pi_times(init_0_index,ref_pitimes_list))
-init_times_p1 = list(get_pi_times(init_p1_index,ref_pitimes_list))
-init_times_p2 = list(get_pi_times(init_p2_index,ref_pitimes_list))
-
-init_freqs_array = [init_freqs_n2,init_freqs_n1,init_freqs_0,init_freqs_p1,init_freqs_p2]
-init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_times_p2]
+init_trans = list_of_inits[init_state+2]
 
 
-shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))[0]
-ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))[0]
+init_freqs_array = list(Get_1762_EOM_Freqs_an1an2(init_trans,f_offset,f_upper))
+init_times_array = list(get_pi_times(init_trans,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
+init_pulse_time = sum(init_times_array)
 
+shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
+ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
 
 output_file_freqs = fr'Z:\Lab Data\D52_Calibration_Ba137\New_initialized_calibration_freq_files\New_initialized_calibration_freq_files_{dt_string}.txt'
+
 
 
 LT_dummy = getGlobal('LineTriggerBoolean')
@@ -149,30 +156,35 @@ F1Pump_reps = getGlobal('F1_PumpReps')
 if not "%s"%F1Pump_reps == F1PumpReps:
     setGlobal("F1_PumpReps", F1PumpReps, "")
 
+Raman_Pulse_Time_dummy = getGlobal("Raman_Pulse_Time")
+if not "%s"%Raman_Pulse_Time_dummy == "%s us"%RamanPulseTime:
+    setGlobal("Raman_Pulse_Time", RamanPulseTime, "us")
+
 
 freq_list_fitted = []
 
-
-def findPiTime_withfit_plotPD(do_pi_time_calibration, dummy_pulse_time, freq_peak, start_time, stop_time, time_step, threshold, pulse_program, script_functions):
+def findPiTime_withfit_plotPD(freq_peak, dummy_flag, stop_time, time_step, threshold, pulse_program, script_functions):
     getGlobal, setGlobal, setScan, startScan, stopScan, getAllData, createTrace, closeTrace, plotPoint, scriptIsStopped = script_functions
     createTrace('1762 nm pi-time scan', 'Scan Data', xLabel=f'Pulse Time (us)')
-    pulse_time = start_time
+    pulse_time = 0
     fluor_ave = []
     pulse_time_list = []
     flour_exp = []
     while pulse_time <= stop_time:
         if scriptIsStopped():
             break
-        if do_pi_time_calibration:
-
-            Raman_Pulse_Time_dummy = getGlobal("Raman_Pulse_Time")
-            if not "%s"%Raman_Pulse_Time_dummy == "%s us"%pulse_time:
-                setGlobal("Raman_Pulse_Time", pulse_time, "us")
-            #time.sleep(1)
-        else:
+        if dummy_flag:
             Raman_Pulse_Time_dummy = getGlobal("Raman_Pulse_Time")
             if not "%s"%Raman_Pulse_Time_dummy == "%s us"%dummy_pulse_time:
                 setGlobal("Raman_Pulse_Time", dummy_pulse_time, "us")
+            #print('This worked')
+            time.sleep(1)
+        else:
+            Raman_Pulse_Time_dummy = getGlobal("Raman_Pulse_Time")
+            if not "%s"%Raman_Pulse_Time_dummy == "%s us"%pulse_time:
+                setGlobal("Raman_Pulse_Time", pulse_time, "us")
+            #print(dosifh)
+            time.sleep(1)
 
         setScan(pulse_program)
         startScan(globalOverrides=list(), wait=True)
@@ -244,12 +256,9 @@ with open(output_file_freqs,'w'):
 
 
 
-Raman_Freq = getGlobal("Raman_Frequency")
-if not "%s"%Raman_Freq == "%s MHz"%freq_peak:
-    setGlobal("Raman_Frequency", np.round(freq_peak, 6), "MHz")
-
 setEvaluation('Eval2')
 
+freq_peak = centre_freq
 
 tone_1 = 150
 tone_2 = 150 + freq_peak
@@ -264,7 +273,7 @@ TABLE_DAC0 = [
         ]],
         [1, [
             [tone_2, 0, 0.5, 5e6,
-             0, -1*rep_rate_stabilisation, True, 0, "DAC0 tone 1, rep -1"],
+             0, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "DAC0 tone 1, rep -1"],
         ]],
     ]],
 ]
@@ -278,7 +287,11 @@ print(f'Setting freq to {freq_peak} MHz with total probe time of 1500 us')
 
 setEvaluation('Eval3')
 
-RamanPulseTime = findPiTime_withfit_plotPD(do_pi_time_calibration, dummy_pulse_time, freq_peak, start_time, stop_time, time_step, threshold, pulse_program, script_functions)
+RamanPulseTime = findPiTime_withfit_plotPD(freq_peak, dummy_flag, stop_time, time_step, threshold, pulse_program, script_functions)
 
 setEvaluation('Eval2')
+
+
+with open(output_file_freqs,'a') as outfile:
+    outfile.write(f'{np.round(freq_peak,6)}, {np.round(RamanPulseTime,3)}, {int(init_state)}\n')
 

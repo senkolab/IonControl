@@ -6,6 +6,7 @@
 # masks and shutters
 shutter ShutterInitialization
 masked_shutter ShelvingLaser
+masked_shutter MechShutter493
 masked_shutter RamanAOM1
 masked_shutter INIT_ShelvingLaser
 masked_shutter FluorescenceLasers
@@ -35,6 +36,7 @@ parameter GeneralWaitTime
 parameter RepumpTime
 parameter RepumpTimeInit
 parameter PMTIntTime
+parameter MechShutter493Wait
 parameter OpticalPumpTime
 parameter OpticalPumpTimeForCool
 parameter RepumpTimeForCool
@@ -102,6 +104,16 @@ def repump_shelve():
     set_shutter(RepumpShelve)
     update(RepumpTime)
     set_inv_shutter(AllLasersOn)
+    update()
+
+def Mechshutter_493_ON():
+    set_shutter(MechShutter493)
+    update(MechShutter493Wait)
+    update()
+
+def Mechshutter_493_OFF():
+    set_inv_shutter(MechShutter493)
+    update(MechShutter493Wait)
     update()
 
 def repump_shelve_init():
@@ -265,7 +277,7 @@ while not pipe_empty():
         #update(MechShutter614Wait)
 
 
-        
+        #Mechshutter_493_OFF()
         AWG_event_trigger()
         update(AWGEventTriggerWait)
         #TriggerDummyIndex = 1
@@ -282,8 +294,8 @@ while not pipe_empty():
         #if F1PumpTime_long>0:
         #    F1_pump_long()       
 
-        if OpticalPumpTime>0:
-            optical_pump()
+        #if OpticalPumpTime>0:
+        #    optical_pump()
 
         #turn_on_fluorescence()
         #update(PMTIntTime)
@@ -304,8 +316,9 @@ while not pipe_empty():
         if PulseTime>0:
             pulse_shelving()
         else:
-            AWG_event_trigger()    
-      
+            AWG_event_trigger()
+    
+        #Mechshutter_493_ON()
         #if PulseTime==0:
         #    AWG_event_trigger()
 

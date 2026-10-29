@@ -33,6 +33,7 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from Functions_Data import *
 from Functions_Measurement import *
 from Functions_RFSoC import upload_dac0
+from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData, createTrace, closeTrace, plotPoint, scriptIsStopped)
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
@@ -77,10 +78,10 @@ rep_rate_enable = 1
 
 target_freq = 8037.75032 #in MHz [2,0,1,0]
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
-RamanPulseTime = 65.4 #in us
+RamanPulseTime = 210 #in us
 iden_string = '[S, 2, 0, S, 1, 0]'
 
-stop_time = 1802
+stop_time = 1202
 start_time = 0.1
 time_step = 200
 init_state = shelving_transition[0][0]
@@ -102,36 +103,26 @@ f_upper_index = [0,4,-2]
 
 
 
-pitime_ref_index = [[-2,4,-4],[-2,3,-3],[2,4,2],[2,4,3],[2,4,4]]
-
-init_n2_index = [[-1,3,-2],[0,3,0],[1,4,0],[2,4,3]]
-init_n1_index = [[-2,3,-1],[0,3,0],[1,4,2],[2,4,3]]
-init_0_index = [[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]]
-init_p1_index = [[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]]
-init_p2_index = [[-2,3,-1],[-1,3,0],[0,3,2],[1,3,3]]
+list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
+[[-2,3,-1],[0,3,0],[1,4,0],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]],
+[[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[0,3,2],[1,3,3]]
+]
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 year = datetime.datetime.now().strftime("%Y")
 month = datetime.datetime.now().strftime("%m")
 day = datetime.datetime.now().strftime("%d")
 
-init_freqs_n2 = list(Get_1762_EOM_Freqs_an1an2(init_n2_index,f_offset,f_upper))
-init_freqs_n1 = list(Get_1762_EOM_Freqs_an1an2(init_n1_index,f_offset,f_upper))
-init_freqs_0 = list(Get_1762_EOM_Freqs_an1an2(init_0_index,f_offset,f_upper))
-init_freqs_p1 = list(Get_1762_EOM_Freqs_an1an2(init_p1_index,f_offset,f_upper))
-init_freqs_p2 = list(Get_1762_EOM_Freqs_an1an2(init_p2_index,f_offset,f_upper))
+init_trans = list_of_inits[init_state+2]
 
-init_times_n2 = list(Get_1762_PiTimes(init_n2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_n1 = list(Get_1762_PiTimes(init_n1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_0 = list(Get_1762_PiTimes(init_0_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p1 = list(Get_1762_PiTimes(init_p1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p2 = list(Get_1762_PiTimes(init_p2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-
-init_freqs_array = [init_freqs_n2,init_freqs_n1,init_freqs_0,init_freqs_p1,init_freqs_p2]
-init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_times_p2]
+init_freqs_array = list(Get_1762_EOM_Freqs_an1an2(init_trans,f_offset,f_upper))
+init_times_array = list(get_pi_times(init_trans,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
+init_pulse_time = sum(init_times_array)
 
 shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
-ShelvingPulseTime = list(Get_1762_PiTimes(shelving_transition,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
+ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
 
 
 
@@ -174,7 +165,7 @@ def phase_ramsey_scans(init_state, ShelvingPulseTime, RamanPulseTime, start_wait
     print(set_freq,ShelvingPulseTime)
     print(init_freqs_array[int(init_state+2)],init_times_array[int(init_state+2)])
 
-    init_row1 = [1, init_freqs_array[int(init_state+2)], [0]*len(init_freqs_array[int(init_state+2)]), init_times_array[int(init_state+2)], [0]*len(init_times_array[int(init_state+2)]), 0]
+    init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
     tot_init_time = np.sum(init_times_array[int(init_state+2)])
     InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")
@@ -213,6 +204,7 @@ def phase_ramsey_scans(init_state, ShelvingPulseTime, RamanPulseTime, start_wait
 
         createTrace(f'Raman Ramsey {wait_time} [in units of pi]', 'Script Data', xLabel=f'X: phase in units of pi + wait time in us Y: PB')        
         phase_index_list = [0,1,2,3,4,5,6,7,8,9,10]
+        #phase_index_list = [0,5]
         for i in phase_index_list:
             if scriptIsStopped():
                 break
@@ -236,17 +228,17 @@ def phase_ramsey_scans(init_state, ShelvingPulseTime, RamanPulseTime, start_wait
                         # f_MHz, phase_rad, amp, duration_us, phase_mode,
                         # rep_rate_mode, enable, phase_latency_cycles, label
                         [tone_1, 0.0, 0.5, RamanPulseTime/2,
-                        1, 0, True, 0, "T1U1"],
-                        [tone_1, 0.0, 0.5, wait_time,
-                        1, 0, False, 0, "Wait"],
+                        1, -0*rep_rate_enable*rep_rate_stabilisation, True, 0, "T1U1"],
+                        [tone_1, 0.0, 0.0, wait_time,
+                        1, -0*rep_rate_enable*rep_rate_stabilisation, False, 0, "Wait"],
                         [tone_1, 0.0, 0.5, RamanPulseTime/2,
-                        1, 0, True, 0, "T1U2"],
+                        1, -0*rep_rate_enable*rep_rate_stabilisation, True, 0, "T1U2"],
                     ]],
                     [1, [
                         [tone_2, 0, 0.5, RamanPulseTime/2,
                         1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "T2U1"],
-                        [tone_2, 0, 0.5, wait_time,
-                        1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "Wait"],
+                        [tone_2, 0, 0.0, wait_time,
+                        1, -1*rep_rate_enable*rep_rate_stabilisation, False, 0, "Wait"],
                         [tone_2, phase_value, 0.5, RamanPulseTime/2,
                         1, -1*rep_rate_enable*rep_rate_stabilisation, True, 0, "T2U2"],
                     ]],

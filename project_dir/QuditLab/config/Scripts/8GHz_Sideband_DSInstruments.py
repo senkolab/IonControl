@@ -13,12 +13,12 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from Functions_Trap import * 
 
 # 138
-#Set8GHzSideband(5.82, -10,"ON")
+#
+Set8GHzSideband(5.81, 0,"ON")
 #135
 #Set8GHzSideband(7.79,0,"ON")
 # 137
-#
-Set8GHzSideband(8.101,-1,"ON")
+#Set8GHzSideband(8.101,-9,"ON")
 '''
 
 ser = serial.Serial(

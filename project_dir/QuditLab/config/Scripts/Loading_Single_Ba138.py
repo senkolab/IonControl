@@ -15,7 +15,7 @@ script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllDa
 
 ResetLasers = bool(getGlobal("LasersReset"))
 
-Set8GHzSideband(5.82,-5,"ON")
+Set8GHzSideband(5.82,0,"ON")
 #os.system(f'ssh pi@192.168.168.104 python ~/pll-evalboard-synthesizer/src/Control-Programs/mw1.py 4 6.92e9')
 
 CurrLoadAttempts = getGlobal("LoadAttempts")
