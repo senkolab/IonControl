@@ -36,7 +36,7 @@ pitime_p2 = float(getGlobal('pitime_p2')) # [2, 4, 4]
 
 target_transition  = [[2,4,2]]
 
-centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper))[0] + 0.00
+centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper))[0] 
 
 #centre_freq = 610.4188 + 20.7737
 #centre_freq = 604.5756 + 1.139

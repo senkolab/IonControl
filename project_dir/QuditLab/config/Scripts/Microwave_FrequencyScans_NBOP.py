@@ -35,6 +35,7 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from Functions_Data import *
 from Functions_Measurement import *
 from Functions_RFSoC import upload_dac0
+from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 import sys
 
 sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
@@ -132,6 +133,30 @@ init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_
 
 shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
 ShelvingPulseTime = list(Get_1762_PiTimes(shelving_transition,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
+
+
+list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
+[[-2,3,-1],[0,3,0],[1,4,0],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]],
+[[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[0,3,2],[1,3,3]]
+]
+
+dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+year = datetime.datetime.now().strftime("%Y")
+month = datetime.datetime.now().strftime("%m")
+day = datetime.datetime.now().strftime("%d")
+
+init_trans = list_of_inits[init_state+2]
+
+init_freqs_array = list(Get_1762_EOM_Freqs_an1an2(init_trans,f_offset,f_upper))
+init_times_array = list(get_pi_times(init_trans,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
+init_pulse_time = sum(init_times_array)
+
+shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
+ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
+
+
 
 output_file_freqs = fr'Z:\Lab Data\D52_Calibration_Ba137\New_initialized_calibration_freq_files\New_initialized_calibration_freq_files_{dt_string}.txt'
 

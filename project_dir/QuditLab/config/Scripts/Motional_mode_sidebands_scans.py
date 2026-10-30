@@ -38,15 +38,15 @@ target_transition  = [[2,4,2]]
 
 centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper))[0]
 
-s1 = 1.46578
-s2 = 1.2969
+s1 = -1.4553
+s2 = -1.2906
 num_scans = 10
 #centre_freq = 610.4188 + 20.7737
 #centre_freq = 604.5756 + 1.139
 #centre_freq = 610.7
 centre_freq = centre_freq
-freq_step = 0.001
-freq_range_factor = 10
+freq_step = 0.002
+freq_range_factor = 5
 threshold = 11
 
 SetPulseTime = 3000 #us

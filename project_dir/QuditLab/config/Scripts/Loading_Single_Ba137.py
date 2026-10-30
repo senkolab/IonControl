@@ -9,7 +9,7 @@ from datetime import date
 
 import datetime
 
-Check_Ba138 = False
+Check_Ba138 = True
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 year = datetime.datetime.now().strftime("%Y")

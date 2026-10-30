@@ -3,6 +3,8 @@
 import numpy as np
 comm_voltage = 0.48
 
+48
+
 #1762nm Coupling Co-ords for MMC
 Push_Vertical_Down = -0.05
 Push_Vertical_Up = 0.05

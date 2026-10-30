@@ -3,7 +3,7 @@
 import socket
 import numpy as np
 
-DSI_IP = "192.168.168.40"   # Change to your SG12000PRO IP
+DSI_IP = "192.168.168.29"   # Change to your SG12000PRO IP
 DSI_PORT = 10001
 
 
