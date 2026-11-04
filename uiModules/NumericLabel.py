@@ -17,9 +17,10 @@ class NumericLabel(QLabel):
 
     @precision.setter
     def precision(self, prec):
-        self._precision = prec
-        self.formatStrQ = "{{:~.{0}f}}".format(int(prec)) if prec is not None else "{:~}"
-        self.formatStr = "{{:.{0}f}}".format(int(prec)) if prec is not None else "{}"
+        # a negative precision (e.g. from a saved config) builds "{:.-1f}", which str.format rejects
+        self._precision = max(0, int(prec)) if prec is not None else None
+        self.formatStrQ = "{{:~.{0}f}}".format(self._precision) if prec is not None else "{:~}"
+        self.formatStr = "{{:.{0}f}}".format(self._precision) if prec is not None else "{}"
 
     @property
     def value(self):

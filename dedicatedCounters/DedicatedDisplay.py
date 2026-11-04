@@ -35,7 +35,7 @@ class DedicatedDisplay(DedicatedDisplayForm, DedicatedDisplayBase ):
         self._values = [0]*8
         self.configName = "DedicatedDisplay." + self.name
         self.settings = self.config.get(self.configName, Settings())
-        self.stat = [RunningStat()] * 4
+        self.stat = [RunningStat() for _ in range(4)]
 
     def setupUi(self, parent):
         DedicatedDisplayForm.setupUi(self, parent)
@@ -47,7 +47,7 @@ class DedicatedDisplay(DedicatedDisplayForm, DedicatedDisplayBase ):
             
     def onAverageChanged(self, state ):
         self.settings.average = state == QtCore.Qt.Checked
-        self.stat = [RunningStat()] * 4
+        self.stat = [RunningStat() for _ in range(4)]
         if not self.settings.average:
             self.numPointsLabel.setText("")
         else:
