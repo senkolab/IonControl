@@ -67,7 +67,7 @@ for s12_level in s12_levels:
     F1PumpTime_list = [1.5] #us
  
     F1PumpReps_list = [1, 3, 5, 7, 11, 15, 17, 20, 25,30, 40]
-    #F1PumpReps_list = [20,30,40]
+    F1PumpReps_list = [20,30,40, 50, 60]
     InitReps = 0
     fs = 4e9
     threshold = 10

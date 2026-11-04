@@ -14,7 +14,7 @@ from Functions_Trap import *
 
 # 138
 #
-Set8GHzSideband(5.81, 0,"ON")
+Set8GHzSideband(5.89, -15,"ON")
 #135
 #Set8GHzSideband(7.79,0,"ON")
 # 137

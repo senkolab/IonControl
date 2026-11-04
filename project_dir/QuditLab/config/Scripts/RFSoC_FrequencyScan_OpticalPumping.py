@@ -46,7 +46,7 @@ freq_step = 0.003
 freq_range_factor = 14
 threshold = 10
 
-SetPulseTime = 34 #us
+SetPulseTime = 40 #us
 opt_pump_time = 1000
 
 PulseTime = getGlobal("Shelving_Pulse_Time")
