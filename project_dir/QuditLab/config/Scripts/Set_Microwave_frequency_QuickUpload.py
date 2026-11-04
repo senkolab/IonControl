@@ -6,4 +6,4 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from DSI_12000PRO_connet import set_DSI12000PRO
 
 
-set_DSI12000PRO(8037.750392123456, -10, False)
+set_DSI12000PRO(8101, 10, True)

@@ -65,9 +65,9 @@ ref_pitimes_list = [pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]
 
 threshold = 11
 F1PumpTime = 1.5
-F1PumpReps = 40
+F1PumpReps = 60
 InitReps = 0
-fs = 4e9
+
 
 #target_freq = 2.95073618 #in MHz [2,0,2.1]
 #target_freq = 8034.80359 #in MHz [2,1,1,0]
@@ -76,15 +76,15 @@ fs = 4e9
 #target_freq = 8028.89995 #in MHz [2,2,1,1]
 
 centre_freq = 8037.75032 #in MHz [2,0,1,0]
-MicrowavePulseTime = 257 #in us
+MicrowavePulseTime = 90 #in us
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 freq_step = 0.003 # MHz
 freq_range_factor = 10 # kHz    
 
 start_time = 0
-stop_time = start_time + 25000
-time_step = 50
+stop_time = 500
+time_step = 10
 
 '''
 target_freq = 8031.85285 + 0.085#in MHz [2,1,1,1] (11.707 MHz)
@@ -103,36 +103,10 @@ init_state = shelving_transition[0][0]
 f_offset_index = [0,2,0]
 f_upper_index = [0,4,-2]
 
-pitime_ref_index = [[-2,4,-4],[-2,3,-3],[2,4,2],[2,4,3],[2,4,4]]
-
-init_n2_index = [[-1,3,-2],[0,3,0],[1,4,0],[2,4,3]]
-init_n1_index = [[-2,3,-1],[0,3,0],[1,4,2],[2,4,3]]
-init_0_index = [[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]]
-init_p1_index = [[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]]
-init_p2_index = [[-2,3,-1],[-1,3,0],[0,3,2],[1,3,3]]
-
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 year = datetime.datetime.now().strftime("%Y")
 month = datetime.datetime.now().strftime("%m")
 day = datetime.datetime.now().strftime("%d")
-
-init_freqs_n2 = list(Get_1762_EOM_Freqs_an1an2(init_n2_index,f_offset,f_upper))
-init_freqs_n1 = list(Get_1762_EOM_Freqs_an1an2(init_n1_index,f_offset,f_upper))
-init_freqs_0 = list(Get_1762_EOM_Freqs_an1an2(init_0_index,f_offset,f_upper))
-init_freqs_p1 = list(Get_1762_EOM_Freqs_an1an2(init_p1_index,f_offset,f_upper))
-init_freqs_p2 = list(Get_1762_EOM_Freqs_an1an2(init_p2_index,f_offset,f_upper))
-
-init_times_n2 = list(Get_1762_PiTimes(init_n2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_n1 = list(Get_1762_PiTimes(init_n1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_0 = list(Get_1762_PiTimes(init_0_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p1 = list(Get_1762_PiTimes(init_p1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p2 = list(Get_1762_PiTimes(init_p2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-
-init_freqs_array = [init_freqs_n2,init_freqs_n1,init_freqs_0,init_freqs_p1,init_freqs_p2]
-init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_times_p2]
-
-shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
-ShelvingPulseTime = list(Get_1762_PiTimes(shelving_transition,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
 
 
 list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
@@ -159,26 +133,6 @@ ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,p
 
 
 output_file_freqs = fr'Z:\Lab Data\D52_Calibration_Ba137\New_initialized_calibration_freq_files\New_initialized_calibration_freq_files_{dt_string}.txt'
-
-
-if get_calibration_values_only and do_pi_time_calibration:
-    full_scan_indeces = [f_upper_index] + [f_offset_index] + pitime_ref_index
-    full_scan_indeces = [full_scan_indeces]
-
-elif get_calibration_values_only and not do_pi_time_calibration:
-    full_scan_indeces =  [[f_upper_index],[f_offset_index]]
-    #full_scan_indeces =  [[f_upper_index]]
-    #full_scan_indeces =  [[[0,2,0]], [[0,3,-1]]]
-
-else:
-    full_scan_indeces = [[f_offset_index] +[f_upper_index] + pitime_ref_index,
-                        [f_offset_index] + [f_upper_index] + scan_indeces[0:5], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[5:10], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[10:15], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[15:20], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[20:25], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[25:30], \
-                        [f_offset_index] + [f_upper_index] + scan_indeces[30:36]]
 
 
 LT_dummy = getGlobal('LineTriggerBoolean')
@@ -225,7 +179,7 @@ def findResonance_withfit_plotPD(init_state, ShelvingPulseTime, start_freq, stop
     print(set_freq,ShelvingPulseTime)
     print(init_freqs_array[int(init_state+2)],init_times_array[int(init_state+2)])
 
-    init_row1 = [1, init_freqs_array[int(init_state+2)], [0]*len(init_freqs_array[int(init_state+2)]), init_times_array[int(init_state+2)], [0]*len(init_times_array[int(init_state+2)]), 0]
+    init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
     tot_init_time = np.sum(init_times_array[int(init_state+2)])
     InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")
@@ -440,7 +394,7 @@ else:
 
 if do_pi_time_calibration:
 
-    init_row1 = [1, init_freqs_array[int(init_state+2)], [0]*len(init_freqs_array[int(init_state+2)]), init_times_array[int(init_state+2)], [0]*len(init_times_array[int(init_state+2)]), 0]
+    init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
     tot_init_time = np.sum(init_times_array[int(init_state+2)])
     InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")

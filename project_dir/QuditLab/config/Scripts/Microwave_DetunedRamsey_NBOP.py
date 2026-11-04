@@ -35,6 +35,7 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from Functions_Data import *
 from Functions_Measurement import *
 from Functions_RFSoC import upload_dac0
+from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
 import sys
 
 sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
@@ -61,7 +62,7 @@ ref_pitimes_list = [pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]
 
 threshold = 11
 F1PumpTime = 1.5
-F1PumpReps = 40
+F1PumpReps = 60
 InitReps = 0
 fs = 4e9
 
@@ -76,12 +77,12 @@ detuning = 0.0005
 
 set_freq = centre_freq - detuning
 
-MicrowavePulseTime = 72 #in us
+MicrowavePulseTime = 97 #in us
 pi_over_2_time = MicrowavePulseTime/2
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 start_time = 0
-stop_time = start_time + 2000
+stop_time = start_time + 10000
 time_step = 100
 
 
@@ -90,36 +91,31 @@ init_state = shelving_transition[0][0]
 f_offset_index = [0,2,0]
 f_upper_index = [0,4,-2]
 
-pitime_ref_index = [[-2,4,-4],[-2,3,-3],[2,4,2],[2,4,3],[2,4,4]]
+dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+year = datetime.datetime.now().strftime("%Y")
+month = datetime.datetime.now().strftime("%m")
+day = datetime.datetime.now().strftime("%d")
 
-init_n2_index = [[-1,3,-2],[0,3,0],[1,4,0],[2,4,3]]
-init_n1_index = [[-2,3,-1],[0,3,0],[1,4,2],[2,4,3]]
-init_0_index = [[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]]
-init_p1_index = [[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]]
-init_p2_index = [[-2,3,-1],[-1,3,0],[0,3,2],[1,3,3]]
+list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
+[[-2,3,-1],[0,3,0],[1,4,0],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[1,3,2],[2,4,2]],
+[[-2,3,-1],[-1,3,0],[0,3,2],[2,4,3]],
+[[-2,2,-1],[-1,3,0],[0,3,2],[1,3,3]]
+]
 
 dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M")
 year = datetime.datetime.now().strftime("%Y")
 month = datetime.datetime.now().strftime("%m")
 day = datetime.datetime.now().strftime("%d")
 
-init_freqs_n2 = list(Get_1762_EOM_Freqs_an1an2(init_n2_index,f_offset,f_upper))
-init_freqs_n1 = list(Get_1762_EOM_Freqs_an1an2(init_n1_index,f_offset,f_upper))
-init_freqs_0 = list(Get_1762_EOM_Freqs_an1an2(init_0_index,f_offset,f_upper))
-init_freqs_p1 = list(Get_1762_EOM_Freqs_an1an2(init_p1_index,f_offset,f_upper))
-init_freqs_p2 = list(Get_1762_EOM_Freqs_an1an2(init_p2_index,f_offset,f_upper))
+init_trans = list_of_inits[init_state+2]
 
-init_times_n2 = list(Get_1762_PiTimes(init_n2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_n1 = list(Get_1762_PiTimes(init_n1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_0 = list(Get_1762_PiTimes(init_0_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p1 = list(Get_1762_PiTimes(init_p1_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-init_times_p2 = list(Get_1762_PiTimes(init_p2_index,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
-
-init_freqs_array = [init_freqs_n2,init_freqs_n1,init_freqs_0,init_freqs_p1,init_freqs_p2]
-init_times_array = [init_times_n2,init_times_n1,init_times_0,init_times_p1,init_times_p2]
+init_freqs_array = list(Get_1762_EOM_Freqs_an1an2(init_trans,f_offset,f_upper))
+init_times_array = list(get_pi_times(init_trans,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
+init_pulse_time = sum(init_times_array)
 
 shelving_freq = list(Get_1762_EOM_Freqs_an1an2(shelving_transition,f_offset,f_upper))
-ShelvingPulseTime = list(Get_1762_PiTimes(shelving_transition,pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2))
+ShelvingPulseTime = list(get_pi_times(shelving_transition,[pitime_n2,pitime_n1,pitime_0,pitime_p1,pitime_p2]))
 
 output_file_freqs = fr'Z:\Lab Data\Microwave_Ramsey_Raw_data\MW_detuned_ramsey_[S, 2, 0, S, 1, 0]_{dt_string}.txt'
 
@@ -182,59 +178,22 @@ def Detuned_Ramsey(start_time, stop_time, time_step, threshold, pulse_program, s
 
         fluor_ave.append(PD)
         Wait_time_list.append(Wait_time)
-
+        x = Wait_time
+        y = PD
         plotPoint(Wait_time, PD, '1762 nm pi-time scan', plotStyle=0)
 
         Wait_time = Wait_time + time_step
+ 
+        with open(output_file_freqs,'a') as file:
+            file.write(f"{x},{y}\n")
         
     closeTrace('1762 nm pi-time scan')
-
-    def oscfunc(t, A, w, p, c, d):
-        return A * np.cos(w * t + p) * np.exp(-t / d) + c
-
-    def fit_oscillation(tt, yy):
-        tt = np.array(tt)
-        yy = np.array(yy)
-        ff = np.fft.fftfreq(len(tt), (tt[1]-tt[0]))
-        Fyy = abs(np.fft.fft(yy))
-        guess_freq = abs(ff[np.argmax(Fyy[1:])+1])
-            
-        guess_amp = np.max(yy)-np.mean(yy)
-        guess_offset = np.mean(yy)
-
-        guess = np.array([guess_amp, 2.*np.pi*guess_freq, np.pi, guess_offset, 1e4])
-        popt, pcov = curve_fit(oscfunc, tt, yy, p0=guess, maxfev=10000)
-        uncertainty = np.sqrt(pcov[1][1])
-        A, omeg, p, c, d = popt
-        f = omeg/(2.*np.pi)
-        
-        return omeg, uncertainty
-
-    
-    omega, uncertainty = fit_oscillation(Wait_time_list,fluor_ave)
-    print("firstpass_omega is", omega)
-
-    period = 2*np.pi/omega
-    pulse_time_list = np.array(pulse_time_list)
-    fluor_ave = np.array(fluor_ave)
-
-    final_pi_time = np.pi/omega
-    print("pi time is", final_pi_time)
-
-    freq_string = str(round(freq_peak,4)).replace('.','p')
-    combined_data = zip(pulse_time_list,fluor_ave)
-
-    with open(output_file_freqs,'w') as file:
-        for x,y in combined_data:
-            file.write(f"{x},{y}\n")
-
-
-    return final_pi_time
+    return Wait_time_list, fluor_ave
 
 #set_DSI12000PRO(set_freq, -10, True)
 print(set_freq)
 
-init_row1 = [1, init_freqs_array[int(init_state+2)], [0]*len(init_freqs_array[int(init_state+2)]), init_times_array[int(init_state+2)], [0]*len(init_times_array[int(init_state+2)]), 0]
+init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
 tot_init_time = np.sum(init_times_array[int(init_state+2)])
 InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")
@@ -260,8 +219,12 @@ print("Uploaded Microwave successfully.")
 
 setEvaluation('Eval3')
 
-MicrowavePulseTime = Detuned_Ramsey(start_time, stop_time, time_step, threshold, pulse_program, script_functions)
-
+start_time_list = np.linspace(0, 100e3, 11)
+stop_time_list = np.linspace(0, 100e3, 11) + 4000
+for start_time, stop_time in zip(start_time_list, stop_time_list):
+    output_file_freqs = fr'Z:\Lab Data\Microwave_Ramsey_Raw_data\MW_detuned_ramsey_[S, 2, 0, S, 1, 0]_{np.round(start_time)}-{np.round(stop_time)}_{dt_string}.txt'
+    Wait_time_list, fluor_ave = Detuned_Ramsey(start_time, stop_time, time_step, threshold, pulse_program, script_functions)
+    print(Wait_time_list, fluor_ave)
 setEvaluation('Eval2')
 
 
