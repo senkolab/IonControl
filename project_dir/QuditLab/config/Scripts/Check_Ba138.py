@@ -6,5 +6,7 @@ sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config
 from Functions_Trap import * 
 script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
 
-Set8GHzSideband(5.82,0,"ON")
+eom_493_frequency = getGlobal("Ba138_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+
+Set8GHzSideband(eom_493_frequency,0,"ON")
 (Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba138", script_functions)

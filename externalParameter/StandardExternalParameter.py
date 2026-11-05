@@ -7,6 +7,9 @@ from collections import OrderedDict
 
 import logging
 import numpy
+import math
+from urllib.error import URLError
+from urllib.request import ProxyHandler, build_opener
 import pint
 ureg = pint.UnitRegistry()
 
@@ -1165,6 +1168,109 @@ if DC_Controller_Enabled:
             return instrument_list
 
 
+
+
+Trap_RF_Attenuator_Enabled = getProject().isEnabled(
+    'hardware', 'Trap RF Attenuator'
+)
+
+if Trap_RF_Attenuator_Enabled:
+
+    class TrapRFAttenuator(ExternalParameterBase):
+        """Set and read attenuation in dB, from 0 to 30 in 0.25 dB steps."""
+
+        className = 'Trap RF Attenuator'
+        _outputChannels = OrderedDict([('Attenuation', 'dB')])
+        _inputChannels = {'Attenuation': 'dB'}
+
+        def __init__(self, name, config, globalDict, instrument):
+            ExternalParameterBase.__init__(self, name, config, globalDict)
+
+            hardware = getProject().hardware['Trap RF Attenuator'][instrument]
+            ip_address = str(hardware['ipAddress']).strip()
+            port = int(hardware.get('port') or 80)
+            if not ip_address or not 1 <= port <= 65535:
+                raise ValueError('Configure a valid ipAddress and HTTP port')
+
+            self.base_url = 'http://{}:{}'.format(ip_address, port)
+            self.timeout = 2.0  # Seconds per HTTP request.
+            # Send local instrument requests directly, bypassing proxy settings.
+            self._http = build_opener(ProxyHandler({}))
+            self.qtHelper = qtHelper()
+            self.newData = self.qtHelper.newData
+
+            model = self._command(':MN?').split('=', 1)[-1].strip()
+            if model != 'RCDAT-8000-30':
+                raise RuntimeError(
+                    'Expected RCDAT-8000-30 at {}, received {!r}'.format(
+                        self.base_url, model
+                    )
+                )
+
+            # getValue() reads the device when initializing the GUI channels.
+            self.initializeChannelsToExternals()
+            # Preserve the initialization hook used in your IonControl fork.
+            if hasattr(self, 'initOutput'):
+                self.initOutput()
+
+        def _command(self, command):
+            url = self.base_url + '/' + command
+            try:
+                with self._http.open(url, timeout=self.timeout) as response:
+                    return response.read().decode('ascii').strip()
+            except (OSError, URLError) as exc:
+                raise RuntimeError(
+                    'Trap RF Attenuator request {!r} failed at {}: {}'.format(
+                        command, self.base_url, exc
+                    )
+                ) from exc
+
+        @staticmethod
+        def _check_channel(channel):
+            if channel not in (None, 'Attenuation'):
+                raise KeyError('Unknown attenuator channel: {!r}'.format(channel))
+
+        def setValue(self, channel, val):
+            self._check_channel(channel)
+            attenuation = float(val.m_as('dB'))
+            if not math.isfinite(attenuation) or not 0 <= attenuation <= 30:
+                raise ValueError('Attenuation must be between 0 and 30 dB')
+
+            steps = round(attenuation * 4)
+            if not math.isclose(attenuation * 4, steps, rel_tol=0, abs_tol=1e-8):
+                raise ValueError('Attenuation must use 0.25 dB steps')
+
+            attenuation = steps / 4.0
+            response = self._command(':SETATT={:.2f}'.format(attenuation))
+            if response != '1':
+                raise RuntimeError(
+                    'Setting attenuation to {} dB failed: {!r}'.format(
+                        attenuation, response
+                    )
+                )
+            return Q(attenuation, 'dB'), True
+
+        def getValue(self, channel=None):
+            self._check_channel(channel)
+            response = self._command(':ATT?')
+            try:
+                attenuation = float(response)
+            except ValueError as exc:
+                raise RuntimeError('Invalid attenuation reply: {!r}'.format(response)) from exc
+            if not math.isfinite(attenuation) or not 0 <= attenuation <= 30:
+                raise RuntimeError('Invalid attenuation reply: {!r}'.format(response))
+            return Q(attenuation, 'dB')
+
+        def getExternalValue(self, channel=None):
+            return self.getValue(channel)
+
+        def getInputData(self, channel):
+            return self.getValue(channel)
+
+        @classmethod
+        def connectedInstruments(cls):
+            hardware = getProject().hardware.get('Trap RF Attenuator') or {}
+            return list(hardware.keys())
 
 
 

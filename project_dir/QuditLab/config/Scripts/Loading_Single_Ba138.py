@@ -15,7 +15,9 @@ script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllDa
 
 ResetLasers = bool(getGlobal("LasersReset"))
 
-Set8GHzSideband(5.82,0,"ON")
+eom_493_frequency = getGlobal("Ba138_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+Set8GHzSideband(eom_493_frequency, 0, "ON")
+setGlobal("Trap_RF_attn", 6, "dB")
 #os.system(f'ssh pi@192.168.168.104 python ~/pll-evalboard-synthesizer/src/Control-Programs/mw1.py 4 6.92e9')
 
 CurrLoadAttempts = getGlobal("LoadAttempts")
@@ -128,6 +130,7 @@ if IonTrapped:
     CurrWhichIon = int(getGlobal("WhichIon").magnitude)
     if not CurrWhichIon == 138:
         setGlobal("WhichIon", 138, "")
+        setGlobal("Trap_RF_attn", 0, "dB")
 else:
     WriteString = f"{time.strftime('%H:%M:%S', time.gmtime())}\tNone trapped after {AttemptCount} attempts\n"
     SaveDataToTextFile(filename0, WriteString)

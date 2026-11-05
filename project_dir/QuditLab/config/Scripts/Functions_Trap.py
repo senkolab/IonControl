@@ -5,6 +5,7 @@ import time
 import os
 import serial
 from serial.serialutil import SerialException
+from urllib.request import urlopen
 #Add the following line to package the script functions to easily send to these functions
 #script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
 
@@ -438,7 +439,7 @@ def SetDCVoltages(HorizontalVoltage,VerticalVoltage,Squeeze_1_4_V,Squeeze_2_3_V,
 
     if not "%s"%Rod_4_V == "%s V"%Rod_4_set_V:
         setGlobal("Rod_4_Voltage_V", Rod_4_set_V, "V")
-
+#493nm EOM Sideband
 def Set8GHzSideband(freq,att_db,status = "ON", max_retries=3, retry_delay=1):
 
     #ser = serial.Serial(
@@ -475,3 +476,17 @@ def Set8GHzSideband(freq,att_db,status = "ON", max_retries=3, retry_delay=1):
             attempt+=1
             time.sleep(retry_delay)
     return None
+# Trap RF Programmable attenuator 
+
+def command(cmd, BASE_URL = "http://192.168.168.9"):
+    with urlopen(f"{BASE_URL}/{cmd}", timeout=5) as response:
+        return response.read().decode("ascii").strip()
+
+def set_TrapRF_attenuation_db(db):
+    db = float(db)
+    if not 0 <= db <= 30 or db % 0.25 != 0:
+        raise ValueError("Use 0–30 dB in 0.25 dB steps")
+
+    reply = command(f":SETATT={db:.2f}")
+    if reply != "1":
+        raise RuntimeError(f"Attenuator returned: {reply!r}")

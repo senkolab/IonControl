@@ -37,6 +37,11 @@ hardware:
       enabled: false
       ipAddress: 192.168.168.26
       port: '50051'
+  Trap RF Attenuator:
+    null:
+      enabled: true
+      ipAddress: 192.168.168.9
+      port: 80
   VISA:
     null:
       enabled: true

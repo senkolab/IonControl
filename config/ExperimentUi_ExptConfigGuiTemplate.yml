@@ -89,6 +89,15 @@ hardware:
         clientKey: path
         clientCertificate: path
         rootCertificates: path
+  Trap RF Attenuator:
+    
+    description: Mini-Circuits RCDAT-8000-30 programmable attenuator
+    
+    fields:
+      
+        ipAddress: str
+      
+        port: int
   VISA:
     description: communication with peripherals (e.g. GPIB, RS232, USB, Ethernet)
   DG4000 AWG:

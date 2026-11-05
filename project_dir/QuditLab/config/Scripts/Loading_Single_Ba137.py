@@ -24,7 +24,8 @@ script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllDa
 
 ResetLasers = bool(getGlobal("LasersReset"))
 
-Set8GHzSideband(8.101,-20,"ON")
+eom_493_frequency = getGlobal("Ba137_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+Set8GHzSideband(eom_493_frequency, -20, "ON")
 #os.system(f'ssh pi@192.168.168.104 python ~/pll-evalboard-synthesizer/src/Control-Programs/mw1.py 4 8.15e9')
 
 CurrLoadAttempts = getGlobal("LoadAttempts")
