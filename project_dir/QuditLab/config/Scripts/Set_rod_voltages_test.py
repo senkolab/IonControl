@@ -1,13 +1,12 @@
 #Set_rod_voltages_test.py created 2026-09-29 11:04:44.253123
 #script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
 import numpy as np
-comm_voltage = 0.48
+comm_voltage = 0#0.48
 
-48
 
 #1762nm Coupling Co-ords for MMC
-Push_Vertical_Down = -0.06
-Push_Vertical_Up = 0.06
+Push_Vertical_Down = -0.05
+Push_Vertical_Up = 0.05
 
 # Camera Position Co-ords fpor MMC
 Push_Horizontal_Up = 0.07

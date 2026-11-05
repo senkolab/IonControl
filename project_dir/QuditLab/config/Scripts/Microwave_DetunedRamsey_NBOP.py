@@ -77,13 +77,13 @@ detuning = 0.0005
 
 set_freq = centre_freq - detuning
 
-MicrowavePulseTime = 97 #in us
+MicrowavePulseTime = 80 #in us
 pi_over_2_time = MicrowavePulseTime/2
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 start_time = 0
 stop_time = start_time + 10000
-time_step = 100
+time_step = 250
 
 
 init_state = shelving_transition[0][0]
@@ -190,7 +190,7 @@ def Detuned_Ramsey(start_time, stop_time, time_step, threshold, pulse_program, s
     closeTrace('1762 nm pi-time scan')
     return Wait_time_list, fluor_ave
 
-#set_DSI12000PRO(set_freq, -10, True)
+set_DSI12000PRO(set_freq, 0, True)
 print(set_freq)
 
 init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]

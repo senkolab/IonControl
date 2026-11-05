@@ -80,7 +80,7 @@ MicrowavePulseTime = 90 #in us
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 freq_step = 0.003 # MHz
-freq_range_factor = 10 # kHz    
+freq_range_factor = 7 # kHz    
 
 start_time = 0
 stop_time = 500
