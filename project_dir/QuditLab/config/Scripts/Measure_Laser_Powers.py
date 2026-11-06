@@ -3,6 +3,10 @@
 # Both flip mirrors (CRM and PI/UV) are flipped by one Toggle_Beam_Samplers pulse, which sends the whole beam to the meters.
 # Each beam is isolated with its Keep_*_on_only scan preset, read, and dark-subtracted. The trap state is restored on exit.
 # Needs the presets Keep_614_on_only and All_CW_beams_off made in the GUI, and the thorlabs_opm_controller package installed.
+# Revised 2026-11-05: 10 s preset hold, end-of-reading check with one retry, held_s and valid columns, per-meter skips with one
+# "Not measured:" summary, and the results table printed even if an IonControl call fails.
+# If stopped by hand: the beams may still be on the meters. Run Toggle_Beam_Samplers until the PMT counts come back, then run
+# PMT_CheckCounts_For-Script_Even to re-enable all CW AOMs.
 import sys
 import time
 from contextlib import contextmanager
@@ -30,16 +34,17 @@ DARK_PRESET = "All_CW_beams_off"
 NORMAL_PRESET = "PMT_CheckCounts_For-Script_Even"  # re-enables all CW AOMs through its InitializeShutters
 SETTLE_S = 1.0  # after startScan, let the preset take effect (the trace shows ~0.3-0.6 s of latency) before polling the meter
 # A preset's beam state lasts only as long as its program runs. RFWait of All_CW_beams_off and every Keep_* preset is bound to the global
-# LaserPowerMeasurementWait, which the script sets to WAIT_S; a reading must finish within PRESET_HOLD_S, ~1 s under that
+# LaserPowerMeasurementWait, which the script sets to WAIT_S. A reading longer than PRESET_HOLD_S only warns: the end-of-reading check is what
+# catches a program that ended mid-reading (rework plan approved by Collin 2026-11-05)
 WAIT_GLOBAL = "LaserPowerMeasurementWait"
-WAIT_S = 6.0
-PRESET_HOLD_S = WAIT_S - 1.0
+WAIT_S = 10.0
+PRESET_HOLD_S = WAIT_S - 2.0
 COUNT = 20  # host-side samples averaged per reading (saved as n_samples)
 MS_PER_AVERAGE = 3.0  # nominal integration time of one meter sample per unit of hardware averaging on the PM16 (thorlabs_opm_controller docs/usage.md)
 SETTLE_POLL_S = 0.25  # after a preset starts, poll the meter until the last SETTLE_WINDOW readings agree, then average
 SETTLE_MAX_S = 10.0
 SETTLE_WINDOW = 4
-SETTLE_REL = 0.01  # readings agree when their spread is within this fraction of their mean plus SETTLE_ABS_UW
+SETTLE_REL = 0.03  # readings agree when their spread is within this fraction of their mean plus SETTLE_ABS_UW; 0.01 never settled on 1% flicker
 SETTLE_ABS_UW = 0.05
 ROUTING_FACTOR = 10.0  # first beam must read at least this many times the dark reading
 MAX_DARK_UW = 1.0  # a dark reading above this means light is reaching the meter with every CW beam supposedly off; abort rather than misreport routing
@@ -49,6 +54,11 @@ RESULTS_SUBFOLDER = "Laser Powers"  # inside today's Sessions folder, so the res
 
 # Mirror bookkeeping: there is no state readback, so count toggles in total and since the routing check last confirmed the beams on a meter
 mirrors = dict(total=0, since_verified=0, verified=False, retried=False)
+
+
+# Raised to skip one meter's beams for a reason the script found itself (the reason is the message); the other meter still runs
+class MeterSkipped(Exception):
+    pass
 
 
 # Function run_preset: select a scan preset and run it to completion, then stop. Fine for the mirror toggle (a mechanical flip), but beam states
@@ -61,18 +71,22 @@ def run_preset(name):
 
 # Function preset_held: start a preset without waiting and keep it open, so its beam state is applied inside the with block; stopScan on exit.
 # The beam state only lasts while the preset's program runs (RFWait); when it exits the apparatus returns to its default state at once, so the
-# block must finish within PRESET_HOLD_S or the readings are of the default state
+# block should finish within PRESET_HOLD_S. Yields a dict whose "s" is set to the time held, in s, when the block ends
 @contextmanager
 def preset_held(name):
     setScan(name)
     startScan(globalOverrides=list(), wait=False)
     started = time.time()
+    hold = dict(s=float("nan"))
     try:
-        yield
-        held = time.time() - started
-        if held > PRESET_HOLD_S:
-            consolePrint(f"{name}: reading took {held:0.1f} s, longer than the {PRESET_HOLD_S:0.0f} s the preset's program is set to run; raise WAIT_S, and check this preset's RFWait is bound to {WAIT_GLOBAL}", error=True)
-            raise RuntimeError(f"{name} program may have ended before the reading finished")
+        yield hold
+        hold["s"] = time.time() - started
+        if hold["s"] > PRESET_HOLD_S:
+            consolePrint(
+                f"{name}: reading took {hold['s']:0.1f} s, within {WAIT_S - hold['s']:0.1f} s of the {WAIT_S:0.0f} s the preset's program runs; raise WAIT_S, "
+                f"and check this preset's RFWait is bound to {WAIT_GLOBAL}",
+                error=True,
+            )
     finally:
         stopScan()
 
@@ -104,6 +118,11 @@ def read_uW(pm, wavelength_nm):
     return r, r.value * 1e6, stdev_uW
 
 
+# Function tolerance_uW: how far apart two readings near mean_uW may be and still count as the same light, in uW
+def tolerance_uW(mean_uW):
+    return SETTLE_REL * abs(mean_uW) + SETTLE_ABS_UW
+
+
 # Function wait_stable: poll the meter until the last SETTLE_WINDOW readings agree, so the average is not taken while the beams or the meter are
 # still changing. Warns and carries on if it never settles within SETTLE_MAX_S. Returns True if it settled
 def wait_stable(pm, wavelength_nm, what):
@@ -114,7 +133,7 @@ def wait_stable(pm, wavelength_nm, what):
         recent = recent[-SETTLE_WINDOW:]
         if len(recent) == SETTLE_WINDOW:
             mean = sum(recent) / SETTLE_WINDOW
-            if max(recent) - min(recent) <= SETTLE_REL * abs(mean) + SETTLE_ABS_UW:
+            if max(recent) - min(recent) <= tolerance_uW(mean):
                 return True
         time.sleep(SETTLE_POLL_S)
     consolePrint(
@@ -132,40 +151,64 @@ def range_text(row):
     return f"> {row['min_uW']:0.0f}" if row["max_uW"] is None else f"{row['min_uW']:0.0f}-{row['max_uW']:0.0f}"
 
 
-# Function measure_beam: isolate one beam, wait, read. Returns a row dict with the raw (not dark-subtracted) power
+# Function read_held: run a preset, wait for the meter to settle, average, then read once more inside the preset. If that last read disagrees
+# with the average, the preset's program probably ended mid-reading (the apparatus snaps back to its default beams), so run the preset once more.
+# Returns (Reading, power_uW, stdev_uW, held_s, valid); valid is False if the retry also failed or the script was stopped before it
+def read_held(pm, preset, wavelength_nm, what):
+    for attempt in (1, 2):
+        with preset_held(preset) as hold:
+            time.sleep(SETTLE_S)
+            wait_stable(pm, wavelength_nm, what)
+            r, value, stdev = read_uW(pm, wavelength_nm)
+            check = pm.read() * 1e6
+        if abs(check - value) <= tolerance_uW(value):
+            return r, value, stdev, hold["s"], True
+        if attempt == 1 and not scriptIsStopped():
+            consolePrint(
+                f"{what}: read {check:0.3f} uW at the end against an average of {value:0.3f} uW, so {preset}'s program probably ended mid-reading; retrying",
+                error=True,
+            )
+        else:
+            break
+    consolePrint(f"{what}: reading still not steady to the end of {preset} ({check:0.3f} against {value:0.3f} uW); marking it invalid", error=True)
+    return r, value, stdev, hold["s"], False
+
+
+# Function measure_beam: isolate one beam, wait, read. Returns a row dict with the raw (not dark-subtracted) power, nan if the reading is invalid
 def measure_beam(pm, beam):
     label, wavelength, meter, preset, lo, hi = beam
-    with preset_held(preset):
-        time.sleep(SETTLE_S)
-        wait_stable(pm, wavelength, f"{meter} {label} nm")
-        r, raw, stdev = read_uW(pm, wavelength)
+    r, raw, stdev, held, valid = read_held(pm, preset, wavelength, f"{meter} {label} nm")
     return dict(
         timestamp=r.timestamp,
         label=label,
         lambda_req=r.wavelength_requested,
         lambda_used=r.wavelength,
         clamped=r.clamped,
-        raw_uW=raw,
-        stdev_uW=stdev,
+        raw_uW=raw if valid else float("nan"),
+        stdev_uW=stdev if valid else float("nan"),
         n_samples=COUNT,
         integration_ms=integration_ms(pm),
+        held_s=held,
+        valid=valid,
         min_uW=lo,
         max_uW=hi,
     )
 
 
-# Function integration_ms: integration time of one sample, in ms = the meter's current hardware averaging count (SENS:AVER:COUN) x MS_PER_AVERAGE.
-# The script leaves the averaging as the meter has it, so ask the meter; nan if it can't say
+# Function integration_ms: nominal integration time of one sample, in ms. The PM16-120 rejects SENS:AVER:COUN? with -113 (lab PC, 2026-10-14)
+# and the driver's retry leaves two errors queued that fail the next command, so the meter is never asked: this assumes hardware averaging of 1
 def integration_ms(pm):
-    try:
-        return float(pm._query("SENS:AVER:COUN?")) * MS_PER_AVERAGE
-    except Exception:
-        return float("nan")
+    return MS_PER_AVERAGE
 
 
 # Function summarize: one-line list of the raw readings of some rows
 def summarize(rows):
     return ", ".join("%s nm %0.3f uW" % (row["label"], row["raw_uW"]) for row in rows)
+
+
+# Function reaches_meter: whether any valid reading among the rows clears the routing threshold
+def reaches_meter(rows, threshold):
+    return any(row["valid"] and row["raw_uW"] >= threshold for row in rows)
 
 
 # Function measure_beams: measure each beam of a meter in turn, stopping early if the script is stopped. Returns the rows
@@ -180,23 +223,22 @@ def measure_beams(pm, beams):
 
 # Function measure_meter: dark reading, then every beam of this meter. The routing check is that at least one beam clears ROUTING_FACTOR x dark: if
 # none does, the mirrors are probably the wrong way round, so toggle and measure again. If some do and others don't, the mirrors are right and the
-# dark-level beams are off or blocked, which is reported per beam rather than aborting. Returns the rows
+# dark-level beams are off or blocked, which is reported per beam rather than aborting. Raises MeterSkipped to skip this meter. Returns the rows
 def measure_meter(pm, key, beams):
-    with preset_held(DARK_PRESET):
-        time.sleep(SETTLE_S)
-        wait_stable(pm, beams[0][1], f"{key} dark")
-        r, dark, dark_stdev = read_uW(pm, beams[0][1])
-    consolePrint(f"{key}: dark = {dark:0.3f} uW (stdev {dark_stdev:0.3f})")
+    r, dark, dark_stdev, held, valid = read_held(pm, DARK_PRESET, beams[0][1], f"{key} dark")
+    if not valid:
+        raise MeterSkipped("dark reading unreliable")
+    consolePrint(f"{key}: dark = {dark:0.3f} uW (stdev {dark_stdev:0.3f}), held {held:0.1f} s of {WAIT_S:0.0f} s")
     if dark > MAX_DARK_UW:
         consolePrint(
             f"{key}: dark reading {dark:0.1f} uW is above {MAX_DARK_UW:0.1f} uW, so something is still lighting this meter with {DARK_PRESET} running "
-            f"(a beam the preset does not close, or stray light); aborting",
+            f"(a beam the preset does not close, or stray light); skipping this meter",
             error=True,
         )
-        raise RuntimeError(f"{key} dark reading too high")
+        raise MeterSkipped("dark reading too high")
     threshold = ROUTING_FACTOR * max(dark, MIN_SIGNAL_UW)
     rows = measure_beams(pm, beams)
-    if rows and not any(row["raw_uW"] >= threshold for row in rows):
+    if rows and not reaches_meter(rows, threshold):
         consolePrint(
             f"{key}: no beam reaches the meter (all below {threshold:0.3f} uW: {summarize(rows)}); mirrors probably the wrong way round, toggling",
             error=True,
@@ -204,14 +246,14 @@ def measure_meter(pm, key, beams):
         mirrors["retried"] = True
         toggle_mirrors()
         rows = measure_beams(pm, beams)
-        if rows and not any(row["raw_uW"] >= threshold for row in rows):
-            consolePrint(f"{key}: still no beam reaches the meter after toggling the mirrors ({summarize(rows)}); aborting", error=True)
-            raise RuntimeError(f"{key} meter routing check failed")
-    if any(row["raw_uW"] >= threshold for row in rows):
+        if rows and not reaches_meter(rows, threshold):
+            consolePrint(f"{key}: still no beam reaches the meter after toggling the mirrors ({summarize(rows)}); skipping this meter", error=True)
+            raise MeterSkipped("routing check failed")
+    if reaches_meter(rows, threshold):
         mirrors["verified"] = True
         mirrors["since_verified"] = 0
     for row in rows:
-        if row["raw_uW"] < threshold and mirrors["verified"]:
+        if row["valid"] and row["raw_uW"] < threshold and mirrors["verified"]:
             consolePrint(
                 f"{key}: {row['label']} nm reads {row['raw_uW']:0.3f} uW, at the dark level although other beams reach the meter, so this beam is off or "
                 f"blocked: check its preset and path",
@@ -219,8 +261,36 @@ def measure_meter(pm, key, beams):
             )
         row["dark_uW"] = dark
         row["power_uW"] = row["raw_uW"] - dark
-        row["in_tol"] = row["power_uW"] >= row["min_uW"] and (row["max_uW"] is None or row["power_uW"] <= row["max_uW"])
+        row["in_tol"] = row["valid"] and row["power_uW"] >= row["min_uW"] and (row["max_uW"] is None or row["power_uW"] <= row["max_uW"])
     return rows
+
+
+# Function print_summary: mirror warning, results table, what was not measured, and where the file went. Called from the finally block so the
+# readings already taken are reported even when an IonControl call fails
+def print_summary():
+    if mirrors["retried"]:
+        consolePrint(
+            "The mirrors were not where the script assumed; the two flip mirrors toggle together and may be out of step, so check the PMT counts",
+            error=True,
+        )
+    # The table is printed as one consolePrint so IonControl's per-statement "Executing ..." echo lines can't get between its rows
+    table = ["| Laser (nm) | Power (\u00b5W) | Notes |", "|---|---|---|"]  # \u00b5 escape: IonControl reads scripts in the Windows codepage, keep the source ASCII
+    for row in all_rows:
+        notes = []
+        if not row["valid"]:
+            notes.append("invalid reading")
+        else:
+            if row["clamped"]:
+                notes.append(f"read at {row['lambda_used']:0.0f} nm")
+            if not row["in_tol"]:
+                notes.append(f"outside {range_text(row)} \u00b5W")
+        table.append(f"| {row['label']} | {row['power_uW']:0.1f} | {'; '.join(notes) or '-'} |")
+    # Blank lines either side: Markdown only starts a table after a blank line and a following non-table line becomes one of its rows, so the
+    # copied block carries its own separation from whatever surrounds it in the note
+    consolePrint("\n" + "\n".join(table) + "\n")
+    if not_measured:
+        consolePrint("Not measured: " + "; ".join(not_measured), error=True)
+    consolePrint(f"Saved to {path}")
 
 
 # The first call makes sure today's Sessions folder exists and returns it; the file is then numbered inside the results subfolder
@@ -229,11 +299,13 @@ makeRelativeDirectory(day_folder, RESULTS_SUBFOLDER)
 path, folder = GetDataFilePath(RESULTS_SUBFOLDER + "\\" + f"Laser_Powers_{time.strftime('%H%M')}_*.txt")
 SaveDataToTextFile(
     path,
-    "timestamp, label, lambda_req_nm, lambda_used_nm, clamped, power_uW, stdev_uW, n_samples, integration_ms, dark_uW, min_uW, max_uW, in_tol",
+    "timestamp, label, lambda_req_nm, lambda_used_nm, clamped, power_uW, stdev_uW, n_samples, integration_ms, held_s, valid, dark_uW, min_uW, max_uW, "
+    "in_tol",
 )
 setGlobal(WAIT_GLOBAL, WAIT_S, "s")  # raises if the global does not exist, before anything moves
 createTrace("Laser power (uW)", TRACE_PLOT, xLabel="Wavelength (nm)")
 all_rows = []
+not_measured = []  # "<meter> (<reason>)" or "<label> nm (invalid reading)", printed as one line at the end
 try:
     toggle_mirrors()
     for key in METERS:
@@ -245,40 +317,34 @@ try:
                 rows = measure_meter(pm, key, beams)
         except OpmError as err:
             consolePrint(f"{key}: meter failed, skipping its beams: {err}", error=True)
+            not_measured.append(f"{key} (meter failed: {err})")
+            continue
+        except MeterSkipped as err:
+            not_measured.append(f"{key} ({err})")
             continue
         for row in rows:
             stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(row["timestamp"]))
             SaveDataToTextFile(
                 path,
                 f"{stamp}, {row['label']}, {row['lambda_req']:0.1f}, {row['lambda_used']:0.1f}, {row['clamped']}, "
-                f"{row['power_uW']:0.3f}, {row['stdev_uW']:0.3f}, {row['n_samples']}, {row['integration_ms']:0.1f}, {row['dark_uW']:0.3f}, {row['min_uW']:0.1f}, {range_hi(row)}, {row['in_tol']}",
+                f"{row['power_uW']:0.3f}, {row['stdev_uW']:0.3f}, {row['n_samples']}, {row['integration_ms']:0.1f}, {row['held_s']:0.1f}, {row['valid']}, "
+                f"{row['dark_uW']:0.3f}, {row['min_uW']:0.1f}, {range_hi(row)}, {row['in_tol']}",
             )
+            if not row["valid"]:
+                consolePrint(f"{row['label']} nm: invalid reading, not plotted (held {row['held_s']:0.1f} s of {WAIT_S:0.0f} s)", error=True)
+                not_measured.append(f"{row['label']} nm (invalid reading)")
+                continue
             consolePrint(
-                f"{row['label']} nm: {row['power_uW']:0.2f} uW (want {range_text(row)})", error=not row["in_tol"]
+                f"{row['label']} nm: {row['power_uW']:0.2f} uW (want {range_text(row)}), held {row['held_s']:0.1f} s of {WAIT_S:0.0f} s",
+                error=not row["in_tol"],
             )
             plotPoint(row["lambda_req"], row["power_uW"], "Laser power (uW)", plotStyle=2)
         all_rows.extend(rows)
 finally:
-    # Send the beams back to the trap, then re-enable all CW AOMs
-    restore_mirrors()
-    run_preset(NORMAL_PRESET)
-    closeTrace("Laser power (uW)")
-
-if mirrors["retried"]:
-    consolePrint(
-        "The mirrors were not where the script assumed; the two flip mirrors toggle together and may be out of step, so check the PMT counts",
-        error=True,
-    )
-# The table is printed as one consolePrint so IonControl's per-statement "Executing ..." echo lines can't get between its rows
-table = ["| Laser (nm) | Power (\u00b5W) | Notes |", "|---|---|---|"]  # \u00b5 escape: IonControl reads scripts in the Windows codepage, keep the source ASCII
-for row in all_rows:
-    notes = []
-    if row["clamped"]:
-        notes.append(f"read at {row['lambda_used']:0.0f} nm")
-    if not row["in_tol"]:
-        notes.append(f"outside {range_text(row)} \u00b5W")
-    table.append(f"| {row['label']} | {row['power_uW']:0.1f} | {'; '.join(notes) or '-'} |")
-# Blank lines either side: Markdown only starts a table after a blank line and a following non-table line becomes one of its rows, so the copied
-# block carries its own separation from whatever surrounds it in the note
-consolePrint("\n" + "\n".join(table) + "\n")
-consolePrint(f"Saved to {path}")
+    try:
+        # Send the beams back to the trap, then re-enable all CW AOMs
+        restore_mirrors()
+        run_preset(NORMAL_PRESET)
+        closeTrace("Laser power (uW)")
+    finally:
+        print_summary()
