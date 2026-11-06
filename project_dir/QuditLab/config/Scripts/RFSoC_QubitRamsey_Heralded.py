@@ -56,7 +56,7 @@ detunings = [0]
 s12_level = probe_trans[0][0]
 
 stop_time = 1700.1
-start_time = 1400.1
+start_time = 0.1
 time_step = 100
 
 f_offset = float(getGlobal('f_offset'))

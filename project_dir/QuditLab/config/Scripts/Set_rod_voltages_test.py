@@ -5,8 +5,8 @@ comm_voltage = 0#0.48
 
 
 #1762nm Coupling Co-ords for MMC
-Push_Vertical_Down = -0.05
-Push_Vertical_Up = 0.05
+Push_Vertical_Down = -0.04
+Push_Vertical_Up = 0.04
 
 # Camera Position Co-ords fpor MMC
 Push_Horizontal_Up = 0.07

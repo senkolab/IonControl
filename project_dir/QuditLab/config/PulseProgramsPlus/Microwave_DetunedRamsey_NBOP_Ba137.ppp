@@ -19,6 +19,7 @@ masked_shutter AllLasersOn
 masked_shutter Just650Laser
 masked_shutter Shutter614nm
 masked_shutter F1MechShutter
+masked_shutter Mechanical_shutter_493nm
 #masked_shutter test
 
 
@@ -251,7 +252,9 @@ while not pipe_empty():
         if OpticalPumpTime>0:
             optical_pump()
 
-
+        set_inv_shutter(Mechanical_shutter_493nm)
+        update(MechShutter614Wait)
+        
         if LineTriggerBool>0:
             wait_trigger(TriggerCondition)
             update(LineTrigWait)
@@ -259,7 +262,8 @@ while not pipe_empty():
         Microwave_Ramsey()  
 
         pulse_shelving()
-
+        set_shutter(Mechanical_shutter_493nm)
+        update(MechShutter614Wait)
       
         turn_on_fluorescence()
         get_PMT_count()
