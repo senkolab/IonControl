@@ -1,13 +1,5 @@
 #Microwave_FrequencyScans_NBOP.py created 2026-08-13 11:08:33.276135
 
-#Raman_FrequencyScan_NBOP.py created 2026-07-31 11:36:52.300832
-
-#RFSoC_FrequencyScansPiTimeCalibrations_NBOP.py created 2025-09-26 19:55:38.769639
-'''
-
-This script does frequency scans (and optionally pi-time calibrations) using RFSoC. 
-
-'''
 import time
 import json
 import urllib.request
@@ -76,15 +68,33 @@ InitReps = 0
 #target_freq = 8028.89995 #in MHz [2,2,1,1]
 
 centre_freq = 8037.75032 #in MHz [2,0,1,0]
-MicrowavePulseTime = 90 #in us
+MicrowavePulseTime = 34 #in us
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
-freq_step = 0.003 # MHz
-freq_range_factor = 7 # kHz    
+centre_freq = 8029.020 #in MHz [2,-2,1,-1]
+MicrowavePulseTime = 21 #in us
+shelving_transition  = [[-2,4,-4],[-2,3,-3],[-2,3,-2]]
+
+#centre_freq = 8046.470548 #in MHz [2,2,1,1]
+#MicrowavePulseTime = 21 #in us
+#shelving_transition  = [[2,4,2],[2,4,3],[2,4,4]]
+
+centre_freq = 8034.844 #in MHz [2,-1,1,0]
+MicrowavePulseTime = 33 #in us
+shelving_transition  = [[-1,4,-3],[-1,3,0],[-1,3,-1]]
+
+
+centre_freq = 8031.935 #in MHz [2,-1,1,-1]
+MicrowavePulseTime = 39 #in us
+shelving_transition  = [[-1,4,-3],[-1,3,0],[-1,3,-1]]
+
+
+freq_step = 0.004 # MHz
+freq_range_factor = 10 # kHz    
 
 start_time = 0
-stop_time = 500
-time_step = 10
+stop_time = 300
+time_step = 4
 
 '''
 target_freq = 8031.85285 + 0.085#in MHz [2,1,1,1] (11.707 MHz)
@@ -177,11 +187,11 @@ def findResonance_withfit_plotPD(init_state, ShelvingPulseTime, start_freq, stop
     dummy_counter = 0
 
     print(set_freq,ShelvingPulseTime)
-    print(init_freqs_array[int(init_state+2)],init_times_array[int(init_state+2)])
+    #print(init_freqs_array[int(init_state+2)],init_times_array[int(init_state+2)])
 
     init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
-    tot_init_time = np.sum(init_times_array[int(init_state+2)])
+    tot_init_time = np.sum(init_times_array)
     InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")
     if not "%s"%InitShelvingTime == "%s us"%tot_init_time:
         setGlobal("Init_Shelving_Pulse_Time", tot_init_time, "us")
@@ -396,7 +406,7 @@ if do_pi_time_calibration:
 
     init_row1 = [1, init_freqs_array, [0]*len(init_freqs_array), init_times_array, [0]*len(init_times_array), 0]
 
-    tot_init_time = np.sum(init_times_array[int(init_state+2)])
+    tot_init_time = np.sum(init_times_array)
     InitShelvingTime = getGlobal("Init_Shelving_Pulse_Time")
     if not "%s"%InitShelvingTime == "%s us"%tot_init_time:
         setGlobal("Init_Shelving_Pulse_Time", tot_init_time, "us")

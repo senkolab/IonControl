@@ -77,13 +77,13 @@ detuning = 0.0005
 
 set_freq = centre_freq - detuning
 
-MicrowavePulseTime = 80 #in us
+MicrowavePulseTime = 34 #in us
 pi_over_2_time = MicrowavePulseTime/2
 shelving_transition  = [[0,2,0],[0,4,-2],[0,3,2]]
 
 start_time = 0
 stop_time = start_time + 10000
-time_step = 400
+time_step = 100
 
 
 init_state = shelving_transition[0][0]
@@ -219,8 +219,8 @@ print("Uploaded Microwave successfully.")
 
 setEvaluation('Eval3')
 
-start_time_list = np.linspace(1250e3, 1251e3, 1)
-stop_time_list = np.linspace(1250e3, 1251e3, 1) + 4000
+start_time_list = np.linspace(0e3, 1251e3, 3)
+stop_time_list = np.linspace(0e3, 1251e3, 3) + 4000
 for start_time, stop_time in zip(start_time_list, stop_time_list):
     output_file_freqs = fr'Z:\Lab Data\Microwave_Ramsey_Raw_data\MW_detuned_ramsey_[S, 2, 0, S, 1, 0]_{np.round(start_time)}-{np.round(stop_time)}_{dt_string}.txt'
     Wait_time_list, fluor_ave = Detuned_Ramsey(start_time, stop_time, time_step, threshold, pulse_program, script_functions)
