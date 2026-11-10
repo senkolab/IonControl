@@ -46,7 +46,7 @@ line_trigger_wait = 0
 Side_band_cooling_reps = 0
 Take_calibrations = True
 
-probe_trans = [[0, 4, -2]]
+probe_trans = [[0, 2, 0]]
 
 pulse_train = [probe_trans[0], [0,0,0], probe_trans[0]]
 fractions_U1 = [0.5,0]
@@ -57,7 +57,7 @@ s12_level = probe_trans[0][0]
 
 stop_time = 1700.1
 start_time = 0.1
-time_step = 100
+time_step = 250
 
 f_offset = float(getGlobal('f_offset'))
 f_upper = float(getGlobal('f_upper'))

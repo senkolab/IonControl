@@ -1,7 +1,7 @@
 #Set_rod_voltages_test.py created 2026-09-29 11:04:44.253123
 #script_functions = (getGlobal, setGlobal, setScan, startScan, stopScan, getAllData)
 import numpy as np
-comm_voltage = 0#0.48
+comm_voltage = 0.47
 
 
 #1762nm Coupling Co-ords for MMC

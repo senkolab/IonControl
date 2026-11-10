@@ -17,8 +17,9 @@ def upload_rows(rows, time_unit="us"):
  
 micro_freq = 604.5734#+ 20.784 # MHz
 micro_freq = 598.0192#+ 20.784 # MHz
-micro_freq = 610.779 + 20.734# 1.2906#+ 20.737# + 20.777# MHz
+micro_freq = 610.7772 + 20.739# 1.2906#+ 20.737# + 20.777# MHz
 #micro_freq = 606.0584#
+micro_freq = 610.7743 #MHz
 rows = [
     [1, [micro_freq], [0], [10e6], [0], 0]
     #[2, [610], [0], [10], [0], 0]
