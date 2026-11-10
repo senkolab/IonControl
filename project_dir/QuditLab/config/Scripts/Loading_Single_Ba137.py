@@ -26,6 +26,7 @@ ResetLasers = bool(getGlobal("LasersReset"))
 
 eom_493_frequency = getGlobal("Ba137_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
 Set8GHzSideband(eom_493_frequency, -20, "ON")
+setGlobal("Trap_RF_attn", 6, "dB")
 #os.system(f'ssh pi@192.168.168.104 python ~/pll-evalboard-synthesizer/src/Control-Programs/mw1.py 4 8.15e9')
 
 CurrLoadAttempts = getGlobal("LoadAttempts")
@@ -132,7 +133,8 @@ while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 
     setGlobal("LoadAttempts", AttemptCount, "")
     
     if IonTrapped and Check_Ba138:
-        Ba138_Present = Check_Ba138_Present(PulseAblationDummyProgram, 5.82, 4, script_functions)
+        eom_493_frequency_ba138 = getGlobal("Ba13_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+        Ba138_Present = Check_Ba138_Present(PulseAblationDummyProgram, eom_493_frequency_ba138, 4, script_functions)
         if Ba138_Present:
             IonTrapped = False
             Ba138_Counter +=1
@@ -143,7 +145,7 @@ while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 
     #else:
     #?    pass
     # We need this in case we check for Ba138!
-    Set8GHzSideband(8.101,-20,"ON")
+    Set8GHzSideband(eom_493_frequency, -20, "ON")
     print("Attempts: ", AttemptCount, " Ba138 Count: ", Ba138_Counter)
     (Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba137", script_functions)
     # end of if IonTrapped indent
@@ -157,7 +159,7 @@ while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 
 
         (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
         IonTrapped = CheckIonTrappedWithBa138Check(ydataAvg, ydataStd, AttemptCount, Ba138_Counter, "Ba137", script_functions)
-
+        setGlobal("Trap_RF_attn", 0, "dB")
 if CurrPMTInt != TrapPMTInt:
     setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
 setEvaluation('Eval2')
