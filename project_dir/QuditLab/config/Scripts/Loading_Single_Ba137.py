@@ -133,7 +133,7 @@ while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 
     setGlobal("LoadAttempts", AttemptCount, "")
     
     if IonTrapped and Check_Ba138:
-        eom_493_frequency_ba138 = getGlobal("Ba13_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+        eom_493_frequency_ba138 = getGlobal("Ba138_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
         Ba138_Present = Check_Ba138_Present(PulseAblationDummyProgram, eom_493_frequency_ba138, 4, script_functions)
         if Ba138_Present:
             IonTrapped = False
