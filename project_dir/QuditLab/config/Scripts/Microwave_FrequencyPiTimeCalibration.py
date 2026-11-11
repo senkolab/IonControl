@@ -81,7 +81,7 @@ pulse_program = "Microwave_Calibration_NBOP_Ba137"
 
 threshold = 11
 F1PumpTime = 1.5
-F1PumpReps = 60
+F1PumpReps = 35
 InitReps = 0
 
 freq_step = 0.004 # MHz
