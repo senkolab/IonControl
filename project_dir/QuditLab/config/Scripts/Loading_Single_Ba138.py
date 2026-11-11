@@ -69,68 +69,79 @@ SaveDataToTextFile(filename0, WriteString)
 IonTrapped = False
 AttemptCount = 0
 ZeroNeutralCount = 0
-while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 10:
-    if scriptIsStopped():
-        if CurrPMTInt != TrapPMTInt:
-            setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
-        WriteString = f"{time.strftime('%H:%M:%S', time.gmtime())}\tNone trapped after {AttemptCount} attempts\n"
-        SaveDataToTextFile(filename0, WriteString)
-        break
+OutcomeWritten = False
+EndNote = ""
+# Every exit writes exactly one outcome line. After Stop, IonControl script functions return None without
+# acting (Script.scriptFunction), so the next getAllData()[...] or getGlobal(...).magnitude raises and, without
+# this, the run ended with only its Metadata line. The finally clause uses plain file I/O only.
+try:
+    while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 10:
+        if scriptIsStopped():
+            break
+            
+        if AttemptCount == 0:
+            AblationPulsesDummy = getGlobal("AblationPulsesDummy")
+            if AblationPulsesDummy != 1:
+                setGlobal("AblationPulsesDummy", 1, "")
+            setScan(PulseAblationDummyProgram)
+            startScan(globalOverrides=list(), wait=False)
+            stopScan()
+            if AblationPulsesDummy != 1:
+                setGlobal("AblationPulsesDummy", AblationPulsesDummy, "")
+            #AttemptCount += 1
+        FlushTrapRF(script_functions)
         
-    if AttemptCount == 0:
-        AblationPulsesDummy = getGlobal("AblationPulsesDummy")
-        if AblationPulsesDummy != 1:
-            setGlobal("AblationPulsesDummy", 1, "")
+        (BGydataAvg, BGydataStd) = GetPMTCounts(BGCountsProgram, script_functions, bg=True) 
+
+        setScan(PulseAblationProgram)
+        startScan(globalOverrides=list(), wait=True)
+        data = getAllData()['PMT Count'] #Returns all data associated with scan.
+        NeutralCounts = data[1]
+        stopScan()
+
+        print(f"\n Neutral counts is:{NeutralCounts[0]}\n")
+        if NeutralCounts[0] <= 0.1:
+            ZeroNeutralCount += 1
+        else:
+            ZeroNeutralCount = 0
+        WriteStringNC = f"{NeutralCounts[0]:0.1f}\n"
+        SaveDataToTextFile(filenameNC, WriteStringNC)
+
         setScan(PulseAblationDummyProgram)
         startScan(globalOverrides=list(), wait=False)
+        SweepCool493650(Freq493, Freq650, CoolSweepsNum, script_functions)
+        #SweepCool493(Freq493, CoolSweepsNum, script_functions)
+
         stopScan()
-        if AblationPulsesDummy != 1:
-            setGlobal("AblationPulsesDummy", AblationPulsesDummy, "")
-        #AttemptCount += 1
-    FlushTrapRF(script_functions)
-    
-    (BGydataAvg, BGydataStd) = GetPMTCounts(BGCountsProgram, script_functions, bg=True) 
+        
+        (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
+        AttemptCount += 1
+        setGlobal("LoadAttempts", AttemptCount, "")
+        IonTrapped = CheckIonTrappedNoIsotopeCycle(ydataAvg, ydataStd, AttemptCount, "Ba138", script_functions)
+        gc.collect()
+    if CurrPMTInt != TrapPMTInt:
+        setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
 
-    setScan(PulseAblationProgram)
-    startScan(globalOverrides=list(), wait=True)
-    data = getAllData()['PMT Count'] #Returns all data associated with scan.
-    NeutralCounts = data[1]
-    stopScan()
-
-    print(f"\n Neutral counts is:{NeutralCounts[0]}\n")
-    if NeutralCounts[0] <= 0.1:
-        ZeroNeutralCount += 1
-    else:
-        ZeroNeutralCount = 0
-    WriteStringNC = f"{NeutralCounts[0]:0.1f}\n"
-    SaveDataToTextFile(filenameNC, WriteStringNC)
-
-    setScan(PulseAblationDummyProgram)
-    startScan(globalOverrides=list(), wait=False)
-    SweepCool493650(Freq493, Freq650, CoolSweepsNum, script_functions)
-    #SweepCool493(Freq493, CoolSweepsNum, script_functions)
-
-    stopScan()
-    
-    (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
-    AttemptCount += 1
-    setGlobal("LoadAttempts", AttemptCount, "")
-    IonTrapped = CheckIonTrappedNoIsotopeCycle(ydataAvg, ydataStd, AttemptCount, "Ba138", script_functions)
-    gc.collect()
-if CurrPMTInt != TrapPMTInt:
-    setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
-
-if len(NeutralCounts) > 1:
-    NeutralString = f"{np.mean(NeutralCounts):0.1f}, {np.std(NeutralCounts):0.1f}"
-else:
-    NeutralString = f"{NeutralCounts[0]:0.1f}"
-if IonTrapped:
-    WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tTrapped after {AttemptCount} attempts, Ion counts: {ydataAvg:0.1f}, {ydataStd:0.1f} std, Neutral counts: {NeutralString}\n"
-    SaveDataToTextFile(filename0, WriteString)
-    CurrWhichIon = int(getGlobal("WhichIon").magnitude)
-    if not CurrWhichIon == 138:
-        setGlobal("WhichIon", 138, "")
+    if IonTrapped:
+        if len(NeutralCounts) > 1:
+            NeutralString = f"{np.mean(NeutralCounts):0.1f}, {np.std(NeutralCounts):0.1f}"
+        else:
+            NeutralString = f"{NeutralCounts[0]:0.1f}"
+        WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tTrapped after {AttemptCount} attempts, Ion counts: {ydataAvg:0.1f}, {ydataStd:0.1f} std, Neutral counts: {NeutralString}\n"
+        SaveDataToTextFile(filename0, WriteString)
+        OutcomeWritten = True
+        CurrWhichIon = int(getGlobal("WhichIon").magnitude)
+        if not CurrWhichIon == 138:
+            setGlobal("WhichIon", 138, "")
         setGlobal("Trap_RF_attn", 0, "dB")
-else:
-    WriteString = f"{time.strftime('%H:%M:%S', time.gmtime())}\tNone trapped after {AttemptCount} attempts\n"
-    SaveDataToTextFile(filename0, WriteString)
+    elif scriptIsStopped():
+        EndNote = " (script stopped)"
+    elif ZeroNeutralCount >= 10:
+        EndNote = " (no neutral fluorescence)"
+except Exception as e:
+    EndNote = " (script stopped)" if scriptIsStopped() else f" (error: {type(e).__name__})"
+    raise
+finally:
+    if not OutcomeWritten:
+        WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tNone trapped after {AttemptCount} attempts{EndNote}\n"
+        SaveDataToTextFile(filename0, WriteString)
