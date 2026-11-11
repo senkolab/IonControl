@@ -78,104 +78,117 @@ setGlobal("Ba138_Positives", Ba138_Counter, "")
 ZeroNeutralCount = 0
 
 setEvaluation('Eval3')
-while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 20:
-    if scriptIsStopped():
-        WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tNothing trapped after {AttemptCount} attempts\n"
-        SaveDataToTextFile(filename0, WriteString)
-        break
+OutcomeWritten = False
+EndNote = ""
+# Every exit writes exactly one outcome line. After Stop, IonControl script functions return None without
+# acting (Script.scriptFunction), so the next getAllData()[...] or getGlobal(...).magnitude raises and, without
+# this, the run ended with only its Metadata line. The finally clause uses plain file I/O only.
+try:
+    while not IonTrapped  and AttemptCount < MaxTrapAttempts and ZeroNeutralCount < 20:
+        if scriptIsStopped():
+            break
 
-    # set 650 EOM freqs and sidebands
-    #os.system(f'ssh pi@192.168.168.105 "cd /home/pi/pll-evalboard-synthesizer/src/Control-Programs/Pi5/ && ./PowersN770"')
-    #os.system(f'ssh pi@192.168.168.105 "cd /home/pi/pll-evalboard-synthesizer/src/Control-Programs/Pi5/ && ./FreqsN770"')
-    if AttemptCount == 0:
-        AblationPulsesDummy = getGlobal("AblationPulsesDummy")
-        if AblationPulsesDummy != 1:
-            setGlobal("AblationPulsesDummy", 1, "")
-        setScan(PulseAblationDummyProgram)
-        startScan(globalOverrides=list(), wait=False)
+        # set 650 EOM freqs and sidebands
+        #os.system(f'ssh pi@192.168.168.105 "cd /home/pi/pll-evalboard-synthesizer/src/Control-Programs/Pi5/ && ./PowersN770"')
+        #os.system(f'ssh pi@192.168.168.105 "cd /home/pi/pll-evalboard-synthesizer/src/Control-Programs/Pi5/ && ./FreqsN770"')
+        if AttemptCount == 0:
+            AblationPulsesDummy = getGlobal("AblationPulsesDummy")
+            if AblationPulsesDummy != 1:
+                setGlobal("AblationPulsesDummy", 1, "")
+            setScan(PulseAblationDummyProgram)
+            startScan(globalOverrides=list(), wait=False)
+            stopScan()
+            if AblationPulsesDummy != 1:
+                setGlobal("AblationPulsesDummy", AblationPulsesDummy, "")
+            #AttemptCount += 1
+        FlushTrapRF(script_functions) 
+
+        (BGydataAvg, BGydataStD) = GetPMTCounts(BGCountsProgram, script_functions, bg=True)
+        print(BGydataAvg, BGydataStD)
+        #print(hdsuack)
+        setScan(PulseAblationProgram)
+        startScan(globalOverrides=list(), wait=True)
+        data = getAllData()['PMT Count'] #Returns all data associated with scan.
+        NeutralCounts = data[1]
         stopScan()
-        if AblationPulsesDummy != 1:
-            setGlobal("AblationPulsesDummy", AblationPulsesDummy, "")
-        #AttemptCount += 1
-    FlushTrapRF(script_functions) 
 
-    (BGydataAvg, BGydataStD) = GetPMTCounts(BGCountsProgram, script_functions, bg=True)
-    print(BGydataAvg, BGydataStD)
-    #print(hdsuack)
-    setScan(PulseAblationProgram)
-    startScan(globalOverrides=list(), wait=True)
-    data = getAllData()['PMT Count'] #Returns all data associated with scan.
-    NeutralCounts = data[1]
-    stopScan()
+        print(f"\n Neutral counts is:{NeutralCounts[0]}\n")
+        if NeutralCounts[0] <= 0.1:
+            ZeroNeutralCount += 1
+        else:
+            ZeroNeutralCount = 0
 
-    print(f"\n Neutral counts is:{NeutralCounts[0]}\n")
-    if NeutralCounts[0] <= 0.1:
-        ZeroNeutralCount += 1
-    else:
-        ZeroNeutralCount = 0
+        time_h_m_s =  datetime.datetime.now().strftime("%H:%M:%S")
 
-    time_h_m_s =  datetime.datetime.now().strftime("%H:%M:%S")
+        WriteStringNC = f"{time_h_m_s} - {NeutralCounts[0]:0.1f}\n"
+        SaveDataToTextFile(filenameNC, WriteStringNC)
 
-    WriteStringNC = f"{time_h_m_s} - {NeutralCounts[0]:0.1f}\n"
-    SaveDataToTextFile(filenameNC, WriteStringNC)
-
-    setScan(PulseAblationDummyProgram)
-    startScan(globalOverrides=list(), wait=False)
-    #SweepCool493(Freq493, CoolSweepsNum, script_functions)
-    SweepCool493650(Freq493, Freq650, CoolSweepsNum, script_functions)
-    stopScan()
-
-    time.sleep(wait_before_checking_ion)
-    
-    (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
-    IonTrapped = CheckIonTrappedHeadless(ydataAvg, ydataStd, AttemptCount, "Ba137", script_functions)
-    AttemptCount += 1
-    setGlobal("LoadAttempts", AttemptCount, "")
-    
-    if IonTrapped and Check_Ba138:
-        eom_493_frequency_ba138 = getGlobal("Ba138_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
-        Ba138_Present = Check_Ba138_Present(PulseAblationDummyProgram, eom_493_frequency_ba138, 4, script_functions)
-        if Ba138_Present:
-            IonTrapped = False
-            Ba138_Counter +=1
-            setGlobal("Ba138_Positives", Ba138_Counter, "")
-    else:
-        Ba138_Present = False
-        
-    #else:
-    #?    pass
-    # We need this in case we check for Ba138!
-    Set8GHzSideband(eom_493_frequency, -20, "ON")
-    print("Attempts: ", AttemptCount, " Ba138 Count: ", Ba138_Counter)
-    (Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba137", script_functions)
-    # end of if IonTrapped indent
-    
-
-    if IonTrapped and not Ba138_Present:
         setScan(PulseAblationDummyProgram)
         startScan(globalOverrides=list(), wait=False)
+        #SweepCool493(Freq493, CoolSweepsNum, script_functions)
         SweepCool493650(Freq493, Freq650, CoolSweepsNum, script_functions)
         stopScan()
 
+        time.sleep(wait_before_checking_ion)
+        
         (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
-        IonTrapped = CheckIonTrappedWithBa138Check(ydataAvg, ydataStd, AttemptCount, Ba138_Counter, "Ba137", script_functions)
-        setGlobal("Trap_RF_attn", 0, "dB")
-if CurrPMTInt != TrapPMTInt:
-    setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
-setEvaluation('Eval2')
+        IonTrapped = CheckIonTrappedHeadless(ydataAvg, ydataStd, AttemptCount, "Ba137", script_functions)
+        AttemptCount += 1
+        setGlobal("LoadAttempts", AttemptCount, "")
+        
+        if IonTrapped and Check_Ba138:
+            eom_493_frequency_ba138 = getGlobal("Ba138_CoolingFreq_EOM").magnitude / 1000 # MHz to GHz
+            Ba138_Present = Check_Ba138_Present(PulseAblationDummyProgram, eom_493_frequency_ba138, 4, script_functions)
+            if Ba138_Present:
+                IonTrapped = False
+                Ba138_Counter +=1
+                setGlobal("Ba138_Positives", Ba138_Counter, "")
+        else:
+            Ba138_Present = False
+            
+        #else:
+        #?    pass
+        # We need this in case we check for Ba138!
+        Set8GHzSideband(eom_493_frequency, -20, "ON")
+        print("Attempts: ", AttemptCount, " Ba138 Count: ", Ba138_Counter)
+        (Freq493, Freq650, Freq553, Freq614) = SetGlobalLaserFreqs("Ba137", script_functions)
+        # end of if IonTrapped indent
+        
 
-if len(NeutralCounts) > 1:
-    NeutralString = f"{np.mean(NeutralCounts):0.1f}, {np.std(NeutralCounts):0.1f}"
-else:
-    NeutralString = f"{NeutralCounts[0]:0.1f}"
+        if IonTrapped and not Ba138_Present:
+            setScan(PulseAblationDummyProgram)
+            startScan(globalOverrides=list(), wait=False)
+            SweepCool493650(Freq493, Freq650, CoolSweepsNum, script_functions)
+            stopScan()
 
-if IonTrapped:
-    WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tTrapped after {AttemptCount} attempts, Ion counts: {ydataAvg:0.1f}, \
+            (ydataAvg, ydataStd) = GetPMTCounts(CountsProgram, script_functions, bg=False)
+            IonTrapped = CheckIonTrappedWithBa138Check(ydataAvg, ydataStd, AttemptCount, Ba138_Counter, "Ba137", script_functions)
+            if IonTrapped:  # confirmed; a failed confirmation keeps loading at low RF
+                setGlobal("Trap_RF_attn", 0, "dB")
+    if CurrPMTInt != TrapPMTInt:
+        setGlobal("PMT_Integration_Time", CurrPMTInt, 'ms')
+    setEvaluation('Eval2')
+
+    if IonTrapped:
+        if len(NeutralCounts) > 1:
+            NeutralString = f"{np.mean(NeutralCounts):0.1f}, {np.std(NeutralCounts):0.1f}"
+        else:
+            NeutralString = f"{NeutralCounts[0]:0.1f}"
+        WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tTrapped after {AttemptCount} attempts, Ion counts: {ydataAvg:0.1f}, \
     {ydataStd:0.1f} std, Neutral counts: {NeutralString}\n"
-    SaveDataToTextFile(filename0, WriteString)
-    CurrWhichIon = int(getGlobal("WhichIon").magnitude)
-    if not CurrWhichIon == 137:
-        setGlobal("WhichIon", 137, "")
-else:
-    WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tNothing trapped after {AttemptCount} attempts\n"
-    SaveDataToTextFile(filename0, WriteString)
+        SaveDataToTextFile(filename0, WriteString)
+        OutcomeWritten = True
+        CurrWhichIon = int(getGlobal("WhichIon").magnitude)
+        if not CurrWhichIon == 137:
+            setGlobal("WhichIon", 137, "")
+    elif scriptIsStopped():
+        EndNote = " (script stopped)"
+    elif ZeroNeutralCount >= 20:
+        EndNote = " (no neutral fluorescence)"
+except Exception as e:
+    EndNote = " (script stopped)" if scriptIsStopped() else f" (error: {type(e).__name__})"
+    raise
+finally:
+    if not OutcomeWritten:
+        WriteString = f"{time.strftime('%H:%M:%S', time.localtime())}\tNothing trapped after {AttemptCount} attempts{EndNote}\n"
+        SaveDataToTextFile(filename0, WriteString)
