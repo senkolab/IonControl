@@ -40,13 +40,13 @@ centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper)
 
 #centre_freq = 610.4188 + 20.7737
 #centre_freq = 604.5756 + 1.139
-#centre_freq = 610.600
+centre_freq = 610.700
 centre_freq = centre_freq 
 freq_step = 0.003
-freq_range_factor = 14
+freq_range_factor = 24
 threshold = 10
 
-SetPulseTime = 40 #us
+SetPulseTime = 33.25 #us
 opt_pump_time = 1000
 
 PulseTime = getGlobal("Shelving_Pulse_Time")
@@ -92,6 +92,8 @@ def findResonance_withfit_plotPD(start_freq, stop_freq, freq_step, dt_string , t
         setScan(pulse_program)
         startScan(globalOverrides=list(), wait=True)
         stopScan()
+        if scriptIsStopped():  # after Stop, getAllData() returns None; keep the points already taken
+            break
         data = getAllData()['PMT Count']
         ydata = data[1]
         #threshold = getShelvingThreshold2(ydata)
@@ -111,11 +113,10 @@ def findResonance_withfit_plotPD(start_freq, stop_freq, freq_step, dt_string , t
         PD = np.mean(fluor_bool)
         flour_exp.append(fluor_bool)
 
-        if not DC_check(fluor_bool):
-            fluor_ave.append(PD)
-            freq_list.append(set_freq)
-        else:
-            pass
+        if DC_check(fluor_bool):  # warn only: on resonance a long dark run is signal, not ion loss
+            print(f'DC_check: 15 or more dark shots in a row at {set_freq} MHz; point kept')
+        fluor_ave.append(PD)
+        freq_list.append(set_freq)
 
         plotPoint(set_freq, PD, '1762 nm freq scan', plotStyle=0)
         set_freq = np.round(set_freq + freq_step, 6)
@@ -127,19 +128,24 @@ def findResonance_withfit_plotPD(start_freq, stop_freq, freq_step, dt_string , t
         return amp/(1+((x-centre)/width)**2) + bg
     #def Lorentzian_1D(x, centre, width, amp, bg):
     #    return -amp/(1+((x-centre)/width)**2) + bg
-    #freq_guess = (start_freq+stop_freq)/2
-    freq_guess = freq_list[np.argmax(fluor_ave)]
-    guess = np.array([freq_guess,0.001,0.5,0])
-    #freq_guess = freq_list[np.argmax(fluor_data)]
-    #guess = np.array([freq_guess,0.001,10,30])
-    popt, pcov = curve_fit(Lorentzian_1D, freq_list, fluor_ave, guess, maxfev = 10000)
-    freq_res = popt[0]
-    uncertainty = np.sqrt(pcov[0][0])
-    print(f'freqs covered: {freq_list}')
-    print(f'fluor ave: {fluor_ave}')
-    print(f'{freq_res}, amp={popt[2]}, width={popt[1]}, bg={popt[3]}')
+    fit_error = None
+    try:
+        #freq_guess = (start_freq+stop_freq)/2
+        freq_guess = freq_list[np.argmax(fluor_ave)]
+        guess = np.array([freq_guess,0.001,0.5,0])
+        #freq_guess = freq_list[np.argmax(fluor_data)]
+        #guess = np.array([freq_guess,0.001,10,30])
+        popt, pcov = curve_fit(Lorentzian_1D, freq_list, fluor_ave, guess, maxfev = 10000)
+        freq_res = popt[0]
+        uncertainty = np.sqrt(pcov[0][0])
+        print(f'freqs covered: {freq_list}')
+        print(f'fluor ave: {fluor_ave}')
+        print(f'{freq_res}, amp={popt[2]}, width={popt[1]}, bg={popt[3]}')
+        freq_string = str(round(freq_res,4)).replace('.','p')
+    except Exception as err:  # no points, or no convergence: still save the scan, then raise as before
+        fit_error = err
+        freq_string, uncertainty = 'nofit', float('nan')
     #Sving Raw data for the plots
-    freq_string = str(round(freq_res,4)).replace('.','p')
     combined_data = zip(freq_list,fluor_ave)
     filename = f'Z:\Lab Data\D52_Calibration_Ba137\Complete_Calibration_Raw_data\D52_calibration_raw_data_{freq_string}_{dt_string}.txt'
     with open(filename,'w') as file:
@@ -153,6 +159,8 @@ def findResonance_withfit_plotPD(start_freq, stop_freq, freq_step, dt_string , t
         for x,y in combined_data:
             file.write(f"{x},{y}\n")
         file.write(f"{uncertainty}")
+    if fit_error is not None:
+        raise fit_error
     return freq_res
 
 freq_peak = findResonance_withfit_plotPD(freq_start, freq_stop, freq_step, dt_string, threshold, pulse_program_findres, script_functions, AWG=True)
