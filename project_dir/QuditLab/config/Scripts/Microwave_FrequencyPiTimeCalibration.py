@@ -67,6 +67,8 @@ fl, pi_time_l = 8029.019188, 27.98  # Lower transition, mF -1 to -2
 fu, pi_time_u = 8046.471323, 16.9  # Upper transition, mF +1 to +2
 f0, pi_time_0 = 8037.750920, 34.475  # Clock transition, mF 0 to 0
 
+drive_power = -6
+
 # Leave a transition out of these dictionaries to use its predicted value.
 frequency_overrides_mhz = {}
 pi_time_overrides_us = {
@@ -160,7 +162,7 @@ def findResonance_withfit_plotPD(init_state, ShelvingPulseTime, start_freq, stop
         if not "%s"%Microwave_Freq == "%s MHz"%set_freq:
             setGlobal("Microwave_Frequency", np.round(set_freq, 6), "MHz")
 
-        set_DSI12000PRO(set_freq, 0, True)
+        set_DSI12000PRO(set_freq, drive_power, True)
 
         setScan(pulse_program)
         startScan(globalOverrides=list(), wait=True)
@@ -461,7 +463,7 @@ with open(output_file_freqs, 'w') as outfile:
 
             if not do_frequency_scan:
                 setGlobal("Microwave_Frequency", np.round(freq_peak, 6), "MHz")
-            set_DSI12000PRO(freq_peak, 0, True)
+            set_DSI12000PRO(freq_peak, drive_power, True)
 
             start_time = 0
             stop_time = 4 * MicrowavePulseTime
