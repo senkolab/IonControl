@@ -41,7 +41,7 @@ run_time = datetime.datetime.now()
 dt_string = run_time.strftime("%Y%m%d_%H%M%S_%f")
 
 transitions = [
-    ['S', 2, 1, 'S', 1, 1],
+    ['S', 2,  0, 'S', 1,  0],
     # ['S', 2, -1, 'S', 1, 0],
 ]
 
@@ -67,7 +67,7 @@ fl, pi_time_l = 8029.019188, 27.98  # Lower transition, mF -1 to -2
 fu, pi_time_u = 8046.471323, 16.9  # Upper transition, mF +1 to +2
 f0, pi_time_0 = 8037.750920, 34.475  # Clock transition, mF 0 to 0
 
-drive_power = -6
+drive_power = 0
 
 # Leave a transition out of these dictionaries to use its predicted value.
 frequency_overrides_mhz = {}
@@ -75,7 +75,7 @@ pi_time_overrides_us = {
     #('S', 2, 1, 'S', 1, 1): 20,
 }
 
-do_pi_time_calibration = True
+do_pi_time_calibration = False
 do_frequency_scan = True
 line_trigger = True
 
@@ -87,7 +87,7 @@ F1PumpReps = 35
 InitReps = 0
 
 freq_step = 0.004 # MHz
-freq_range_factor = 10 # number of frequency steps
+freq_range_factor = 20 # number of frequency steps
 
 # Shelving transitions are indexed by the F=2 mF plus two.
 list_of_shelving = [
