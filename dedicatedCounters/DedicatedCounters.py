@@ -264,7 +264,8 @@ class DedicatedCounters(DedicatedCountersForm, DedicatedCountersBase ):
     def onEnableTimeseries(self, checked):
         if checked:
             self.timeseries = TimeseriesPersist()
-            checked = self.timeseries.initDB()
+            #checked = self.timeseries.initDB()
+            checked = bool(self.timeseries.database)
         else:
             self.timeseries = None
         self.enableTimeseries = checked
@@ -343,21 +344,26 @@ class DedicatedCounters(DedicatedCountersForm, DedicatedCountersBase ):
             self.replot()
 
     def storeData(self, data, queueSize):
-        if self.timeseries is None or not self.timeseries.active:
+        if self.timeseries is None:
             return
-        if not self.timeseries.initialized:
-            self.timeseries.initDB()
-        fields = {'count{}'.format(index): float(value) for index, value in enumerate(data.data[:16]) if value is not None}
-        fields.update({'analog{}'.format(index): float(self.analogValue(index+16, value)) for index, value in enumerate(data.analogValues) if value is not None})
-        fields['integrationtime'] = float(self.dataIntegrationTime.m_as('ms'))
-        TimeseriesPersist.store.write_points([{
-            "measurement": "dedicated",
-            "tags": {
-                "project": self.timeseries.projectName,
-            },
-            "fields": fields,
-            "time": data.timestamp if data.timestamp > 1000000000000000000 else int(data.timestamp * 1000000000)
-        }])
+
+        fields = {
+            "count{}".format(index): float(value)
+            for index, value in enumerate(data.data[:16])
+            if value is not None
+        }
+        fields.update({
+            "analog{}".format(index): float(self.analogValue(index + 16, value))
+            for index, value in enumerate(data.analogValues)
+            if value is not None
+        })
+        fields["integrationtime"] = float(self.dataIntegrationTime.m_as("ms"))
+
+        timestamp = data.timestamp
+        if timestamp <= 1_000_000_000_000_000_000:
+            timestamp = int(timestamp * 1_000_000_000)
+        self.timeseries.record("dedicated", fields, timestamp=timestamp)
+
 
     def replot(self):
         for name, plotwin in self.curvesDict.items():

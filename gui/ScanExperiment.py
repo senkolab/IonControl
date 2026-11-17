@@ -41,7 +41,7 @@ from pyqtgraph.dockarea import DockArea, Dock
 from pyqtgraph.graphicsItems.ViewBox import ViewBox
 from pyqtgraph.exporters.ImageExporter import ImageExporter
 from pyqtgraph.exporters.SVGExporter import SVGExporter
-
+from persist.Timeseries import TimeseriesPersist
 from trace.PlottedStructure import PlottedStructure
 from .AverageViewTable import AverageViewTable
 from . import MainWindowWidget
@@ -252,6 +252,13 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
         self.progressUi = ScanProgress()
         self.progressUi.setupUi()
         self.stateChanged = self.progressUi.stateChanged
+        self.experimentTelemetry = TimeseriesPersist()
+        self.experimentTelemetryTimer = QtCore.QTimer(self)
+        if self.experimentTelemetry.telemetryDatabase:
+            self.stateChanged.connect(self.recordExperimentState)
+            self.experimentTelemetryTimer.timeout.connect(self.recordExperimentState)
+            self.recordExperimentState("idle")
+            self.experimentTelemetryTimer.start(5000)
         self.setupAsDockWidget(self.progressUi, "Progress", QtCore.Qt.RightDockWidgetArea)
         # Average View
         self.displayUi = AverageViewTable(self.config)
@@ -940,7 +947,17 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
         self.fitWidget.saveConfig()
         self.analysisControlWidget.saveConfig()
         
+    def recordExperimentState(self, state=None):
+        if state is not None:
+            self.lastExperimentState = state
+        self.experimentTelemetry.record(
+            "experiment_state",
+            {"state": self.lastExperimentState},
+            tags={"experiment": self.experimentName},
+        )
+        
     def onClose(self):
+        self.experimentTelemetryTimer.stop()
         self.traceui.exitSignal.emit()
         self.namedTraceui.exitSignal.emit()
         self.namedTraceui.onClose()

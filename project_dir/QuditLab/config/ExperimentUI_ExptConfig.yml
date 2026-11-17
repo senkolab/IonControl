@@ -51,5 +51,10 @@ software:
     null:
       enabled: true
       hardware: Opal Kelly FPGA
+  Timeseries Database:
+    ioncontrol:
+      database: ioncontrol
+      enabled: true
+      host: 192.168.168.31
 useCustomDatabaseName: false
 version: 2.0

@@ -1,13 +1,54 @@
 import logging
+from queue import Empty, Full, Queue
+from threading import Thread
+from time import monotonic, time
 
 from ProjectConfig.Project import getProject
 from externalParameter.persistence import persistenceProviders, persistenceDict
 
 try:
     from influxdb import InfluxDBClient
+    from influxdb.exceptions import InfluxDBClientError, InfluxDBServerError
+    from requests.exceptions import RequestException
+
+    class TelemetryWriter:
+        def __init__(self, host, database):
+            self.client = InfluxDBClient(
+                host=host, port=8086, database=database, timeout=2, retries=1
+            )
+            self.points = Queue(maxsize=512)
+            Thread(target=self.run, name="InfluxDB telemetry", daemon=True).start()
+
+        def record(self, point):
+            try:
+                self.points.put_nowait(point)
+            except Full:
+                # A database outage should never block acquisition.
+                pass
+
+        def run(self):
+            next_warning = 0
+            while True:
+                batch = [self.points.get()]
+                try:
+                    for _ in range(127):
+                        batch.append(self.points.get_nowait())
+                except Empty:
+                    pass
+
+                try:
+                    self.client.write_points(batch)
+                except (RequestException, InfluxDBClientError, InfluxDBServerError, ValueError) as exc:
+                    now = monotonic()
+                    if now >= next_warning:
+                        logging.getLogger(__name__).warning(
+                            "InfluxDB telemetry write failed: %s", exc
+                        )
+                        next_warning = now + 30
 
     class TimeseriesPersist:
         store = None
+        telemetry = None
         name = "Timeseries persist"
 
         def __init__(self):
@@ -20,19 +61,39 @@ try:
             self.initialized = False
 
         def initDB(self):
-            self.active = False
-            if TimeseriesPersist.store is None:
-                prj = getProject()
-                self.projectName = prj.name
-                if 'Timeseries Database' in prj.software:
-                    dbs = prj.software['Timeseries Database']
-                    if dbs:
-                        db = list(dbs.values())[0]
-                        TimeseriesPersist.store = InfluxDBClient(host=db.get('host'), port=8086,
-                                                                 database=db.get('database'))
-                        self.active = True
+            project = getProject()
+            self.projectName = project.name
+            databases = project.software.get("Timeseries Database", {})
+            self.telemetryDatabase = databases.get("ioncontrol")
+            default_database = next(
+                (config for name, config in databases.items() if name != "ioncontrol"),
+                None,
+            )
+            self.database = self.telemetryDatabase or default_database
+            if default_database and TimeseriesPersist.store is None:
+                TimeseriesPersist.store = InfluxDBClient(
+                    host=default_database.get("host"),
+                    port=8086,
+                    database=default_database.get("database"),
+                )
+            self.active = TimeseriesPersist.store is not None
             self.initialized = True
             return self.active
+
+        def record(self, measurement, fields, timestamp=None, tags=None):
+            if not self.database:
+                return
+            if TimeseriesPersist.telemetry is None:
+                TimeseriesPersist.telemetry = TelemetryWriter(
+                    self.database.get("host"), self.database.get("database")
+                )
+            TimeseriesPersist.telemetry.record({
+                "measurement": measurement,
+                "tags": dict(tags or {}, project=self.projectName),
+                "fields": fields,
+                "time": int(time() * 1_000_000_000) if timestamp is None else timestamp,
+            })
+
 
         def persist(self, space, source, time, value, minval=None, maxval=None, unit=None):
             if not self.active:
