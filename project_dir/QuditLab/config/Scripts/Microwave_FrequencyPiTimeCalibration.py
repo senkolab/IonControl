@@ -48,18 +48,18 @@ transitions = [
 transitions = [
     # DmF = -1
     ['S', 2, -2, 'S', 1, -1],
-    ['S', 2, -1, 'S', 1,  0],
-    ['S', 2,  0, 'S', 1, +1],
+    #['S', 2, -1, 'S', 1,  0],
+    #['S', 2,  0, 'S', 1, +1],
 
     # DmF = 0
-    ['S', 2, -1, 'S', 1, -1],
-    ['S', 2,  0, 'S', 1,  0],  # Clock transition
-    ['S', 2, +1, 'S', 1, +1],
+    #['S', 2, -1, 'S', 1, -1],
+    #['S', 2,  0, 'S', 1,  0],  # Clock transition
+    #['S', 2, +1, 'S', 1, +1],
 
     # DmF = +1
-    ['S', 2,  0, 'S', 1, -1],
-    ['S', 2, +1, 'S', 1,  0],
-    ['S', 2, +2, 'S', 1, +1],
+    #['S', 2,  0, 'S', 1, -1],
+    #['S', 2, +1, 'S', 1,  0],
+    #['S', 2, +2, 'S', 1, +1],
 ]
 
 # Reference calibrations for theory predictions. Frequencies are in MHz and pi times are in us.
@@ -75,7 +75,7 @@ pi_time_overrides_us = {
     #('S', 2, 1, 'S', 1, 1): 20,
 }
 
-do_pi_time_calibration = False
+do_pi_time_calibration = True
 do_frequency_scan = True
 line_trigger = True
 
@@ -86,8 +86,8 @@ F1PumpTime = 1.5
 F1PumpReps = 35
 InitReps = 0
 
-freq_step = 0.004 # MHz
-freq_range_factor = 20 # number of frequency steps
+freq_step = 0.006 # MHz
+freq_range_factor = 10 # number of frequency steps
 
 # Shelving transitions are indexed by the F=2 mF plus two.
 list_of_shelving = [
