@@ -92,6 +92,7 @@ class DedicatedCounters(DedicatedCountersForm, DedicatedCountersBase ):
         self.actionData_Reporting.triggered.connect(self.onEnableDataTaking)
         self.actionPlot_Data.triggered.connect(self.onEnableDataPlotting)
         self.actionTimeseries.triggered.connect(self.onEnableTimeseries)
+        self.onEnableTimeseries(True)
         self.settingsUi = DedicatedCountersSettings.DedicatedCountersSettings(self.config,self.plotDict)
         self.settingsUi.setupUi(self.settingsUi)
         self.settingsDock.setWidget( self.settingsUi )

@@ -22,6 +22,7 @@ from pulseProgram.PulseProgramSourceEdit import PulseProgramSourceEdit
 from collections import OrderedDict
 from pathlib import Path
 from gui.FileTree import ensurePath, onExpandOrCollapse, FileTreeMixin, OrderedList, OptionsWindow
+from persist.Timeseries import TimeseriesPersist
 
 uipath = os.path.join(os.path.dirname(__file__), '..', 'ui/Scripting.ui')
 ScriptingWidget, ScriptingBase = PyQt5.uic.loadUiType(uipath)
@@ -38,6 +39,10 @@ class ScriptingUi(FileTreeMixin, ScriptingWidget, ScriptingBase):
         self.defaultDir = Path(getProject().configDir+'/Scripts')
         self.script = Script(homeDir=self.defaultDir) #encapsulates the script
         self.scriptHandler = ScriptHandler(self.script, experimentUi) #handles interface to the script
+        self.scriptTelemetry = TimeseriesPersist()
+        self.telemetryScriptName = ""
+        if self.scriptTelemetry.telemetryDatabase:
+            self.script.started.connect(self.recordScriptStart)
         self.revert = False
         self.allowFileViewerLoad = True
         self.initcode = ''
@@ -198,10 +203,28 @@ class ScriptingUi(FileTreeMixin, ScriptingWidget, ScriptingBase):
         self.actionPauseScript.setChecked(False)
         self.repeatButton.setChecked(False)
         self.scriptHandler.onStopScriptAndScan()
-        
+
+    @QtCore.pyqtSlot()
+    def recordScriptStart(self):
+        self.telemetryScriptName = Path(self.script.fullname).name if self.script.fullname else ""
+        if self.telemetryScriptName:
+            self.scriptTelemetry.record(
+                "script_events",
+                {"state": "started", "script_name": self.telemetryScriptName},
+            )
+
+
     @QtCore.pyqtSlot()
     def onFinished(self):
         """Runs when script thread finishes. re-enables script GUI."""
+        
+        if self.telemetryScriptName:
+            self.scriptTelemetry.record(
+                "script_events",
+                {"state": "finished", "script_name": self.telemetryScriptName},
+            )
+            self.telemetryScriptName = ""
+        
         logger = logging.getLogger(__name__)
         self.statusLabel.setText("Idle")
         message = "script {0} finished at {1}".format(self.script.fullname, str(datetime.now()))

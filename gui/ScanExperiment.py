@@ -92,6 +92,7 @@ class ScanExperimentContext(object):
         self.histogramTrace = None
         self.histogramBuffer = defaultdict( list )
         self.scan = None
+        self.telemetryRunNames = {}
         self.otherDataFile = None
         self.evaluation = None
         self.scanMethod = None
@@ -382,6 +383,7 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
         self.context.overrideGlobals(self.globalVariables)
         self.accumulatedTimingViolations = set()
         self.pulseProgramUi.setTimingViolations( [] )
+        self.context.telemetryRunNames = {}
         self.context.scan = self.scanControlWidget.getScan()
         self.context.evaluation = self.evaluationControlWidget.getEvaluation()
         self.displayUi.setNames( [evaluation.name for evaluation in self.context.evaluation.evalList ])
@@ -414,6 +416,12 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
                         awgDevice.program()
 
             self.context.PulseProgramBinary = self.pulseProgramUi.getPulseProgramBinary()
+            if self.experimentTelemetry.telemetryDatabase:
+                program_path = self.pulseProgramUi.configParams.lastLoadFilename
+                self.context.telemetryRunNames = {
+                    "pulse_program": Path(program_path).name if program_path else "",
+                    "scan_name": self.context.scan.settingsName,
+                }
             self.context.generator = GeneratorList[self.context.scan.scanMode](self.context.scan)
 
             if self.dataStore:
@@ -947,14 +955,31 @@ class ScanExperiment(ScanExperimentForm, MainWindowWidget.MainWindowWidget):
         self.fitWidget.saveConfig()
         self.analysisControlWidget.saveConfig()
         
+    #def recordExperimentState(self, state=None):
+    #    if state is not None:
+    #        self.lastExperimentState = state
+    #    self.experimentTelemetry.record(
+    #        "experiment_state",
+    #        {"state": self.lastExperimentState},
+    #        tags={"experiment": self.experimentName},
+    #    )
     def recordExperimentState(self, state=None):
+        previous = getattr(self, "lastExperimentState", None)
         if state is not None:
             self.lastExperimentState = state
-        self.experimentTelemetry.record(
-            "experiment_state",
-            {"state": self.lastExperimentState},
-            tags={"experiment": self.experimentName},
-        )
+
+        tags = {"experiment": self.experimentName}
+        names = self.context.telemetryRunNames
+        fields = {"state": self.lastExperimentState}
+        if self.lastExperimentState != "idle":
+            fields.update(names)
+
+        self.experimentTelemetry.record("experiment_state", fields, tags=tags)
+        if state is not None and state != previous and names:
+            self.experimentTelemetry.record(
+                "scan_program_events", {**names, "state": state}, tags=tags
+            )
+
         
     def onClose(self):
         self.experimentTelemetryTimer.stop()
