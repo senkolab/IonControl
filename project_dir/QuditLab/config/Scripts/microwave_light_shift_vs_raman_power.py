@@ -28,11 +28,8 @@ from Functions_Data import *
 from Functions_Measurement import *
 from Functions_RFSoC import upload_dac0
 from Functions_RFSoC_2ptRamseyCalibration_ms0 import *
-
 from Functions_Microwave import *
-
-sys.path.append(r'C:\Users\ions\Documents\IonControl\project_dir\QuditLab\config\Scripts')
-
+from Functions_Trap import GetPMTCounts, CheckIonTrappedHeadless
 from DSI_12000PRO_connet import set_DSI12000PRO
 
 
@@ -47,18 +44,18 @@ transitions = [
 
 transitions = [
     # DmF = -1
-    #['S', 2, -2, 'S', 1, -1],
-    #['S', 2, -1, 'S', 1,  0],
-    #['S', 2,  0, 'S', 1, +1],
+    ['S', 2, -2, 'S', 1, -1],
+    ['S', 2, -1, 'S', 1,  0],
+    ['S', 2,  0, 'S', 1, +1],
 
     # DmF = 0
-    #['S', 2, -1, 'S', 1, -1],
-    #['S', 2,  0, 'S', 1,  0],  # Clock transition
-    #['S', 2, +1, 'S', 1, +1],
+    ['S', 2, -1, 'S', 1, -1],
+    ['S', 2,  0, 'S', 1,  0],  # Clock transition
+    ['S', 2, +1, 'S', 1, +1],
 
     # DmF = +1
-    #['S', 2,  0, 'S', 1, -1],
-    #['S', 2, +1, 'S', 1,  0],
+    ['S', 2,  0, 'S', 1, -1],
+    ['S', 2, +1, 'S', 1,  0],
     ['S', 2, +2, 'S', 1, +1],
 ]
 
@@ -72,7 +69,7 @@ drive_power = 0
 from dsi_sg_controller import open_generator, PowerLimits
 
 # Raman SG6000L through the NUC bridge. None = RF output off (reference sweep).
-raman_powers_dbm = [None, -21, -19, -17, -15, -13, -11, -9, -7, -5, None]
+raman_powers_dbm = raman_powers_dbm = [None, -21, -17, -13, None, -9, -5, None, -7, -11, None, -15, -19, None]
 raman_park_dbm = -21
 raman_settle_s = 0.5
 
@@ -87,7 +84,7 @@ def open_raman():
 # Leave a transition out of these dictionaries to use its predicted value.
 frequency_overrides_mhz = {}
 pi_time_overrides_us = {
-    ('S', 2, 2, 'S', 1, 1): 21,
+    ('S', 2, 2, 'S', 1, 1): 19,
 }
 
 do_pi_time_calibration = False
@@ -121,12 +118,6 @@ list_of_inits = [[[-1,3,-2],[0,4,-2],[1,4,0],[2,4,2]],
 ]
 
 output_root = r'Z:\Lab Data\MicrowaveLightShiftMeasurements'
-date_folders = (run_time.strftime('%Y_%m'), run_time.strftime('%d'))
-frequency_scan_dir = os.path.join(output_root, 'Frequency_scans', *date_folders)
-frequency_scan_raw_data_dir = os.path.join(output_root, 'Experiment_raw_data', 'Frequency_scans', *date_folders)
-pulse_time_scan_dir = os.path.join(output_root, 'Pulse_time_scans', *date_folders)
-pulse_time_scan_raw_data_dir = os.path.join(output_root, 'Experiment_raw_data', 'Pulse_time_scans', *date_folders)
-calibration_runs_dir = os.path.join(output_root, 'Calibration_runs', *date_folders)
 
 def findResonance_withfit_plotPD(init_state, ShelvingPulseTime, start_freq, stop_freq, freq_step, scan_path, raw_data_path, threshold, pulse_program, script_functions):
     getGlobal, setGlobal, setScan, startScan, stopScan, getAllData, createTrace, closeTrace, plotPoint, scriptIsStopped = script_functions
@@ -376,19 +367,32 @@ if scan_enabled:
     if not "%s"%F1Pump_reps == F1PumpReps:
         setGlobal("F1_PumpReps", F1PumpReps, "")
 
-os.makedirs(calibration_runs_dir, exist_ok=True)
-if do_frequency_scan:
-    os.makedirs(frequency_scan_dir, exist_ok=True)
-    os.makedirs(frequency_scan_raw_data_dir, exist_ok=True)
-if do_pi_time_calibration:
-    os.makedirs(pulse_time_scan_dir, exist_ok=True)
-    os.makedirs(pulse_time_scan_raw_data_dir, exist_ok=True)
-
 try:
     for raman_power in raman_powers_dbm:
         if scriptIsStopped():
             break
-        dt_string = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_%f")  # new stamp per sweep, same file names
+
+        yAvg, yStd = GetPMTCounts("PMT_CheckCounts_For-Script_Ba137", script_functions[:6], bg=False)
+        if not CheckIonTrappedHeadless(yAvg, yStd, None, None, script_functions[:6]):
+            print(f"Ion check failed before Raman {raman_power} dBm ({yAvg:.1f} counts). Stopping.")
+            break
+
+        now = datetime.datetime.now()
+        dt_string = now.strftime("%Y%m%d_%H%M%S_%f")  # new stamp per sweep, same file names      
+        date_folders = (now.strftime('%Y_%m'), now.strftime('%d'))  # day folder from the sweep's own stamp
+        frequency_scan_dir = os.path.join(output_root, 'Frequency_scans', *date_folders)
+        frequency_scan_raw_data_dir = os.path.join(output_root, 'Experiment_raw_data', 'Frequency_scans', *date_folders)
+        pulse_time_scan_dir = os.path.join(output_root, 'Pulse_time_scans', *date_folders)
+        pulse_time_scan_raw_data_dir = os.path.join(output_root, 'Experiment_raw_data', 'Pulse_time_scans', *date_folders)
+        calibration_runs_dir = os.path.join(output_root, 'Calibration_runs', *date_folders)
+        os.makedirs(calibration_runs_dir, exist_ok=True)
+        if do_frequency_scan:
+            os.makedirs(frequency_scan_dir, exist_ok=True)
+            os.makedirs(frequency_scan_raw_data_dir, exist_ok=True)
+        if do_pi_time_calibration:
+            os.makedirs(pulse_time_scan_dir, exist_ok=True)
+            os.makedirs(pulse_time_scan_raw_data_dir, exist_ok=True)
+
         with open_raman() as raman:
             raman_ch = raman.channel(1)
             if raman_power is None:
@@ -396,8 +400,13 @@ try:
             else:
                 raman_ch.ramp_power_dbm(raman_power)
                 raman_ch.set_output(True)
-            with open(os.path.join(calibration_runs_dir, 'raman_power_log.tsv'), 'a') as log:
-                log.write(f"{dt_string}\t{raman_power}\t{raman_ch.get_power_dbm()}\t{raman_ch.get_output()}\n")
+            log_path = os.path.join(calibration_runs_dir, 'raman_power_log.tsv')
+            new_log = not os.path.exists(log_path)
+            with open(log_path, 'a') as log:
+                if new_log:
+                    log.write("stamp\trequested_dbm\treadback_dbm\toutput\tsweep_stamp\n")
+                log.write(f"{dt_string}\t{raman_power}\t{raman_ch.get_power_dbm()}\t{raman_ch.get_output()}\t"
+                          f"{run_time.strftime('%Y%m%d_%H%M%S_%f')}\n")  # sweep_stamp: script start, same for the whole sweep
         time.sleep(raman_settle_s)
 
         output_file_freqs = os.path.join(calibration_runs_dir, f'{dt_string}_microwave_calibration.txt')

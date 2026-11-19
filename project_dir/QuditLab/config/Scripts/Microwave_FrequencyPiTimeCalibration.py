@@ -47,7 +47,7 @@ transitions = [
 
 transitions = [
     # DmF = -1
-    ['S', 2, -2, 'S', 1, -1],
+    #['S', 2, -2, 'S', 1, -1],
     #['S', 2, -1, 'S', 1,  0],
     #['S', 2,  0, 'S', 1, +1],
 
@@ -59,7 +59,7 @@ transitions = [
     # DmF = +1
     #['S', 2,  0, 'S', 1, -1],
     #['S', 2, +1, 'S', 1,  0],
-    #['S', 2, +2, 'S', 1, +1],
+    ['S', 2, +2, 'S', 1, +1],
 ]
 
 # Reference calibrations for theory predictions. Frequencies are in MHz and pi times are in us.
@@ -73,6 +73,7 @@ drive_power = 0
 frequency_overrides_mhz = {}
 pi_time_overrides_us = {
     #('S', 2, 1, 'S', 1, 1): 20,
+    ('S', 2, 2, 'S', 1, 1): 22,
 }
 
 do_pi_time_calibration = True
