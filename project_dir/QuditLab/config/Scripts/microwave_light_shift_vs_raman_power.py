@@ -69,7 +69,8 @@ drive_power = 0
 from dsi_sg_controller import open_generator, PowerLimits
 
 # Raman SG6000L through the NUC bridge. None = RF output off (reference sweep).
-raman_powers_dbm = raman_powers_dbm = [None, -21, -17, -13, None, -9, -5, None, -7, -11, None, -15, -19, None]
+#raman_powers_dbm = raman_powers_dbm = [None, -21, -17, -13, None, -9, -5, None, -7, -11, None, -15, -19, None]
+raman_powers_dbm = [None, -19,]
 raman_park_dbm = -21
 raman_settle_s = 0.5
 

@@ -70,10 +70,12 @@ f0, pi_time_0 = 8037.750920, 34.475  # Clock transition, mF 0 to 0
 drive_power = 0
 
 # Leave a transition out of these dictionaries to use its predicted value.
-frequency_overrides_mhz = {}
+frequency_overrides_mhz = {
+    #('S', 2, 2, 'S', 1, 1): fu + 0.150
+}
 pi_time_overrides_us = {
     #('S', 2, 1, 'S', 1, 1): 20,
-    ('S', 2, 2, 'S', 1, 1): 22,
+    ('S', 2, 2, 'S', 1, 1): 21,
 }
 
 do_pi_time_calibration = True

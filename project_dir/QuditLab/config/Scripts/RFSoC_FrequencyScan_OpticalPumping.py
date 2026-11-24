@@ -43,7 +43,7 @@ centre_freq = list(Get_1762_EOM_Freqs_an1an2(target_transition,f_offset,f_upper)
 centre_freq = 610.65
 #centre_freq = centre_freq 
 freq_step = 0.003
-freq_range_factor = 11
+freq_range_factor = 9
 threshold = 10
 
 SetPulseTime = 34 #us
